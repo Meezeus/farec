@@ -14,14 +14,14 @@ public class MenuBarController {
     private FXMLLoader fxmlLoader;
     public MenuBar menuBar;
 
-    public void openCreateFAWindow(ActionEvent event) throws IOException {
+    public void openCreateFAWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_FA_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         Stage stage = (Stage) menuBar.getScene().getWindow();
         stage.setScene(scene);
     }
 
-    public void openCreateREWindow(ActionEvent event) throws IOException{
+    public void openCreateREWindow() throws IOException{
         fxmlLoader = new FXMLLoader(App.class.getResource("create_RE_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         Stage stage = (Stage) menuBar.getScene().getWindow();
