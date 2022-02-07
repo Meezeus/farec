@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<MenuBar BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:id="menuBar" fx:controller="dudzinski.kacper.farec.MenuBarController">
+    <menus>
+        <Menu mnemonicParsing="false" text="Convert">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Convert finite automaton" onAction="#openCreateFAWindow" />
+                <MenuItem mnemonicParsing="false" text="Convert regular expression" onAction="#openCreateREWindow" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Save">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Save finite automaton" />
+                <MenuItem mnemonicParsing="false" text="Save regular expression" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Load">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Load finite automaton" />
+                <MenuItem mnemonicParsing="false" text="Load regular expression" />
+            </items>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Settings">
+            <items>
+                <CheckMenuItem mnemonicParsing="false" text="Show Ø transitions" />
+                <MenuItem mnemonicParsing="false" text="Settings..." />
+            </items>
+        </Menu>
+    </menus>
+</MenuBar>
