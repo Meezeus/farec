@@ -20,7 +20,7 @@
       </VBox>
    </right>
    <center>
-      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
+      <ScrollPane fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" BorderPane.alignment="CENTER">
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
