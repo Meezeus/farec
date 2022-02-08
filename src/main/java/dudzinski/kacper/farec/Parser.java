@@ -2,11 +2,59 @@ package dudzinski.kacper.farec;
 
 public class Parser {
 
+    private static char starOperator = '*';
+    private static char concatenationOperator = '|';
+    private static char unionOperator = '+';
     private static String alphanumericPattern = "^[a-zA-Z0-9]*$";
-    private static String validPattern = "^[a-zA-Z0-9()*|+]*$";
+    private static String symbolPattern = "^[!£$%^&*\\-+=:;@~#|<>,.?]$";
+    private static String validRegexPattern = "^[a-zA-Z0-9()" + starOperator + concatenationOperator + unionOperator + "]*$";
 
     public enum REOperators {
         STAR, CONCATENATION, UNION
+    }
+
+    /**
+     * Given a REOperator and a char, links the REOperator to that char and returns true if the char is a valid symbol.
+     * If the char is not a valid symbol, returns false.
+     * @param operator The REOperator to set the char for.
+     * @param operatorChar The char that will represent the REOperator.
+     * @return True if the char was valid and set successfully, false otherwise.
+     */
+    public static Boolean setOperatorChar(REOperators operator, char operatorChar){
+        if (!(""+operatorChar).matches(symbolPattern)){
+            return false;
+        }
+        if (operator == REOperators.STAR){
+            starOperator = operatorChar;
+        }
+        else if (operator == REOperators.CONCATENATION){
+            concatenationOperator = operatorChar;
+        }
+        else if (operator == REOperators.UNION){
+            unionOperator = operatorChar;
+        }
+        return true;
+    }
+
+    /**
+     * Given a given regex operator, returns the char corresponding to that operator or throws an exception.
+     * @param operator The regex operator for which to find the corresponding char.
+     * @return The char corresponding to the given regex operator.
+     * @throws IllegalArgumentException
+     */
+    public static char getOperatorChar(REOperators operator) throws IllegalArgumentException{
+        if (operator == REOperators.STAR){
+            return starOperator;
+        }
+        else if (operator == REOperators.CONCATENATION){
+            return concatenationOperator;
+        }
+        else if (operator == REOperators.UNION){
+            return unionOperator;
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -17,15 +65,17 @@ public class Parser {
      * @throws IllegalArgumentException
      */
     public static REOperators getOperator(char operatorChar) throws IllegalArgumentException{
-        switch (operatorChar){
-            case '*':
-                return REOperators.STAR;
-            case '|':
-                return REOperators.CONCATENATION;
-            case '+':
-                return REOperators.UNION;
-            default:
-                throw new IllegalArgumentException();
+        if (operatorChar == starOperator){
+            return REOperators.STAR;
+        }
+        else if (operatorChar == concatenationOperator){
+            return REOperators.CONCATENATION;
+        }
+        else if (operatorChar == unionOperator){
+            return REOperators.UNION;
+        }
+        else{
+            throw new IllegalArgumentException();
         }
     }
 
@@ -37,7 +87,7 @@ public class Parser {
      */
     public static Boolean isValid(String regexString){
         // Check if string contains only alphanumeric characters and operators.
-        if (!regexString.matches(validPattern)){
+        if (!regexString.matches(validRegexPattern)){
             return false;
         }
 

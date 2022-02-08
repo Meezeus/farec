@@ -1,12 +1,67 @@
 package dudzinski.kacper.farec;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ParserTest {
+
+    @Nested
+    @DisplayName("Parser returns correct bool when setting REOperator")
+    class SetOperatorCharTest {
+        @Test
+        @DisplayName("STAR as valid symbol *")
+        void test1(){
+            boolean result = Parser.setOperatorChar(Parser.REOperators.STAR, '*');
+            assertTrue(result);
+        }
+        @Test
+        @DisplayName("CONCATENATION as valid symbol |")
+        void test2(){
+            boolean result = Parser.setOperatorChar(Parser.REOperators.CONCATENATION, '|');
+            assertTrue(result);
+        }
+        @Test
+        @DisplayName("STAR as valid symbol *")
+        void test3(){
+            boolean result = Parser.setOperatorChar(Parser.REOperators.UNION, '+');
+            assertTrue(result);
+        }
+        @Test
+        @DisplayName("CONCATENATION as invalid symbol /")
+        void test4(){
+            boolean result = Parser.setOperatorChar(Parser.REOperators.CONCATENATION, '/');
+            assertFalse(result);
+        }
+    }
+
+    @Nested
+    @DisplayName("Parser returns correct char")
+    class getOperatorCharTest {
+        @Test
+        @DisplayName("when the operator is STAR")
+        void test1(){
+            Parser.REOperators operator = Parser.REOperators.STAR;
+            char operatorChar = Parser.getOperatorChar(operator);
+            assertEquals('*', operatorChar);
+        }
+        @Test
+        @DisplayName("when the operator is CONCATENATION")
+        void test2(){
+            Parser.REOperators operator = Parser.REOperators.CONCATENATION;
+            char operatorChar = Parser.getOperatorChar(operator);
+            assertEquals('|', operatorChar);
+        }
+        @Test
+        @DisplayName("when the operator is UNION")
+        void test3(){
+            Parser.REOperators operator = Parser.REOperators.UNION;
+            char operatorChar = Parser.getOperatorChar(operator);
+            assertEquals('+', operatorChar);
+        }
+    }
 
     @Nested
     @DisplayName("Parser returns correct operator")
