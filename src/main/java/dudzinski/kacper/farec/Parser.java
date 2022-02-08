@@ -220,9 +220,8 @@ public class Parser {
                 rightOperand = parse(regexString.substring(rootIndex + 1));
             }
         }
-
-        if ((operator == REOperators.CONCATENATION || operator == REOperators.UNION) && (leftOperand == null || rightOperand == null)){
-            throw new IllegalArgumentException("The expression \"" + regexString + "\" contains a UNION/CONCATENATION operator with null operands!");
+        else if (operator == REOperators.STAR && rootIndex != regexString.length() - 1){
+            throw new IllegalArgumentException("The expression \"" + regexString + "\" contains a STAR operator with a right operand!");
         }
 
         return new ComplexRegularExpression(leftOperand, operator, rightOperand);

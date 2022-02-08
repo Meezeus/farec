@@ -425,13 +425,6 @@ class ParserTest {
                 RegularExpression regex = Parser.parse(testString);
                 assertEquals("((a)STAR(null))STAR(null)", regex.toString());
             }
-            @Test
-            @DisplayName("a**")
-            void test12(){
-                String testString = "a**";
-                RegularExpression regex = Parser.parse(testString);
-                assertEquals("(a)STAR(null)", regex.toString());
-            }
         }
         @Nested
         @DisplayName("throws an exception when the regex string is")
@@ -488,6 +481,30 @@ class ParserTest {
             @DisplayName("++a")
             void test9(){
                 String testString = "++a";
+                assertThrows(IllegalArgumentException.class, () -> Parser.parse(testString));
+            }
+            @Test
+            @DisplayName("a*a")
+            void tes10(){
+                String testString = "a*a";
+                assertThrows(IllegalArgumentException.class, () -> Parser.parse(testString));
+            }
+            @Test
+            @DisplayName("(a*)a")
+            void tes11(){
+                String testString = "(a*)a";
+                assertThrows(IllegalArgumentException.class, () -> Parser.parse(testString));
+            }
+            @Test
+            @DisplayName("a**")
+            void tes12(){
+                String testString = "a**";
+                assertThrows(IllegalArgumentException.class, () -> Parser.parse(testString));
+            }
+            @Test
+            @DisplayName("a*+")
+            void tes13(){
+                String testString = "a*+";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(testString));
             }
         }
