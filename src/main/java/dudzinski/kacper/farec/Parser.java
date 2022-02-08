@@ -2,14 +2,12 @@ package dudzinski.kacper.farec;
 
 public class Parser {
 
-    enum REOperators {
+    private static String alphanumericPattern = "^[a-zA-Z0-9]*$";
+    private static String validPattern = "^[a-zA-Z0-9()*|+]*$";
+
+    public enum REOperators {
         STAR, CONCATENATION, UNION
     }
-
-    String validPattern = "^[a-zA-Z0-9*|+()]*$";
-    String alphanumericPattern = "^[a-zA-Z0-9]*$";
-
-    public Parser(){}
 
     /**
      * Given a char representation a regex operator, returns an enum constant representation for that operator, or
@@ -18,7 +16,7 @@ public class Parser {
      * @return An enum constant representing the operator.
      * @throws IllegalArgumentException
      */
-    public REOperators getOperator(char operatorChar) throws IllegalArgumentException{
+    public static REOperators getOperator(char operatorChar) throws IllegalArgumentException{
         switch (operatorChar){
             case '*':
                 return REOperators.STAR;
@@ -37,7 +35,7 @@ public class Parser {
      * @param regexString The string to be tested.
      * @return True if the string is valid, false otherwise.
      */
-    public Boolean isValid(String regexString){
+    public static Boolean isValid(String regexString){
         // Check if string contains only alphanumeric characters and operators.
         if (!regexString.matches(validPattern)){
             return false;
@@ -51,6 +49,9 @@ public class Parser {
                 openBracketCount++;
             } else if (currentChar == ')') {
                 openBracketCount--;
+                if (openBracketCount < 0){
+                    return false;
+                }
             }
         }
         if (openBracketCount != 0){
@@ -65,7 +66,7 @@ public class Parser {
      * @param regexString The string to be trimmed.
      * @return The same string, without the outer brackets.
      */
-    public String removeOuterBrackets(String regexString){
+    public static String removeOuterBrackets(String regexString){
         // If string does not start and end with brackets, it cannot be trimmed.
         if (!(regexString.startsWith("(") && regexString.endsWith(")"))){
             return regexString;
@@ -96,7 +97,7 @@ public class Parser {
      * @param regexString A regex expression, without outer brackets.
      * @return The index of the root operator, or -1 if not found.
      */
-    public int findRootIndex(String regexString){
+    public static int findRootIndex(String regexString){
         int openBracketCount = 0;
         for (int index = 0; index < regexString.length(); ++index) {
             char currentChar = regexString.charAt(index);
@@ -120,7 +121,7 @@ public class Parser {
      * @return The regular expression
      * @throws IllegalArgumentException
      */
-    public RegularExpression parse(String regexString) throws IllegalArgumentException {
+    public static RegularExpression parse(String regexString) throws IllegalArgumentException {
         // Check if regexString is valid.
         if (!isValid(regexString)){
             throw new IllegalArgumentException();
