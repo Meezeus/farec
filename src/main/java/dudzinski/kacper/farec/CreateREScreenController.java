@@ -37,7 +37,7 @@ public class CreateREScreenController {
             infoLabel.setText("Regular expression is valid!");
         }
         catch (IllegalArgumentException e){
-            infoLabel.setText("Regular expression is invalid!");
+            infoLabel.setText(e.getMessage());
         }
     }
 

@@ -209,8 +209,15 @@ class ParserTest {
             assertEquals(rootIndex, 8);
         }
         @Test
-        @DisplayName("when there is no root index")
+        @DisplayName("when the regex is a*+b")
         void test7(){
+            String testString = "a*+b";
+            int rootIndex = Parser.findRootIndex(testString);
+            assertEquals(rootIndex, 2);
+        }
+        @Test
+        @DisplayName("when there is no root index")
+        void test8(){
             String testString = "a";
             int rootIndex = Parser.findRootIndex(testString);
             assertEquals(rootIndex, -1);
