@@ -159,10 +159,10 @@ public class Parser {
             else if (currentChar == ')') {
                 openBracketCount--;
             }
-            else if (openBracketCount == 0 && (currentChar == '+' || currentChar == '|')) {
+            else if (openBracketCount == 0 && (currentChar ==  unionOperator || currentChar == concatenationOperator)) {
                 return index;
             }
-            else if (openBracketCount == 0 && starIndex == -1 && currentChar == '*') {
+            else if (openBracketCount == 0 && starIndex == -1 && currentChar == starOperator) {
                 starIndex = index;
             }
         }
