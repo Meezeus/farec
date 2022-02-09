@@ -24,24 +24,22 @@ public class ComplexRegularExpression extends RegularExpression{
         return leftOperand;
     }
 
-    public void setLeftOperand(RegularExpression leftOperand) {
-        this.leftOperand = leftOperand;
+    public REOperators getOperator() {
+        return operator;
     }
 
     public RegularExpression getRightOperand() {
         return rightOperand;
     }
 
-    public void setRightOperand(RegularExpression rightOperand) {
-        this.rightOperand = rightOperand;
-    }
+    public int getDepth(){
+        if (operator == REOperators.STAR){
+            return leftOperand.getDepth() + 1;
+        }
+        else {
+            return Math.max(leftOperand.getDepth(), rightOperand.getDepth()) + 1;
+        }
 
-    public REOperators getOperator() {
-        return operator;
-    }
-
-    public void setOperator(REOperators operator) {
-        this.operator = operator;
     }
 
     @Override
