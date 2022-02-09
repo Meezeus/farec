@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -17,6 +18,7 @@ public class CreateREScreenController {
     public Button helpButton;
     public Button parseButton;
     public Label infoLabel;
+    public StackPane parseTreeContainer;
 
     public void openHelpWindow() throws IOException {
         Stage window = new Stage();
@@ -30,14 +32,16 @@ public class CreateREScreenController {
 
     public void parseRE(){
         String regexString = reInputField.getText().replaceAll("\\s+","").trim();
-        System.out.println(regexString);
         try {
             RegularExpression regex = Parser.parse(regexString);
-            System.out.println(regex);
             infoLabel.setText("Regular expression is valid!");
+            ParseTree parseTree = new ParseTree(regex);
+            parseTreeContainer.getChildren().clear();
+            parseTreeContainer.getChildren().add(parseTree);
         }
         catch (IllegalArgumentException e){
             infoLabel.setText(e.getMessage());
+            parseTreeContainer.getChildren().clear();
         }
     }
 

@@ -6,9 +6,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dudzinski.kacper.farec.CreateREScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dudzinski.kacper.farec.CreateREScreenController">
   <top>
       <fx:include source="menu_bar.fxml" />
   </top>
@@ -28,7 +29,7 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0" spacing="20.0">
+            <VBox alignment="TOP_CENTER" prefHeight="120.0" prefWidth="600.0" spacing="20.0">
                <children>
                   <Label alignment="CENTER" maxWidth="1.7976931348623157E308" text="Enter your regular expression below." textAlignment="CENTER" VBox.vgrow="ALWAYS" />
                   <TextField fx:id="reInputField" alignment="CENTER" promptText="Enter your regular expression here.">
@@ -40,7 +41,11 @@
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
             </VBox>
+            <StackPane fx:id="parseTreeContainer" alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
          </children>
          <opaqueInsets>
             <Insets />
