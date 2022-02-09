@@ -6,6 +6,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+/**
+ * This class represents a parse tree for a regular expression. A parse tree is an unambiguous representation of a
+ * regular expression. This class is responsible for building and displaying the parse tree for a given regular expression.
+ */
 public class ParseTree extends StackPane {
 
     private ParseTreeNode root;

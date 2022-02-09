@@ -1,5 +1,9 @@
 package dudzinski.kacper.farec;
 
+/**
+ * This class represents a simple regular expression object. A simple regular expression is a regular expression made up
+ * of a single symbol only.
+ */
 public class SimpleRegularExpression extends RegularExpression {
 
     private char symbol;
@@ -20,4 +24,5 @@ public class SimpleRegularExpression extends RegularExpression {
     public String toString(){
         return String.valueOf(symbol);
     }
+
 }

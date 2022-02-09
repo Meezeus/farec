@@ -1,19 +1,24 @@
 package dudzinski.kacper.farec;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
+/**
+ * This is the controller for the menu bar.
+ */
 public class MenuBarController {
 
     private FXMLLoader fxmlLoader;
     public MenuBar menuBar;
 
+    /**
+     * This method is called when the Convert finite automata menu item is clicked. It opens the window for creating
+     * finite automata.
+     * @throws IOException
+     */
     public void openCreateFAWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_FA_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
@@ -21,6 +26,11 @@ public class MenuBarController {
         stage.setScene(scene);
     }
 
+    /**
+     * This method is called when the Convert regular expression menu item is clicked. It opens the window for creating
+     * regular expressions.
+     * @throws IOException
+     */
     public void openCreateREWindow() throws IOException{
         fxmlLoader = new FXMLLoader(App.class.getResource("create_RE_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);

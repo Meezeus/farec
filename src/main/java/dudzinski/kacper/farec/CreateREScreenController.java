@@ -10,11 +10,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * The controller for the screen used to create regular expressions.
+ */
 public class CreateREScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
@@ -36,7 +38,7 @@ public class CreateREScreenController implements Initializable {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Help: Regular Expressions");
-        fxmlLoader = new FXMLLoader(App.class.getResource("help_screen.fxml"));
+        fxmlLoader = new FXMLLoader(App.class.getResource("help_window.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 400, 300);
         window.setScene(scene);
         window.showAndWait();

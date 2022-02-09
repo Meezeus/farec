@@ -2,17 +2,15 @@ package dudzinski.kacper.farec;
 
 import dudzinski.kacper.farec.Parser.REOperators;
 
+/**
+ * This class represents a complex regular expression object. A complex regular expression is a regular expression made
+ * up of a regex operator applied to one or two regular expressions, which themselves may also be complex.
+ */
 public class ComplexRegularExpression extends RegularExpression{
 
     private RegularExpression leftOperand;
-    private RegularExpression rightOperand;
     private REOperators operator;
-
-    public ComplexRegularExpression(){
-        leftOperand = null;
-        rightOperand = null;
-        operator = null;
-    }
+    private RegularExpression rightOperand;
 
     public ComplexRegularExpression(RegularExpression leftOperand, REOperators operator, RegularExpression rightOperand){
         this.leftOperand = leftOperand;
@@ -39,7 +37,6 @@ public class ComplexRegularExpression extends RegularExpression{
         else {
             return Math.max(leftOperand.getDepth(), rightOperand.getDepth()) + 1;
         }
-
     }
 
     @Override

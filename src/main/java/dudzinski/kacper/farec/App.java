@@ -7,7 +7,14 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * The main class of the application. Sets everything off by displaying the start screen.
+ */
 public class App extends Application {
+
+    public static void main(String[] args) {
+        launch();
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -16,10 +23,6 @@ public class App extends Application {
         stage.setTitle("FAREC");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 
 }

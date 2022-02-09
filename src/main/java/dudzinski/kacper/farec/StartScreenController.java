@@ -12,12 +12,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+/**
+ * This class is the controller for the start screen view.
+ */
 public class StartScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
     public Label changelogChanges;
 
-    // Reads the changelog file and sets the label in the start_screen.
+    /**
+     * Reads the changelog file and sets the label in the start_screen.
+     */
     public void initialize(URL location, ResourceBundle resources) {
         try {
             // Get and read the changelog file.
@@ -37,11 +42,17 @@ public class StartScreenController implements Initializable {
                 changelogEntry += line + "\n";
             }
             changelogChanges.setText(changelogEntry);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * This method is called when the Convert Finite Automata button is pressed. It opens the window for creating
+     * finite automata.
+     * @throws IOException
+     */
     public void openCreateFAWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_FA_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
@@ -49,6 +60,11 @@ public class StartScreenController implements Initializable {
         stage.setScene(scene);
     }
 
+    /**
+     * This method is called when the Convert Regular Expression button is pressed. It opens the window for creating
+     * regular expressions.
+     * @throws IOException
+     */
     public void openCreateREWindow() throws IOException{
         fxmlLoader = new FXMLLoader(App.class.getResource("create_RE_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);

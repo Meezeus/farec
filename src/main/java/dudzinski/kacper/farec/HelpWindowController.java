@@ -2,15 +2,20 @@ package dudzinski.kacper.farec;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HelpScreenController implements Initializable {
+/**
+ * This is the controller for the help window.
+ */
+public class HelpWindowController implements Initializable {
 
     public Label operatorsLabel;
     public Label helpLabel;
 
+    /**
+     * Sets the labels in the help window.
+     */
     public void initialize(URL location, ResourceBundle resources) {
         String operatorLabelText = "Available regex operators:\n";
         for (Parser.REOperators operator: Parser.REOperators.values()){

@@ -1,5 +1,8 @@
 package dudzinski.kacper.farec;
 
+/**
+ * The parser is used to parse strings representing regular expressions and turn them into regular expression objects.
+ */
 public class Parser {
 
     private static char starOperator = '*';
