@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
@@ -22,13 +21,17 @@ public class CreateREScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
     public TextField reInputField;
+    public ScrollPane parseTreeContainer;
+    public Label infoLabel;
     public Button helpButton;
     public Button parseButton;
-    public Label infoLabel;
-    public ScrollPane parseTreeContainer;
+    public Button convertButton;
 
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> reInputField.requestFocus());   // Make sure the text field starts off focused.
+        reInputField.textProperty().addListener((observable, oldValue, newValue) -> {
+            convertButton.setDisable(true);
+        });
     }
 
     /**
@@ -59,9 +62,11 @@ public class CreateREScreenController implements Initializable {
             infoLabel.setText("Regular expression is valid!");
             ParseTree parseTree = new ParseTree(regex);
             parseTreeContainer.setContent(parseTree);
+            convertButton.setDisable(false);
         }
         catch (IllegalArgumentException e){
             infoLabel.setText(e.getMessage());
+            convertButton.setDisable(true);
         }
     }
 
