@@ -4,65 +4,138 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
 public class ParseTree extends StackPane {
 
+    private ParseTreeNode root;
+    private int BASE_X_CHANGE = 50;
+    private int BASE_Y_CHANGE = 80;
+    private int NODE_RADIUS = 20;
     private double currentY = 0;
     private double currentX = 0;
 
     public ParseTree(RegularExpression regularExpression){
         this.setAlignment(Pos.TOP_CENTER);
-        buildTree(regularExpression);
+        root = buildTree(regularExpression);
+        connectNodes(root);
     }
 
-    private void buildTree(RegularExpression regularExpression){
+    /**
+     * Given a regular expression, builds a parse tree representation of it.
+     * @param regularExpression The regular expression for which to build a parse tree.
+     * @throws IllegalArgumentException
+     */
+    private ParseTreeNode buildTree(RegularExpression regularExpression) throws IllegalArgumentException{
         if (regularExpression instanceof SimpleRegularExpression){
             SimpleRegularExpression regex = (SimpleRegularExpression) regularExpression;
-            StackPane leafNode = createNode(regex.getSymbol());
-            leafNode.setTranslateX(currentX);
-            leafNode.setTranslateY(currentY);
-            this.getChildren().add(leafNode);
+            StackPane leafNodePane = createNode(regex.getSymbol());
+            leafNodePane.setTranslateX(currentX);
+            leafNodePane.setTranslateY(currentY);
+            this.getChildren().add(leafNodePane);
+            ParseTreeNode leafNode = new ParseTreeNode(leafNodePane, null, null);
+            return leafNode;
         }
         else if (regularExpression instanceof ComplexRegularExpression){
             ComplexRegularExpression regex = (ComplexRegularExpression) regularExpression;
-            StackPane operatorNode = createNode(Parser.getOperatorChar(regex.getOperator()));
-            operatorNode.setTranslateX(currentX);
-            operatorNode.setTranslateY(currentY);
-            this.getChildren().add(operatorNode);
+            StackPane operatorNodePane = createNode(Parser.getOperatorChar(regex.getOperator()));
+            operatorNodePane.setTranslateX(currentX);
+            operatorNodePane.setTranslateY(currentY);
+            this.getChildren().add(operatorNodePane);
+            ParseTreeNode operatorNode = new ParseTreeNode(operatorNodePane);
 
-            int currentDepth = regex.getDepth();
-            double xChange = Math.pow(2,(double) currentDepth - 1) * 50;
-            double yChange = 80;
+            double currentDepth = (double) regex.getDepth();
+            double xChange = Math.pow(2, currentDepth - 1) * BASE_X_CHANGE;
+            double yChange = BASE_Y_CHANGE;
+
+            currentY += yChange;
             if (regex.getOperator() == Parser.REOperators.STAR){
-                currentY += yChange;
-                buildTree(regex.getLeftOperand());
-                currentY -= yChange;
+                operatorNode.setLeftChild(buildTree(regex.getLeftOperand()));
             }
-            else{
-                currentY += yChange;
+            else {
                 currentX -= xChange;
-                buildTree(regex.getLeftOperand());
+                operatorNode.setLeftChild(buildTree(regex.getLeftOperand()));
                 currentX += xChange * 2;
-                buildTree(regex.getRightOperand());
+                operatorNode.setRightChild(buildTree(regex.getRightOperand()));
                 currentX -= xChange;
-                currentY -= yChange;
             }
+            currentY -= yChange;
+            return operatorNode;
+        }
+        else {
+            throw new IllegalArgumentException();
         }
     }
 
-    public StackPane createNode(char title){
-        int radius = 20;
-        StackPane nodePane = new StackPane();
-        nodePane.setMaxSize(radius * 2, radius * 2);
+    /**
+     * Creates a labelled node.
+     * @param title The node label.
+     * @return Labelled node.
+     */
+    private StackPane createNode(char title){
         Circle node = new Circle();
-        node.setRadius(radius);
+        node.setRadius(NODE_RADIUS);
         node.setStyle("-fx-fill: white;-fx-stroke: black;-fx-stroke-width:2px");
         Label nodeTitle = new Label("" + title);
+        StackPane nodePane = new StackPane();
+        nodePane.setMaxSize(NODE_RADIUS * 2, NODE_RADIUS * 2);
         nodePane.getChildren().addAll(node, nodeTitle);
         return nodePane;
     }
 
+    /**
+     * Recursively connects nodes in a tree to their children.
+     * @param parentNode The root node of the tree to be connected.
+     */
+    private void connectNodes(ParseTreeNode parentNode){
+        ParseTreeNode leftChild = parentNode.getLeftChild();
+        ParseTreeNode rightChild = parentNode.getRightChild();
+        if (leftChild != null){
+            createEdge(parentNode.getNodePane(), leftChild.getNodePane());
+            connectNodes(leftChild);
+        }
+        if (rightChild != null){
+            createEdge(parentNode.getNodePane(), rightChild.getNodePane());
+            connectNodes(rightChild);
+        }
+    }
 
+    /**
+     * Connects a parent node to its child.
+     * @param parent The parent node.
+     * @param child The child node.
+     */
+    private void createEdge(StackPane parent, StackPane child){
+        Line edge = new Line();
+        edge.setStyle("-fx-stroke: black;-fx-stroke-width:2px");
+        edge.setStartX(parent.getTranslateX());
+        edge.setStartY(parent.getTranslateY());
+        edge.setEndX(child.getTranslateX());
+        edge.setEndY(child.getTranslateY());
+
+        StackPane edgePane = new StackPane();
+        edgePane.getChildren().add(edge);
+        edgePane.setMaxWidth(edge.getEndX() - edge.getStartX());
+        edgePane.setMaxHeight(edge.getEndY() - edge.getStartY());
+        double xTranslate = parent.getTranslateX();
+        double yTranslate = parent.getTranslateY();
+
+        yTranslate += NODE_RADIUS;
+        double xSeparation = Math.abs(parent.getTranslateX() - child.getTranslateX());
+        // If the child is a left child, we need to move the edge to the left.
+        if (child.getTranslateX() < parent.getTranslateX()){
+            xTranslate += -1 * (xSeparation / 2);
+        }
+        // If the child is a right child, we need to move the edge to the right.
+        else if (child.getTranslateX() > parent.getTranslateX()) {
+            xTranslate += 1 * (xSeparation / 2);
+        }
+        edgePane.setTranslateX(xTranslate);
+        edge.setTranslateY(yTranslate);
+
+        this.getChildren().add(edgePane);
+        edgePane.toBack();
+    }
 
 }
 
