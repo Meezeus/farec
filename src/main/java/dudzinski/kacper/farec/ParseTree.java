@@ -13,24 +13,27 @@ import javafx.scene.shape.Line;
 public class ParseTree extends StackPane {
 
     private ParseTreeNode root;
-    private int BASE_X_CHANGE = 50;
-    private int BASE_Y_CHANGE = 80;
-    private int NODE_RADIUS = 20;
-    private double currentY = 0;
-    private double currentX = 0;
+    private int NODE_RADIUS = 20;   // The radius of a node.
+    private int BASE_X_CHANGE = 50; // The minimum horizontal separation between two nodes.
+    private int BASE_Y_CHANGE = 80; // The minimum vertical separation between two nodes.
+    private double greatestX = 0;   // The greatest horizontal separation between two nodes.
+    private double greatestY = 0;   // The greatest vertical separation between two nodes.
 
     public ParseTree(RegularExpression regularExpression){
         this.setAlignment(Pos.TOP_CENTER);
-        root = buildTree(regularExpression);
+        root = buildTree(regularExpression, 0, 0);
         connectNodes(root);
+        this.setMinSize(2 * greatestX + 4 * NODE_RADIUS, greatestY + 4 * NODE_RADIUS);
     }
 
     /**
      * Given a regular expression, builds a parse tree representation of it.
      * @param regularExpression The regular expression for which to build a parse tree.
+     * @param currentX The horizontal separation used for the previous depth. Initially 0.
+     * @param currentY The vertical separation used for the previous depth. Initially 0.
      * @throws IllegalArgumentException
      */
-    private ParseTreeNode buildTree(RegularExpression regularExpression) throws IllegalArgumentException{
+    private ParseTreeNode buildTree(RegularExpression regularExpression, double currentX, double currentY) throws IllegalArgumentException{
         if (regularExpression instanceof SimpleRegularExpression){
             SimpleRegularExpression regex = (SimpleRegularExpression) regularExpression;
             StackPane leafNodePane = createNode(regex.getSymbol());
@@ -48,22 +51,28 @@ public class ParseTree extends StackPane {
             this.getChildren().add(operatorNodePane);
             ParseTreeNode operatorNode = new ParseTreeNode(operatorNodePane);
 
-            double currentDepth = (double) regex.getDepth();
-            double xChange = Math.pow(2, currentDepth - 1) * BASE_X_CHANGE;
+            double maxDepth = regex.getDepth();
+            double xChange = Math.pow(2, maxDepth - 1) * BASE_X_CHANGE;
             double yChange = BASE_Y_CHANGE;
 
             currentY += yChange;
+            if (currentY > greatestY){
+                greatestY = currentY;
+            }
+
             if (regex.getOperator() == Parser.REOperators.STAR){
-                operatorNode.setLeftChild(buildTree(regex.getLeftOperand()));
+                operatorNode.setLeftChild(buildTree(regex.getLeftOperand(), currentX, currentY));
             }
             else {
                 currentX -= xChange;
-                operatorNode.setLeftChild(buildTree(regex.getLeftOperand()));
+                operatorNode.setLeftChild(buildTree(regex.getLeftOperand(), currentX, currentY));
+
                 currentX += xChange * 2;
-                operatorNode.setRightChild(buildTree(regex.getRightOperand()));
-                currentX -= xChange;
+                if (currentX > greatestX){
+                    greatestX = currentX;
+                }
+                operatorNode.setRightChild(buildTree(regex.getRightOperand(), currentX, currentY));
             }
-            currentY -= yChange;
             return operatorNode;
         }
         else {
