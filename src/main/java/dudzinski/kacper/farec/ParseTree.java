@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import java.util.ArrayList;
 
 /**
  * This class represents a parse tree for a regular expression. A parse tree is an unambiguous representation of a
@@ -24,6 +25,10 @@ public class ParseTree extends StackPane {
         root = buildTree(regularExpression, 0, 0);
         connectNodes(root);
         this.setMinSize(2 * greatestX + 4 * NODE_RADIUS, greatestY + 4 * NODE_RADIUS);
+    }
+
+    public ParseTreeNode getRoot(){
+        return root;
     }
 
     /**
@@ -150,5 +155,23 @@ public class ParseTree extends StackPane {
         edgePane.toBack();
     }
 
+    /**
+     * Performs a preorder traversal of the tree rooted at root.
+     * @param root The root of the tree
+     * @return A list of nodes in the tree, in preorder.
+     */
+    public ArrayList<ParseTreeNode> preorderTraversal(ParseTreeNode root){
+        ArrayList<ParseTreeNode> currentList = new ArrayList<>();
+        ParseTreeNode leftChild = root.getLeftChild();
+        ParseTreeNode rightChild = root.getRightChild();
+        if (leftChild != null){
+            currentList.addAll(preorderTraversal(leftChild));
+        }
+        if (rightChild != null){
+            currentList.addAll(preorderTraversal(rightChild));
+        }
+        currentList.add(root);
+        return currentList;
+    }
 }
 
