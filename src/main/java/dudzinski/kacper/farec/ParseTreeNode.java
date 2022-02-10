@@ -1,5 +1,6 @@
 package dudzinski.kacper.farec;
 
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -40,6 +41,12 @@ public class ParseTreeNode {
 
     public void setRightChild(ParseTreeNode rightChild){
         this.rightChild = rightChild;
+    }
+
+    @Override
+    public String toString(){
+        Label label = (Label) nodePane.getChildren().stream().filter(child -> child instanceof Label).findFirst().get();
+        return label.getText();
     }
 
 }
