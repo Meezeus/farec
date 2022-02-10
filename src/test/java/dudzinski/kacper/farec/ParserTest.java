@@ -1,5 +1,6 @@
 package dudzinski.kacper.farec;
 
+import javafx.util.Pair;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -124,53 +125,57 @@ class ParserTest {
             @DisplayName("a")
             void test1(){
                 String testString = "a";
-                assertTrue(Parser.isValid(testString));
+                Pair<Boolean, String> isValid = Parser.isValid(testString);
+                assertTrue(isValid.getKey());
             }
             @Test
             @DisplayName("a*")
             void test2(){
                 String testString = "a*";
-                assertTrue(Parser.isValid(testString));
+                Pair<Boolean, String> isValid = Parser.isValid(testString);
+                assertTrue(isValid.getKey());
             }
             @Test
             @DisplayName("a+b")
             void test3(){
                 String testString = "a+b";
-                assertTrue(Parser.isValid(testString));
+                Pair<Boolean, String> isValid = Parser.isValid(testString);
+                assertTrue(isValid.getKey());
             }
             @Test
             @DisplayName("(a+b)|c*")
             void test4(){
                 String testString = "(a+b)|c*";
-                assertTrue(Parser.isValid(testString));
+                Pair<Boolean, String> isValid = Parser.isValid(testString);
+                assertTrue(isValid.getKey());
             }
         }
         @Nested
         @DisplayName("false when the expression is invalid because of")
         class IsValidNegativeTest {
             @Test
-            @DisplayName("too many open brackets")
+            @DisplayName("illegal characters")
             void test1(){
-                String testString = "((a+b)|c*";
-                assertFalse(Parser.isValid(testString));
-            }
-            @Test
-            @DisplayName("too few open brackets")
-            void test2(){
-                String testString = "a+b)|c*";
-                assertFalse(Parser.isValid(testString));
+                String testString = "($+&)|!*";
+                Pair<Boolean, String> isValid = Parser.isValid(testString);
+                assertFalse(isValid.getKey());
+                assertEquals("Regular expressions can only contain alphanumeric characters and operators!", isValid.getValue());
             }
             @Test
             @DisplayName("brackets in the wrong order")
-            void test3(){
+            void test2(){
                 String testString = ")a+b(|c*";
-                assertFalse(Parser.isValid(testString));
+                Pair<Boolean, String> isValid = Parser.isValid(testString);
+                assertFalse(isValid.getKey());
+                assertEquals("The regular expression has a closing bracket without an opening bracket!", isValid.getValue());
             }
             @Test
-            @DisplayName("illegal characters")
-            void test4(){
-                String testString = "($+&)|!*";
-                assertFalse(Parser.isValid(testString));
+            @DisplayName("different numbers of opening and closing brackets")
+            void test3(){
+                String testString = "(a+b|c*";
+                Pair<Boolean, String> isValid = Parser.isValid(testString);
+                assertFalse(isValid.getKey());
+                assertEquals("The regular expression has different numbers of opening and closing brackets!", isValid.getValue());
             }
         }
     }

@@ -1,5 +1,7 @@
 package dudzinski.kacper.farec;
 
+import javafx.util.Pair;
+
 /**
  * The parser is used to parse strings representing regular expressions and turn them into regular expression objects.
  */
@@ -40,7 +42,7 @@ public class Parser {
     }
 
     /**
-     * Given a given regex operator, returns the char corresponding to that operator or throws an exception.
+     * Given a regex operator, returns the char corresponding to that operator or throws an exception.
      * @param operator The regex operator for which to find the corresponding char.
      * @return The char corresponding to the given regex operator.
      * @throws IllegalArgumentException
@@ -56,7 +58,7 @@ public class Parser {
             return unionOperator;
         }
         else{
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Argument is not an REOperator!");
         }
     }
 
@@ -78,7 +80,7 @@ public class Parser {
             return REOperators.UNION;
         }
         else{
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The given char is not linked to any regex operator!");
         }
     }
 
@@ -88,10 +90,10 @@ public class Parser {
      * @param regexString The string to be tested.
      * @return True if the string is valid, false otherwise.
      */
-    public static Boolean isValid(String regexString){
+    public static Pair<Boolean, String> isValid(String regexString){
         // Check if string contains only alphanumeric characters and operators.
         if (!regexString.matches(validRegexPattern)){
-            return false;
+            return new Pair<>(false, "Regular expressions can only contain alphanumeric characters and operators!");
         }
 
         // Check if number of opened brackets matches number of closed brackets.
@@ -103,15 +105,15 @@ public class Parser {
             } else if (currentChar == ')') {
                 openBracketCount--;
                 if (openBracketCount < 0){
-                    return false;
+                    return new Pair<>(false, "The regular expression has a closing bracket without an opening bracket!");
                 }
             }
         }
         if (openBracketCount != 0){
-            return false;
+            return new Pair<>(false, "The regular expression has different numbers of opening and closing brackets!");
         }
 
-        return true;
+        return new Pair<>(true, "");
     }
 
     /**
@@ -185,8 +187,9 @@ public class Parser {
      */
     public static RegularExpression parse(String regexString) throws IllegalArgumentException {
         // Check if regexString is valid.
-        if (!isValid(regexString)){
-            throw new IllegalArgumentException("The expression \"" + regexString + "\" is not valid!");
+        Pair<Boolean, String> isValid = isValid(regexString);
+        if (!isValid.getKey()){
+            throw new IllegalArgumentException(isValid.getValue());
         }
 
         // Remove outer brackets.
