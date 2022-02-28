@@ -9,113 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ParserTest {
 
     @Nested
-    @DisplayName("Setting an operator char returns")
-    class SetOperatorCharTest {
-        @Nested
-        @DisplayName("true when setting")
-        class SetOperatorCharPositiveTest {
-            @Test
-            @DisplayName("STAR as *")
-            void test1(){
-                boolean result = Parser.setOperatorChar(Parser.REOperators.STAR, '*');
-                assertTrue(result);
-            }
-            @Test
-            @DisplayName("CONCATENATION as |")
-            void test2(){
-                boolean result = Parser.setOperatorChar(Parser.REOperators.CONCATENATION, '|');
-                assertTrue(result);
-            }
-            @Test
-            @DisplayName("STAR as *")
-            void test3(){
-                boolean result = Parser.setOperatorChar(Parser.REOperators.UNION, '+');
-                assertTrue(result);
-            }
-        }
-        @Nested
-        @DisplayName("false when setting")
-        class SetOperatorCharNegativeTest {
-            @Test
-            @DisplayName("CONCATENATION as /")
-            void test1(){
-                boolean result = Parser.setOperatorChar(Parser.REOperators.CONCATENATION, '/');
-                assertFalse(result);
-            }
-        }
-    }
-
-    @Nested
-    @DisplayName("Getting an operator char returns")
-    class getOperatorCharTest {
-        @Nested
-        @DisplayName("the corresponding char when the operator is")
-        class getOperatorCharPositiveTest {
-            @Test
-            @DisplayName("STAR")
-            void test1(){
-                Parser.REOperators operator = Parser.REOperators.STAR;
-                char operatorChar = Parser.getOperatorChar(operator);
-                assertEquals('*', operatorChar);
-            }
-            @Test
-            @DisplayName("CONCATENATION")
-            void test2(){
-                Parser.REOperators operator = Parser.REOperators.CONCATENATION;
-                char operatorChar = Parser.getOperatorChar(operator);
-                assertEquals('|', operatorChar);
-            }
-            @Test
-            @DisplayName("UNION")
-            void test3(){
-                Parser.REOperators operator = Parser.REOperators.UNION;
-                char operatorChar = Parser.getOperatorChar(operator);
-                assertEquals('+', operatorChar);
-            }
-        }
-    }
-
-    @Nested
-    @DisplayName("Getting an operator")
-    class getOperatorTest {
-        @Nested
-        @DisplayName("returns the correct operator when the char is")
-        class getOperatorPositiveTest {
-            @Test
-            @DisplayName("*")
-            void test1(){
-                char operatorChar = '*';
-                Parser.REOperators operator = Parser.getOperator(operatorChar);
-                assertEquals(Parser.REOperators.STAR, operator);
-            }
-            @Test
-            @DisplayName("|")
-            void test2(){
-                char operatorChar = '|';
-                Parser.REOperators operator = Parser.getOperator(operatorChar);
-                assertEquals(Parser.REOperators.CONCATENATION, operator);
-            }
-            @Test
-            @DisplayName("+")
-            void test3(){
-                char operatorChar = '+';
-                Parser.REOperators operator = Parser.getOperator(operatorChar);
-                assertEquals(Parser.REOperators.UNION, operator);
-            }
-        }
-        @Nested
-        @DisplayName("throws an error when the char is")
-        class getOperatorNegativeTest {
-            @Test
-            @DisplayName("not linked to any operator")
-            void test1(){
-                char operatorChar = ',';
-                assertThrows(IllegalArgumentException.class, () -> Parser.getOperator(operatorChar));
-            }
-        }
-    }
-
-    @Nested
     @DisplayName("Validating a regex string returns")
     class IsValidTest {
         @Nested
@@ -364,70 +257,70 @@ class ParserTest {
             void test2(){
                 String regexString = "a*";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(a)STAR(null)", regularExpression.toString());
+                assertEquals("(a)*(null)", regularExpression.toString());
             }
             @Test
             @DisplayName("a+b")
             void test3(){
                 String regexString = "a+b";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(a)UNION(b)", regularExpression.toString());
+                assertEquals("(a)+(b)", regularExpression.toString());
             }
             @Test
             @DisplayName("a*+b")
             void test4(){
                 String regexString = "a*+b";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("((a)STAR(null))UNION(b)", regularExpression.toString());
+                assertEquals("((a)*(null))+(b)", regularExpression.toString());
             }
             @Test
             @DisplayName("a+b*")
             void test5(){
                 String regexString = "a+b*";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(a)UNION((b)STAR(null))", regularExpression.toString());
+                assertEquals("(a)+((b)*(null))", regularExpression.toString());
             }
             @Test
             @DisplayName("(a+b)+c")
             void test6(){
                 String regexString = "(a+b)+c";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("((a)UNION(b))UNION(c)", regularExpression.toString());
+                assertEquals("((a)+(b))+(c)", regularExpression.toString());
             }
             @Test
             @DisplayName("c+(a+b)")
             void test7(){
                 String regexString = "c+(a+b)";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(c)UNION((a)UNION(b))", regularExpression.toString());
+                assertEquals("(c)+((a)+(b))", regularExpression.toString());
             }
             @Test
             @DisplayName("(a+b)|(c+d)")
             void test8(){
                 String regexString = "(a+b)|(c+d)";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("((a)UNION(b))CONCATENATION((c)UNION(d))", regularExpression.toString());
+                assertEquals("((a)+(b))|((c)+(d))", regularExpression.toString());
             }
             @Test
             @DisplayName("((a+b)|c)|(d*+a)")
             void test9(){
                 String regexString = "((a+b)|c)|(d*+a)";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(((a)UNION(b))CONCATENATION(c))CONCATENATION(((d)STAR(null))UNION(a))", regularExpression.toString());
+                assertEquals("(((a)+(b))|(c))|(((d)*(null))+(a))", regularExpression.toString());
             }
             @Test
             @DisplayName("a+a*+a")
             void test10(){
                 String regexString = "a+a*+a";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(a)UNION(((a)STAR(null))UNION(a))", regularExpression.toString());
+                assertEquals("(a)+(((a)*(null))+(a))", regularExpression.toString());
             }
             @Test
             @DisplayName("(a*)*")
             void test11(){
                 String regexString = "(a*)*";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("((a)STAR(null))STAR(null)", regularExpression.toString());
+                assertEquals("((a)*(null))*(null)", regularExpression.toString());
             }
         }
         @Nested

@@ -7,82 +7,12 @@ import javafx.util.Pair;
  */
 public class Parser {
 
-    private static char starOperator = '*';
-    private static char concatenationOperator = '|';
-    private static char unionOperator = '+';
     private static String alphanumericPattern = "^[a-zA-Z0-9]*$";
-    private static String symbolPattern = "^[!£$%^&*\\-+=:;@~#|<>,.?]$";
-    private static String validRegexPattern = "^[a-zA-Z0-9()" + starOperator + concatenationOperator + unionOperator + "]*$";
-
-    public enum REOperators {
-        STAR, CONCATENATION, UNION
-    }
-
-    /**
-     * Given a REOperator and a char, links the REOperator to that char and returns true if the char is a valid symbol.
-     * If the char is not a valid symbol, returns false.
-     * @param operator The REOperator to set the char for.
-     * @param operatorChar The char that will represent the REOperator.
-     * @return True if the char was valid and set successfully, false otherwise.
-     */
-    public static Boolean setOperatorChar(REOperators operator, char operatorChar){
-        if (!(""+operatorChar).matches(symbolPattern)){
-            return false;
-        }
-        if (operator == REOperators.STAR){
-            starOperator = operatorChar;
-        }
-        else if (operator == REOperators.CONCATENATION){
-            concatenationOperator = operatorChar;
-        }
-        else if (operator == REOperators.UNION){
-            unionOperator = operatorChar;
-        }
-        return true;
-    }
-
-    /**
-     * Given a regex operator, returns the char corresponding to that operator or throws an exception.
-     * @param operator The regex operator for which to find the corresponding char.
-     * @return The char corresponding to the given regex operator.
-     * @throws IllegalArgumentException
-     */
-    public static char getOperatorChar(REOperators operator) throws IllegalArgumentException{
-        if (operator == REOperators.STAR){
-            return starOperator;
-        }
-        else if (operator == REOperators.CONCATENATION){
-            return concatenationOperator;
-        }
-        else if (operator == REOperators.UNION){
-            return unionOperator;
-        }
-        else{
-            throw new IllegalArgumentException("Argument is not an REOperator!");
-        }
-    }
-
-    /**
-     * Given a char representation a regex operator, returns an enum constant representation for that operator, or
-     * throws an exception if the char does not represent any operator.
-     * @param operatorChar A char representing the operator.
-     * @return An enum constant representing the operator.
-     * @throws IllegalArgumentException
-     */
-    public static REOperators getOperator(char operatorChar) throws IllegalArgumentException{
-        if (operatorChar == starOperator){
-            return REOperators.STAR;
-        }
-        else if (operatorChar == concatenationOperator){
-            return REOperators.CONCATENATION;
-        }
-        else if (operatorChar == unionOperator){
-            return REOperators.UNION;
-        }
-        else{
-            throw new IllegalArgumentException("The given char is not linked to any regex operator!");
-        }
-    }
+    private static String validRegexPattern = "^[a-zA-Z0-9()" +
+            RegexOperatorChars.getStarOperatorChar() +
+            RegexOperatorChars.getConcatenationOperatorChar() +
+            RegexOperatorChars.getUnionOperatorChar() +
+            "]*$";
 
     /**
      * Tests is a string is a valid regex string, by checking that it contains only alphanumeric characters, brackets
@@ -164,10 +94,10 @@ public class Parser {
             else if (currentChar == ')') {
                 openBracketCount--;
             }
-            else if (openBracketCount == 0 && (currentChar ==  unionOperator || currentChar == concatenationOperator)) {
+            else if (openBracketCount == 0 && (currentChar ==  RegexOperatorChars.getUnionOperatorChar() || currentChar == RegexOperatorChars.getConcatenationOperatorChar())) {
                 return index;
             }
-            else if (openBracketCount == 0 && starIndex == -1 && currentChar == starOperator) {
+            else if (openBracketCount == 0 && starIndex == -1 && currentChar == RegexOperatorChars.getStarOperatorChar()) {
                 starIndex = index;
             }
         }
@@ -214,11 +144,11 @@ public class Parser {
         RegularExpression leftOperand = parse(leftSubstring);
 
         // Get the operator
-        REOperators operator = getOperator(regexString.charAt(rootIndex));
+        RegexOperator operator = RegexOperatorChars.getOperatorFromChar(regexString.charAt(rootIndex));
 
         // Find right operand
         RegularExpression rightOperand = null;
-        if (operator == REOperators.CONCATENATION || operator == REOperators.UNION){
+        if (operator == RegexOperator.CONCATENATION || operator == RegexOperator.UNION){
             if (rootIndex == regexString.length() - 1) {
                 throw new IllegalArgumentException("The expression \"" + regexString + "\" contains an empty right operand!");
             }
@@ -226,7 +156,7 @@ public class Parser {
                 rightOperand = parse(regexString.substring(rootIndex + 1));
             }
         }
-        else if (operator == REOperators.STAR && rootIndex != regexString.length() - 1){
+        else if (operator == RegexOperator.STAR && rootIndex != regexString.length() - 1){
             throw new IllegalArgumentException("The expression \"" + regexString + "\" contains a STAR operator with a right operand!");
         }
 

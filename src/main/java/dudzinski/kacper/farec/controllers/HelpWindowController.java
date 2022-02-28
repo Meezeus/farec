@@ -1,6 +1,7 @@
 package dudzinski.kacper.farec.controllers;
 
-import dudzinski.kacper.farec.Parser;
+import dudzinski.kacper.farec.RegexOperator;
+import dudzinski.kacper.farec.RegexOperatorChars;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
@@ -20,8 +21,8 @@ public class HelpWindowController implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources) {
         String operatorLabelText = "Available regex operators:\n";
-        for (Parser.REOperators operator: Parser.REOperators.values()){
-            operatorLabelText += "  -" + operator + ", using the character \'" + Parser.getOperatorChar(operator) + "\'\n";
+        for (RegexOperator operator: RegexOperator.values()){
+            operatorLabelText += "  -" + operator + ", using the character \'" + RegexOperatorChars.getCharFromOperator(operator) + "\'\n";
         }
         operatorsLabel.setText(operatorLabelText);
 
