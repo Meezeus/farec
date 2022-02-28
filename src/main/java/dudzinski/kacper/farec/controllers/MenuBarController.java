@@ -23,7 +23,7 @@ public class MenuBarController {
      */
     public void openCreateFAWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_FA_screen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load(), menuBar.getScene().getWidth(), menuBar.getScene().getHeight());
         Stage stage = (Stage) menuBar.getScene().getWindow();
         stage.setScene(scene);
     }
@@ -35,7 +35,7 @@ public class MenuBarController {
      */
     public void openCreateREWindow() throws IOException{
         fxmlLoader = new FXMLLoader(App.class.getResource("create_RE_screen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load(), menuBar.getScene().getWidth(), menuBar.getScene().getHeight());
         Stage stage = (Stage) menuBar.getScene().getWindow();
         stage.setScene(scene);
     }

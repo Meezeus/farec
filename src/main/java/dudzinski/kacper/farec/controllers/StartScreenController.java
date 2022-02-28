@@ -60,7 +60,7 @@ public class StartScreenController implements Initializable {
      */
     public void openCreateFAWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_FA_screen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load(), convertFAButton.getScene().getWidth(), convertFAButton.getScene().getHeight());
         Stage stage = (Stage) convertFAButton.getScene().getWindow();
         stage.setScene(scene);
     }
@@ -72,7 +72,7 @@ public class StartScreenController implements Initializable {
      */
     public void openCreateREWindow() throws IOException{
         fxmlLoader = new FXMLLoader(App.class.getResource("create_RE_screen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load(), convertREButton.getScene().getWidth(), convertREButton.getScene().getHeight());
         Stage stage = (Stage) convertREButton.getScene().getWindow();
         stage.setScene(scene);
     }
