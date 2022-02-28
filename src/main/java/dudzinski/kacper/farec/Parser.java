@@ -117,7 +117,7 @@ public class Parser {
     }
 
     /**
-     * Given a string, removes the outer brackets if they are linked.
+     * Given a regex string, removes the outer brackets if they are linked.
      * @param regexString The string to be trimmed.
      * @return The same string, without the outer brackets.
      */
@@ -150,7 +150,7 @@ public class Parser {
      * Given a regular expression, finds the index of the root operator. This is the operator that is not inside any
      * brackets. Will prefer a CONCATENATION or UNION operator over a STAR operator, otherwise returns the index of
      * the first root operator found.
-     * @param regexString A regex expression, without outer brackets.
+     * @param regexString A regex string, without outer brackets.
      * @return The index of the root operator, or -1 if not found.
      */
     public static int findRootIndex(String regexString){
@@ -179,14 +179,14 @@ public class Parser {
     }
 
     /**
-     * Given a string representing a regex, parses the string into a regular expression object. If the regex is invalid,
-     * throws an exception.
+     * Given a string representing a regular expression, parses the string into a regular expression object.
+     * If the regalar expression is invalid, throws an exception.
      * @param regexString The string to be parsed.
      * @return The regular expression
      * @throws IllegalArgumentException
      */
     public static RegularExpression parse(String regexString) throws IllegalArgumentException {
-        // Check if regexString is valid.
+        // Check if regex string is valid.
         Pair<Boolean, String> isValid = isValid(regexString);
         if (!isValid.getKey()){
             throw new IllegalArgumentException(isValid.getValue());
@@ -195,7 +195,7 @@ public class Parser {
         // Remove outer brackets.
         regexString = removeOuterBrackets(regexString);
 
-        // Check if regexString is a symbol.
+        // Check if regex string is a symbol.
         if (regexString.length() == 1 && regexString.matches(alphanumericPattern)) {
             return new SimpleRegularExpression(regexString.charAt(0));
         }
