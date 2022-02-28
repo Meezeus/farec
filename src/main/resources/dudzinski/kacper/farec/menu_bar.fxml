@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<MenuBar BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:id="menuBar" fx:controller="dudzinski.kacper.farec.MenuBarController">
+<MenuBar BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:id="menuBar" fx:controller="dudzinski.kacper.farec.controllers.MenuBarController">
     <menus>
         <Menu mnemonicParsing="false" text="Convert">
             <items>

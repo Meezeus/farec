@@ -1,4 +1,11 @@
-package dudzinski.kacper.farec;
+package dudzinski.kacper.farec.controllers;
+
+import dudzinski.kacper.farec.App;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -6,11 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 /**
  * This class is the controller for the start screen view.

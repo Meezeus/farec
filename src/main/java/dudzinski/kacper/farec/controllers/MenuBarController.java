@@ -1,9 +1,11 @@
-package dudzinski.kacper.farec;
+package dudzinski.kacper.farec.controllers;
 
+import dudzinski.kacper.farec.App;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 /**

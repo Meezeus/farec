@@ -1,5 +1,6 @@
-package dudzinski.kacper.farec;
+package dudzinski.kacper.farec.controllers;
 
+import dudzinski.kacper.farec.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,9 +11,12 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * The controller for the screen used to create regular expressions.
@@ -63,6 +67,8 @@ public class CreateREScreenController implements Initializable {
             ParseTree parseTree = new ParseTree(regex);
             parseTreeContainer.setContent(parseTree);
             convertButton.setDisable(false);
+            ArrayList<ParseTreeNode> list = parseTree.preorderTraversal(parseTree.getRoot());
+            System.out.println(list.stream().map(ParseTreeNode::toString).collect(Collectors.joining(",")));
         }
         catch (IllegalArgumentException e){
             infoLabel.setText(e.getMessage());

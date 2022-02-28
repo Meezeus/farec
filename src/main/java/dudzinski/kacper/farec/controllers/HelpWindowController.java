@@ -1,7 +1,9 @@
-package dudzinski.kacper.farec;
+package dudzinski.kacper.farec.controllers;
 
+import dudzinski.kacper.farec.Parser;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
