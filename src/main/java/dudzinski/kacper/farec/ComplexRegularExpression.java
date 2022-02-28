@@ -39,6 +39,10 @@ public class ComplexRegularExpression extends RegularExpression{
 
     @Override
     public String toString(){
-        return ("(" + leftOperand + ")" + RegexOperatorChars.getCharFromOperator(operator) + "(" + rightOperand + ")");
+        String regexString = "(" + leftOperand + ")" + RegexOperatorChars.getCharFromOperator(operator);
+        if (rightOperand != null){
+            regexString += "(" + rightOperand + ")";
+        }
+        return regexString;
     }
 }

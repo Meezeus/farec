@@ -257,7 +257,7 @@ class ParserTest {
             void test2(){
                 String regexString = "a*";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(a)*(null)", regularExpression.toString());
+                assertEquals("(a)*", regularExpression.toString());
             }
             @Test
             @DisplayName("a+b")
@@ -271,14 +271,14 @@ class ParserTest {
             void test4(){
                 String regexString = "a*+b";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("((a)*(null))+(b)", regularExpression.toString());
+                assertEquals("((a)*)+(b)", regularExpression.toString());
             }
             @Test
             @DisplayName("a+b*")
             void test5(){
                 String regexString = "a+b*";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(a)+((b)*(null))", regularExpression.toString());
+                assertEquals("(a)+((b)*)", regularExpression.toString());
             }
             @Test
             @DisplayName("(a+b)+c")
@@ -306,21 +306,21 @@ class ParserTest {
             void test9(){
                 String regexString = "((a+b)|c)|(d*+a)";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(((a)+(b))|(c))|(((d)*(null))+(a))", regularExpression.toString());
+                assertEquals("(((a)+(b))|(c))|(((d)*)+(a))", regularExpression.toString());
             }
             @Test
             @DisplayName("a+a*+a")
             void test10(){
                 String regexString = "a+a*+a";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(a)+(((a)*(null))+(a))", regularExpression.toString());
+                assertEquals("(a)+(((a)*)+(a))", regularExpression.toString());
             }
             @Test
             @DisplayName("(a*)*")
             void test11(){
                 String regexString = "(a*)*";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("((a)*(null))*(null)", regularExpression.toString());
+                assertEquals("((a)*)*", regularExpression.toString());
             }
         }
         @Nested
