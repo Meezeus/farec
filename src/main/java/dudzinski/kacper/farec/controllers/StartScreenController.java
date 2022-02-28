@@ -4,6 +4,7 @@ import dudzinski.kacper.farec.App;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
@@ -21,6 +22,8 @@ public class StartScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
     public Label changelogChanges;
+    public Button convertFAButton;
+    public Button convertREButton;
 
     /**
      * Reads the changelog file and sets the label in the start_screen.
@@ -58,7 +61,7 @@ public class StartScreenController implements Initializable {
     public void openCreateFAWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_FA_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        Stage stage = (Stage) changelogChanges.getScene().getWindow();
+        Stage stage = (Stage) convertFAButton.getScene().getWindow();
         stage.setScene(scene);
     }
 
@@ -70,7 +73,7 @@ public class StartScreenController implements Initializable {
     public void openCreateREWindow() throws IOException{
         fxmlLoader = new FXMLLoader(App.class.getResource("create_RE_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        Stage stage = (Stage) changelogChanges.getScene().getWindow();
+        Stage stage = (Stage) convertREButton.getScene().getWindow();
         stage.setScene(scene);
     }
 
