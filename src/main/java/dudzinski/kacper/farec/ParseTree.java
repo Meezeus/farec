@@ -26,18 +26,14 @@ public class ParseTree extends StackPane {
      * @param regularExpression The regular expression for the parse tree.
      */
     public ParseTree(RegularExpression regularExpression){
+        // Set regular expression
         this.regularExpression = regularExpression;
+        // Create the parse tree and connect the nodes.
         root = createParseTree(regularExpression, 0, 0);
         connectNodes(root);
+        // Initialise the container.
         this.setAlignment(Pos.TOP_CENTER);
         this.setMinSize(2 * greatestX + 4 * NODE_RADIUS, greatestY + 4 * NODE_RADIUS);
-    }
-
-    /**
-     * @return The root of the parse tree.
-     */
-    public ParseTreeNode getRoot(){
-        return root;
     }
 
     /**
@@ -215,6 +211,13 @@ public class ParseTree extends StackPane {
         }
         currentList.add(root);
         return currentList;
+    }
+
+    /**
+     * @return The root of the parse tree.
+     */
+    public ParseTreeNode getRoot(){
+        return root;
     }
 }
 
