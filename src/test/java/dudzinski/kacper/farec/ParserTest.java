@@ -16,28 +16,28 @@ class ParserTest {
         class IsValidPositiveTest {
             @Test
             @DisplayName("a")
-            void test1(){
+            void test1() {
                 String regexString = "a";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertTrue(isValid.getKey());
             }
             @Test
             @DisplayName("a*")
-            void test2(){
+            void test2() {
                 String regexString = "a*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertTrue(isValid.getKey());
             }
             @Test
             @DisplayName("a+b")
-            void test3(){
+            void test3() {
                 String regexString = "a+b";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertTrue(isValid.getKey());
             }
             @Test
             @DisplayName("(a+b)|c*")
-            void test4(){
+            void test4() {
                 String regexString = "(a+b)|c*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertTrue(isValid.getKey());
@@ -48,7 +48,7 @@ class ParserTest {
         class IsValidNegativeTest {
             @Test
             @DisplayName("illegal characters")
-            void test1(){
+            void test1() {
                 String regexString = "($+&)|!*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
@@ -56,7 +56,7 @@ class ParserTest {
             }
             @Test
             @DisplayName("brackets in the wrong order")
-            void test2(){
+            void test2() {
                 String regexString = ")a+b(|c*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
@@ -64,7 +64,7 @@ class ParserTest {
             }
             @Test
             @DisplayName("different numbers of opening and closing brackets")
-            void test3(){
+            void test3() {
                 String regexString = "(a+b|c*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
@@ -164,56 +164,56 @@ class ParserTest {
         class FindRootIndexPositiveTest{
             @Test
             @DisplayName("a*")
-            void test1(){
+            void test1() {
                 String regexString = "a*";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(1, rootIndex);
             }
             @Test
             @DisplayName("a+b")
-            void test2(){
+            void test2() {
                 String regexString = "a+b";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(1, rootIndex);
             }
             @Test
             @DisplayName("(a+b)+c")
-            void test3(){
+            void test3() {
                 String regexString = "(a+b)+c";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(5, rootIndex);
             }
             @Test
             @DisplayName("c+(a+b)")
-            void test4(){
+            void test4() {
                 String regexString = "c+(a+b)";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(1, rootIndex);
             }
             @Test
             @DisplayName("(a+b)+(c+d)")
-            void test5(){
+            void test5() {
                 String regexString = "(a+b)+(c+d)";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(5, rootIndex);
             }
             @Test
             @DisplayName("(a+b)*")
-            void test6(){
+            void test6() {
                 String regexString = "(a+b)*";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(5, rootIndex);
             }
             @Test
             @DisplayName("((a+b)*)+(c*)")
-            void test7(){
+            void test7() {
                 String regexString = "((a+b)*)+(c*)";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(8, rootIndex);
             }
             @Test
             @DisplayName("a*+b")
-            void test8(){
+            void test8() {
                 String regexString = "a*+b";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(2, rootIndex);
@@ -224,14 +224,14 @@ class ParserTest {
         class FindRootIndexNegativeTest{
             @Test
             @DisplayName("a")
-            void test1(){
+            void test1() {
                 String regexString = "a";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(-1, rootIndex);
             }
             @Test
             @DisplayName("aa")
-            void test2(){
+            void test2() {
                 String regexString = "a";
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(-1, rootIndex);
@@ -247,77 +247,77 @@ class ParserTest {
         class ParseRegexStringPositiveTest{
             @Test
             @DisplayName("a")
-            void test1(){
+            void test1() {
                 String regexString = "a";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("a", regularExpression.toString());
             }
             @Test
             @DisplayName("a*")
-            void test2(){
+            void test2() {
                 String regexString = "a*";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("(a)*", regularExpression.toString());
             }
             @Test
             @DisplayName("a+b")
-            void test3(){
+            void test3() {
                 String regexString = "a+b";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("(a)+(b)", regularExpression.toString());
             }
             @Test
             @DisplayName("a*+b")
-            void test4(){
+            void test4() {
                 String regexString = "a*+b";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("((a)*)+(b)", regularExpression.toString());
             }
             @Test
             @DisplayName("a+b*")
-            void test5(){
+            void test5() {
                 String regexString = "a+b*";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("(a)+((b)*)", regularExpression.toString());
             }
             @Test
             @DisplayName("(a+b)+c")
-            void test6(){
+            void test6() {
                 String regexString = "(a+b)+c";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("((a)+(b))+(c)", regularExpression.toString());
             }
             @Test
             @DisplayName("c+(a+b)")
-            void test7(){
+            void test7() {
                 String regexString = "c+(a+b)";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("(c)+((a)+(b))", regularExpression.toString());
             }
             @Test
             @DisplayName("(a+b)|(c+d)")
-            void test8(){
+            void test8() {
                 String regexString = "(a+b)|(c+d)";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("((a)+(b))|((c)+(d))", regularExpression.toString());
             }
             @Test
             @DisplayName("((a+b)|c)|(d*+a)")
-            void test9(){
+            void test9() {
                 String regexString = "((a+b)|c)|(d*+a)";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("(((a)+(b))|(c))|(((d)*)+(a))", regularExpression.toString());
             }
             @Test
             @DisplayName("a+a*+a")
-            void test10(){
+            void test10() {
                 String regexString = "a+a*+a";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("(a)+(((a)*)+(a))", regularExpression.toString());
             }
             @Test
             @DisplayName("(a*)*")
-            void test11(){
+            void test11() {
                 String regexString = "(a*)*";
                 RegularExpression regularExpression = Parser.parse(regexString);
                 assertEquals("((a)*)*", regularExpression.toString());
@@ -328,79 +328,79 @@ class ParserTest {
         class ParseRegexStringNegativeTest{
             @Test
             @DisplayName("empty")
-            void test1(){
+            void test1() {
                 String regexString = "";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("+")
-            void test2(){
+            void test2() {
                 String regexString = "+";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("*")
-            void test3(){
+            void test3() {
                 String regexString = "*";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("*a")
-            void test4(){
+            void test4() {
                 String regexString = "*a";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("a+")
-            void test5(){
+            void test5() {
                 String regexString = "a+";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("+a")
-            void test6(){
+            void test6() {
                 String regexString = "+a";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("a+*")
-            void test7(){
+            void test7() {
                 String regexString = "a+*";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("a++")
-            void test8(){
+            void test8() {
                 String regexString = "a++";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("++a")
-            void test9(){
+            void test9() {
                 String regexString = "++a";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("a*a")
-            void tes10(){
+            void tes10() {
                 String regexString = "a*a";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("(a*)a")
-            void tes11(){
+            void tes11() {
                 String regexString = "(a*)a";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("a**")
-            void tes12(){
+            void tes12() {
                 String regexString = "a**";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
             @Test
             @DisplayName("a*+")
-            void tes13(){
+            void tes13() {
                 String regexString = "a*+";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }

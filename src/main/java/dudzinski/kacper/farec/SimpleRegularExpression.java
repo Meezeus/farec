@@ -8,20 +8,20 @@ public class SimpleRegularExpression extends RegularExpression {
 
     private char symbol;
 
-    public SimpleRegularExpression(char symbol){
+    public SimpleRegularExpression(char symbol) {
         this.symbol = symbol;
     }
 
-    public char getSymbol(){
+    public char getSymbol() {
         return symbol;
     }
 
-    public int getDepth(){
+    public int getDepth() {
         return 0;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.valueOf(symbol);
     }
 

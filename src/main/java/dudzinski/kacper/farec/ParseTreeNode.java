@@ -15,11 +15,11 @@ public class ParseTreeNode {
     private ParseTreeNode leftChild;
     private ParseTreeNode rightChild;
 
-    public ParseTreeNode(StackPane nodePane){
+    public ParseTreeNode(StackPane nodePane) {
         this.nodePane = nodePane;
     }
 
-    public ParseTreeNode(StackPane nodePane, ParseTreeNode leftChild, ParseTreeNode rightChild){
+    public ParseTreeNode(StackPane nodePane, ParseTreeNode leftChild, ParseTreeNode rightChild) {
         this.nodePane = nodePane;
         this.leftChild = leftChild;
         this.rightChild = rightChild;
@@ -37,20 +37,20 @@ public class ParseTreeNode {
         return rightChild;
     }
 
-    public void setLeftChild(ParseTreeNode leftChild){
+    public void setLeftChild(ParseTreeNode leftChild) {
         this.leftChild = leftChild;
     }
 
-    public void setRightChild(ParseTreeNode rightChild){
+    public void setRightChild(ParseTreeNode rightChild) {
         this.rightChild = rightChild;
     }
 
-    public String getLabelText(){
+    public String getLabelText() {
         Label label = (Label) nodePane.getChildren().stream().filter(child -> child instanceof Label).findFirst().get();
         return label.getText();
     }
 
-    public void setCircleStrokeColour(String colour){
+    public void setCircleStrokeColour(String colour) {
         Circle circle = (Circle) nodePane.getChildren().stream().filter(child -> child instanceof Circle).findFirst().get();
         circle.setStroke(Paint.valueOf(colour));
     }

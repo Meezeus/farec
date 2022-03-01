@@ -25,9 +25,10 @@ public class ParseTree extends StackPane {
 
     /**
      * Creates and initialises the parse tree for the given regular expression.
+     *
      * @param regularExpression The regular expression for the parse tree.
      */
-    public ParseTree(RegularExpression regularExpression){
+    public ParseTree(RegularExpression regularExpression) {
         // Set regular expression
         this.regularExpression = regularExpression;
         // Create the parse tree and connect the nodes.
@@ -40,14 +41,15 @@ public class ParseTree extends StackPane {
 
     /**
      * Given a regular expression, builds a parse tree representation of it.
+     *
      * @param regularExpression The regular expression for which to build a parse tree.
-     * @param currentX The horizontal separation used for the previous depth. Initially 0.
-     * @param currentY The vertical separation used for the previous depth. Initially 0.
+     * @param currentX          The horizontal separation used for the previous depth. Initially 0.
+     * @param currentY          The vertical separation used for the previous depth. Initially 0.
      * @throws IllegalArgumentException
      */
-    private ParseTreeNode createParseTree(RegularExpression regularExpression, double currentX, double currentY) throws IllegalArgumentException{
+    private ParseTreeNode createParseTree(RegularExpression regularExpression, double currentX, double currentY) throws IllegalArgumentException {
         // If the regular expression is simple, its parse tree is just a single node.
-        if (regularExpression instanceof SimpleRegularExpression){
+        if (regularExpression instanceof SimpleRegularExpression) {
             // Get the simple regular expression.
             SimpleRegularExpression simpleRegex = (SimpleRegularExpression) regularExpression;
             // Create the node.
@@ -60,7 +62,7 @@ public class ParseTree extends StackPane {
             return leafNode;
         }
         // If the regular is complex, its parse tree will include an operator node and one or two children.
-        else if (regularExpression instanceof ComplexRegularExpression){
+        else if (regularExpression instanceof ComplexRegularExpression) {
             // Get the complex regular expression.
             ComplexRegularExpression complexRegex = (ComplexRegularExpression) regularExpression;
             // Create the operator node.
@@ -78,16 +80,16 @@ public class ParseTree extends StackPane {
 
             // Move downwards.
             currentY += yChange;
-            if (currentY > greatestY){
+            if (currentY > greatestY) {
                 greatestY = currentY;
             }
 
             // If the operator is STAR, there is only one child, and we do not need to move left/right.
-            if (complexRegex.getOperator() == RegexOperator.STAR){
+            if (complexRegex.getOperator() == RegexOperator.STAR) {
                 operatorNode.setLeftChild(createParseTree(complexRegex.getLeftOperand(), currentX, currentY));
             }
             // If the operator is CONCATENATION or UNION, there are two children, and we will need to move left/right.
-            else if (complexRegex.getOperator() == RegexOperator.CONCATENATION || complexRegex.getOperator() == RegexOperator.UNION){
+            else if (complexRegex.getOperator() == RegexOperator.CONCATENATION || complexRegex.getOperator() == RegexOperator.UNION) {
                 // Move to the left.
                 currentX -= xChange;
                 // Build the subtree rooted at the left child and add it to the parse tree.
@@ -95,7 +97,7 @@ public class ParseTree extends StackPane {
 
                 // Move to the right.
                 currentX += xChange * 2;
-                if (currentX > greatestX){
+                if (currentX > greatestX) {
                     greatestX = currentX;
                 }
                 // Build the subtree rooted at the right child and add it to the parse tree.
@@ -110,10 +112,11 @@ public class ParseTree extends StackPane {
 
     /**
      * Creates a labelled node.
+     *
      * @param title The node label.
      * @return Labelled node.
      */
-    private StackPane createNode(char title){
+    private StackPane createNode(char title) {
         // Create the node
         Circle node = new Circle();
         node.setRadius(NODE_RADIUS);
@@ -133,19 +136,20 @@ public class ParseTree extends StackPane {
 
     /**
      * Recursively connects nodes in a tree to their children.
+     *
      * @param parentNode The root node of the tree to be connected.
      */
-    private void connectNodes(ParseTreeNode parentNode){
+    private void connectNodes(ParseTreeNode parentNode) {
         // Get the children of the parent node.
         ParseTreeNode leftChild = parentNode.getLeftChild();
         ParseTreeNode rightChild = parentNode.getRightChild();
 
         // Connect the parent node to its children. Connect the nodes of the subtrees rooted at the children.
-        if (leftChild != null){
+        if (leftChild != null) {
             connectParentToChild(parentNode.getNodePane(), leftChild.getNodePane());
             connectNodes(leftChild);
         }
-        if (rightChild != null){
+        if (rightChild != null) {
             connectParentToChild(parentNode.getNodePane(), rightChild.getNodePane());
             connectNodes(rightChild);
         }
@@ -153,10 +157,11 @@ public class ParseTree extends StackPane {
 
     /**
      * Connects a parent node to its child.
+     *
      * @param parent The parent node.
-     * @param child The child node.
+     * @param child  The child node.
      */
-    private void connectParentToChild(StackPane parent, StackPane child){
+    private void connectParentToChild(StackPane parent, StackPane child) {
         // Create the line.
         Line line = new Line();
         line.setStyle("-fx-stroke: black;-fx-stroke-width:2px");
@@ -181,7 +186,7 @@ public class ParseTree extends StackPane {
         // Move the line to the left/right so that it connects the parent and child nodes.
         double xSeparation = Math.abs(parent.getTranslateX() - child.getTranslateX());
         // If the child is a left child, we need to move the edge to the left.
-        if (child.getTranslateX() < parent.getTranslateX()){
+        if (child.getTranslateX() < parent.getTranslateX()) {
             xTranslate += -1 * (xSeparation / 2);
         }
         // If the child is a right child, we need to move the edge to the right.
@@ -200,17 +205,18 @@ public class ParseTree extends StackPane {
 
     /**
      * Performs a preorder traversal of the tree rooted at root.
+     *
      * @param root The root of the tree
      * @return A list of nodes in the tree, in preorder.
      */
-    public static ArrayList<ParseTreeNode> preorderTraversal(ParseTreeNode root){
+    public static ArrayList<ParseTreeNode> preorderTraversal(ParseTreeNode root) {
         ArrayList<ParseTreeNode> currentList = new ArrayList<>();
         ParseTreeNode leftChild = root.getLeftChild();
         ParseTreeNode rightChild = root.getRightChild();
-        if (leftChild != null){
+        if (leftChild != null) {
             currentList.addAll(preorderTraversal(leftChild));
         }
-        if (rightChild != null){
+        if (rightChild != null) {
             currentList.addAll(preorderTraversal(rightChild));
         }
         currentList.add(root);
@@ -220,7 +226,7 @@ public class ParseTree extends StackPane {
     /**
      * @return The root of the parse tree.
      */
-    public ParseTreeNode getRoot(){
+    public ParseTreeNode getRoot() {
         return root;
     }
 

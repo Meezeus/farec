@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ParseTreeTest {
     @BeforeAll
-    static void startJavaFX(){
+    static void startJavaFX() {
         Platform.startup(() -> {});
     }
 

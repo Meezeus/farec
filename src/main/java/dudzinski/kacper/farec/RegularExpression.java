@@ -11,6 +11,7 @@ public abstract class RegularExpression {
 
     /**
      * Performs a preorder traversal of the given regular expression, considering its component subexpressions.
+     *
      * @param regularExpression The regular expression to traverse.
      * @return A list of component regular expressions, in preorder.
      */
@@ -23,7 +24,7 @@ public abstract class RegularExpression {
             if (leftChild != null) {
                 currentList.addAll(preorderTraversal(leftChild));
             }
-            if (rightChild !=  null) {
+            if (rightChild != null) {
                 currentList.addAll(preorderTraversal(rightChild));
             }
         }

@@ -21,7 +21,7 @@ public class HelpWindowController implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources) {
         String operatorLabelText = "Available regex operators:\n";
-        for (RegexOperator operator: RegexOperator.values()){
+        for (RegexOperator operator : RegexOperator.values()) {
             operatorLabelText += "  -" + operator + ", using the character \'" + RegexOperatorChars.getCharFromOperator(operator) + "\'\n";
         }
         operatorsLabel.setText(operatorLabelText);

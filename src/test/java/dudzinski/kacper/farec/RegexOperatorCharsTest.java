@@ -16,19 +16,19 @@ public class RegexOperatorCharsTest {
         class SetOperatorCharPositiveTest {
             @Test
             @DisplayName("STAR as *")
-            void test1(){
+            void test1() {
                 boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '*');
                 assertTrue(result);
             }
             @Test
             @DisplayName("CONCATENATION as |")
-            void test2(){
+            void test2() {
                 boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '|');
                 assertTrue(result);
             }
             @Test
             @DisplayName("UNION as +")
-            void test3(){
+            void test3() {
                 boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.UNION, '+');
                 assertTrue(result);
             }
@@ -38,7 +38,7 @@ public class RegexOperatorCharsTest {
         class SetOperatorCharNegativeTest {
             @Test
             @DisplayName("CONCATENATION as /")
-            void test1(){
+            void test1() {
                 boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '/');
                 assertFalse(result);
             }
@@ -53,21 +53,21 @@ public class RegexOperatorCharsTest {
         class getCharFromOperatorPositiveTest {
             @Test
             @DisplayName("STAR")
-            void test1(){
+            void test1() {
                 RegexOperator regexOperator = RegexOperator.STAR;
                 char regexOperatorChar = RegexOperatorChars.getCharFromOperator(regexOperator);
                 assertEquals('*', regexOperatorChar);
             }
             @Test
             @DisplayName("CONCATENATION")
-            void test2(){
+            void test2() {
                 RegexOperator regexOperator = RegexOperator.CONCATENATION;
                 char regexOperatorChar = RegexOperatorChars.getCharFromOperator(regexOperator);
                 assertEquals('|', regexOperatorChar);
             }
             @Test
             @DisplayName("UNION")
-            void test3(){
+            void test3() {
                 RegexOperator regexOperator = RegexOperator.UNION;
                 char regexOperatorChar = RegexOperatorChars.getCharFromOperator(regexOperator);
                 assertEquals('+', regexOperatorChar);
@@ -83,21 +83,21 @@ public class RegexOperatorCharsTest {
         class getOperatorFromCharPositiveTest {
             @Test
             @DisplayName("*")
-            void test1(){
+            void test1() {
                 char regexOperatorChar = '*';
                 RegexOperator regexOperator = RegexOperatorChars.getOperatorFromChar(regexOperatorChar);
                 assertEquals(RegexOperator.STAR, regexOperator);
             }
             @Test
             @DisplayName("|")
-            void test2(){
+            void test2() {
                 char regexOperatorChar = '|';
                 RegexOperator regexOperator = RegexOperatorChars.getOperatorFromChar(regexOperatorChar);
                 assertEquals(RegexOperator.CONCATENATION, regexOperator);
             }
             @Test
             @DisplayName("+")
-            void test3(){
+            void test3() {
                 char regexOperatorChar = '+';
                 RegexOperator regexOperator = RegexOperatorChars.getOperatorFromChar(regexOperatorChar);
                 assertEquals(RegexOperator.UNION, regexOperator);
@@ -108,7 +108,7 @@ public class RegexOperatorCharsTest {
         class getOperatorFromCharNegativeTest {
             @Test
             @DisplayName("not linked to any operator")
-            void test1(){
+            void test1() {
                 char regexOperatorChar = ',';
                 assertThrows(IllegalArgumentException.class, () -> RegexOperatorChars.getOperatorFromChar(regexOperatorChar));
             }

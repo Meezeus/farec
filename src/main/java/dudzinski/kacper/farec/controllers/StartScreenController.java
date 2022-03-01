@@ -42,7 +42,7 @@ public class StartScreenController implements Initializable {
                     readingLatestChanges = true;
                 }
                 else if (readingLatestChanges && line.matches("##\\s.*")) {
-                      break;
+                    break;
                 }
                 changelogEntry += line + "\n";
             }
@@ -56,6 +56,7 @@ public class StartScreenController implements Initializable {
     /**
      * This method is called when the Convert Finite Automata button is pressed. It opens the window for creating
      * finite automata.
+     *
      * @throws IOException
      */
     public void openCreateFAWindow() throws IOException {
@@ -68,9 +69,10 @@ public class StartScreenController implements Initializable {
     /**
      * This method is called when the Convert Regular Expression button is pressed. It opens the window for creating
      * regular expressions.
+     *
      * @throws IOException
      */
-    public void openCreateREWindow() throws IOException{
+    public void openCreateREWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_RE_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), convertREButton.getScene().getWidth(), convertREButton.getScene().getHeight());
         Stage stage = (Stage) convertREButton.getScene().getWindow();

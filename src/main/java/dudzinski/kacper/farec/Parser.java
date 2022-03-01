@@ -17,12 +17,13 @@ public class Parser {
     /**
      * Tests is a string is a valid regex string, by checking that it contains only alphanumeric characters, brackets
      * and regex operators. Also checks that all opened brackets are closed.
+     *
      * @param regexString The string to be tested.
      * @return True if the string is valid, false otherwise.
      */
-    public static Pair<Boolean, String> isValid(String regexString){
+    public static Pair<Boolean, String> isValid(String regexString) {
         // Check if string contains only alphanumeric characters and operators.
-        if (!regexString.matches(validRegexPattern)){
+        if (!regexString.matches(validRegexPattern)) {
             return new Pair<>(false, "Regular expressions can only contain alphanumeric characters and operators!");
         }
 
@@ -32,14 +33,15 @@ public class Parser {
             char currentChar = regexString.charAt(index);
             if (currentChar == '(') {
                 openBracketCount++;
-            } else if (currentChar == ')') {
+            }
+            else if (currentChar == ')') {
                 openBracketCount--;
-                if (openBracketCount < 0){
+                if (openBracketCount < 0) {
                     return new Pair<>(false, "The regular expression has a closing bracket without an opening bracket!");
                 }
             }
         }
-        if (openBracketCount != 0){
+        if (openBracketCount != 0) {
             return new Pair<>(false, "The regular expression has different numbers of opening and closing brackets!");
         }
 
@@ -48,12 +50,13 @@ public class Parser {
 
     /**
      * Given a regex string, removes the outer brackets if they are linked.
+     *
      * @param regexString The string to be trimmed.
      * @return The same string, without the outer brackets.
      */
-    public static String removeOuterBrackets(String regexString){
+    public static String removeOuterBrackets(String regexString) {
         // If string does not start and end with brackets, it cannot be trimmed.
-        if (!(regexString.startsWith("(") && regexString.endsWith(")"))){
+        if (!(regexString.startsWith("(") && regexString.endsWith(")"))) {
             return regexString;
         }
 
@@ -67,7 +70,7 @@ public class Parser {
                 openBracketCount--;
                 // If we have closed all brackets but are not at the end, the open bracket at the start and the close
                 // bracket at the end are not linked. Return the string.
-                if (openBracketCount == 0 && index != regexString.length() - 1){
+                if (openBracketCount == 0 && index != regexString.length() - 1) {
                     return regexString;
                 }
             }
@@ -80,10 +83,11 @@ public class Parser {
      * Given a regular expression, finds the index of the root operator. This is the operator that is not inside any
      * brackets. Will prefer a CONCATENATION or UNION operator over a STAR operator, otherwise returns the index of
      * the first root operator found.
+     *
      * @param regexString A regex string, without outer brackets.
      * @return The index of the root operator, or -1 if not found.
      */
-    public static int findRootIndex(String regexString){
+    public static int findRootIndex(String regexString) {
         int openBracketCount = 0;
         int starIndex = -1;
         for (int index = 0; index < regexString.length(); ++index) {
@@ -94,7 +98,7 @@ public class Parser {
             else if (currentChar == ')') {
                 openBracketCount--;
             }
-            else if (openBracketCount == 0 && (currentChar ==  RegexOperatorChars.getUnionOperatorChar() || currentChar == RegexOperatorChars.getConcatenationOperatorChar())) {
+            else if (openBracketCount == 0 && (currentChar == RegexOperatorChars.getUnionOperatorChar() || currentChar == RegexOperatorChars.getConcatenationOperatorChar())) {
                 return index;
             }
             else if (openBracketCount == 0 && starIndex == -1 && currentChar == RegexOperatorChars.getStarOperatorChar()) {
@@ -102,7 +106,7 @@ public class Parser {
             }
         }
         // If a CONCATENATION or UNION root operator was not found, return the STAR root operator if available.
-        if (starIndex != -1){
+        if (starIndex != -1) {
             return starIndex;
         }
         return -1;
@@ -111,6 +115,7 @@ public class Parser {
     /**
      * Given a string representing a regular expression, parses the string into a regular expression object.
      * If the regalar expression is invalid, throws an exception.
+     *
      * @param regexString The string to be parsed.
      * @return The regular expression
      * @throws IllegalArgumentException
@@ -118,7 +123,7 @@ public class Parser {
     public static RegularExpression parse(String regexString) throws IllegalArgumentException {
         // Check if regex string is valid.
         Pair<Boolean, String> isValid = isValid(regexString);
-        if (!isValid.getKey()){
+        if (!isValid.getKey()) {
             throw new IllegalArgumentException(isValid.getValue());
         }
 
@@ -138,7 +143,7 @@ public class Parser {
 
         // Find left operand
         String leftSubstring = regexString.substring(0, rootIndex);
-        if (leftSubstring.length() == 0){
+        if (leftSubstring.length() == 0) {
             throw new IllegalArgumentException("The expression \"" + regexString + "\" contains an empty left operand!");
         }
         RegularExpression leftOperand = parse(leftSubstring);
@@ -148,7 +153,7 @@ public class Parser {
 
         // Find right operand
         RegularExpression rightOperand = null;
-        if (operator == RegexOperator.CONCATENATION || operator == RegexOperator.UNION){
+        if (operator == RegexOperator.CONCATENATION || operator == RegexOperator.UNION) {
             if (rootIndex == regexString.length() - 1) {
                 throw new IllegalArgumentException("The expression \"" + regexString + "\" contains an empty right operand!");
             }
@@ -156,7 +161,7 @@ public class Parser {
                 rightOperand = parse(regexString.substring(rootIndex + 1));
             }
         }
-        else if (operator == RegexOperator.STAR && rootIndex != regexString.length() - 1){
+        else if (operator == RegexOperator.STAR && rootIndex != regexString.length() - 1) {
             throw new IllegalArgumentException("The expression \"" + regexString + "\" contains a STAR operator with a right operand!");
         }
 

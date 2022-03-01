@@ -14,56 +14,56 @@ public class RegularExpressionTest {
     class GetDepthTest {
         @Test
         @DisplayName("a")
-        void test1(){
+        void test1() {
             RegularExpression regularExpression = new SimpleRegularExpression('a');
             int depth = regularExpression.getDepth();
             assertEquals(0, depth);
         }
         @Test
         @DisplayName("a*")
-        void test2(){
+        void test2() {
             RegularExpression regularExpression = Parser.parse("a*");
             int depth = regularExpression.getDepth();
             assertEquals(1, depth);
         }
         @Test
         @DisplayName("a+b")
-        void test3(){
+        void test3() {
             RegularExpression regularExpression = Parser.parse("a+b");
             int depth = regularExpression.getDepth();
             assertEquals(1, depth);
         }
         @Test
         @DisplayName("a*+b")
-        void test4(){
+        void test4() {
             RegularExpression regularExpression = Parser.parse("a*+b");
             int depth = regularExpression.getDepth();
             assertEquals(2, depth);
         }
         @Test
         @DisplayName("a+b+c")
-        void test5(){
+        void test5() {
             RegularExpression regularExpression = Parser.parse("a+b+c");
             int depth = regularExpression.getDepth();
             assertEquals(2, depth);
         }
         @Test
         @DisplayName("(a+b)+(c+d)")
-        void test6(){
+        void test6() {
             RegularExpression regularExpression = Parser.parse("(a+b)+(c+d)");
             int depth = regularExpression.getDepth();
             assertEquals(2, depth);
         }
         @Test
         @DisplayName("(a+b)*+(c+d)")
-        void test7(){
+        void test7() {
             RegularExpression regularExpression = Parser.parse("(a+b)*+(c+d)");
             int depth = regularExpression.getDepth();
             assertEquals(3, depth);
         }
         @Test
         @DisplayName("((a*)*)*")
-        void test8(){
+        void test8() {
             RegularExpression regularExpression = Parser.parse("(a+b)*+(c+d)");
             int depth = regularExpression.getDepth();
             assertEquals(3, depth);

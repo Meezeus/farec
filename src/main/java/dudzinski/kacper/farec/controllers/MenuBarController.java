@@ -19,6 +19,7 @@ public class MenuBarController {
     /**
      * This method is called when the Convert finite automata menu item is clicked. It opens the window for creating
      * finite automata.
+     *
      * @throws IOException
      */
     public void openCreateFAWindow() throws IOException {
@@ -31,9 +32,10 @@ public class MenuBarController {
     /**
      * This method is called when the Convert regular expression menu item is clicked. It opens the window for creating
      * regular expressions.
+     *
      * @throws IOException
      */
-    public void openCreateREWindow() throws IOException{
+    public void openCreateREWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_RE_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), menuBar.getScene().getWidth(), menuBar.getScene().getHeight());
         Stage stage = (Stage) menuBar.getScene().getWindow();
