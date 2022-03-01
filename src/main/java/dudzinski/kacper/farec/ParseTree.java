@@ -3,8 +3,10 @@ package dudzinski.kacper.farec;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+
 import java.util.ArrayList;
 
 /**
@@ -115,7 +117,9 @@ public class ParseTree extends StackPane {
         // Create the node
         Circle node = new Circle();
         node.setRadius(NODE_RADIUS);
-        node.setStyle("-fx-fill: white;-fx-stroke: black;-fx-stroke-width:2px");
+        node.setFill(Paint.valueOf("white"));
+        node.setStrokeWidth(2.0);
+        node.setStroke(Paint.valueOf("black"));
 
         // Create the node label.
         Label nodeTitle = new Label("" + title);
