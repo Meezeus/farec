@@ -1,9 +1,12 @@
 package dudzinski.kacper.farec;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
-import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegularExpressionTest {
     @Nested
@@ -64,6 +67,83 @@ public class RegularExpressionTest {
             RegularExpression regularExpression = Parser.parse("(a+b)*+(c+d)");
             int depth = regularExpression.getDepth();
             assertEquals(3, depth);
+        }
+    }
+
+    @Nested
+    @DisplayName("Preorder traversal returns")
+    class PreorderTraversalTest {
+        @Nested
+        @DisplayName("the correct regular expressions when the regex string is")
+        class PreorderTraversalPositiveTest {
+            @Test
+            @DisplayName("1")
+            void test1() {
+                ArrayList<String> trueRegexStringList = new ArrayList<>();
+                trueRegexStringList.add("1");
+
+                RegularExpression regularExpression = Parser.parse("1");
+                ArrayList<RegularExpression> testRegexList = RegularExpression.preorderTraversal(regularExpression);
+
+                assertEquals(trueRegexStringList.size(), testRegexList.size());
+                for (int index = 0; index < trueRegexStringList.size(); index++) {
+                    assertEquals(trueRegexStringList.get(index), testRegexList.get(index).toString());
+                }
+            }
+            @Test
+            @DisplayName("1*")
+            void test2() {
+                ArrayList<String> trueRegexStringList = new ArrayList<>();
+                trueRegexStringList.add("1");
+                trueRegexStringList.add("(1)*");
+
+                RegularExpression regularExpression = Parser.parse("1*");
+                ArrayList<RegularExpression> testRegexList = RegularExpression.preorderTraversal(regularExpression);
+
+                assertEquals(trueRegexStringList.size(), testRegexList.size());
+                for (int index = 0; index < trueRegexStringList.size(); index++) {
+                    assertEquals(trueRegexStringList.get(index), testRegexList.get(index).toString());
+                }
+            }
+            @Test
+            @DisplayName("1+2")
+            void test3() {
+                ArrayList<String> trueRegexStringList = new ArrayList<>();
+                trueRegexStringList.add("1");
+                trueRegexStringList.add("2");
+                trueRegexStringList.add("(1)+(2)");
+
+                RegularExpression regularExpression = Parser.parse("1+2");
+                ArrayList<RegularExpression> testRegexList = RegularExpression.preorderTraversal(regularExpression);
+
+                assertEquals(trueRegexStringList.size(), testRegexList.size());
+                for (int index = 0; index < trueRegexStringList.size(); index++) {
+                    assertEquals(trueRegexStringList.get(index), testRegexList.get(index).toString());
+                }
+            }
+            @Test
+            @DisplayName("(1+2)|(3*+(4|5))")
+            void test4() {
+                ArrayList<String> trueRegexStringList = new ArrayList<>();
+                trueRegexStringList.add("1");
+                trueRegexStringList.add("2");
+                trueRegexStringList.add("(1)+(2)");
+                trueRegexStringList.add("3");
+                trueRegexStringList.add("(3)*");
+                trueRegexStringList.add("4");
+                trueRegexStringList.add("5");
+                trueRegexStringList.add("(4)|(5)");
+                trueRegexStringList.add("((3)*)+((4)|(5))");
+                trueRegexStringList.add("((1)+(2))|(((3)*)+((4)|(5)))");
+
+                RegularExpression regularExpression = Parser.parse("(1+2)|(3*+(4|5))");
+                ArrayList<RegularExpression> testRegexList = RegularExpression.preorderTraversal(regularExpression);
+
+                assertEquals(trueRegexStringList.size(), testRegexList.size());
+                for (int index = 0; index < trueRegexStringList.size(); index++) {
+                    assertEquals(trueRegexStringList.get(index), testRegexList.get(index).toString());
+                }
+            }
         }
     }
 
