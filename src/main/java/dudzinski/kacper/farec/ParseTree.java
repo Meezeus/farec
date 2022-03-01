@@ -203,7 +203,7 @@ public class ParseTree extends StackPane {
      * @param root The root of the tree
      * @return A list of nodes in the tree, in preorder.
      */
-    public ArrayList<ParseTreeNode> preorderTraversal(ParseTreeNode root){
+    public static ArrayList<ParseTreeNode> preorderTraversal(ParseTreeNode root){
         ArrayList<ParseTreeNode> currentList = new ArrayList<>();
         ParseTreeNode leftChild = root.getLeftChild();
         ParseTreeNode rightChild = root.getRightChild();
