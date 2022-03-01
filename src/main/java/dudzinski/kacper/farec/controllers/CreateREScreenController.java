@@ -1,6 +1,9 @@
 package dudzinski.kacper.farec.controllers;
 
-import dudzinski.kacper.farec.*;
+import dudzinski.kacper.farec.App;
+import dudzinski.kacper.farec.ParseTree;
+import dudzinski.kacper.farec.Parser;
+import dudzinski.kacper.farec.RegularExpression;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,9 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 /**
  * The controller for the screen used to create regular expressions.
@@ -31,8 +32,17 @@ public class CreateREScreenController implements Initializable {
     public Button parseButton;
     public Button convertButton;
 
+    private RegularExpression regularExpression;
+    private ParseTree parseTree;
+
+    /**
+     * This method makes sure the input field starts off focused, and adds a listener to it so that any changes diasble
+     * the convert button.
+     */
     public void initialize(URL location, ResourceBundle resources) {
-        Platform.runLater(() -> reInputField.requestFocus());   // Make sure the text field starts off focused.
+        // Make sure the text field starts off focused.
+        Platform.runLater(() -> reInputField.requestFocus());
+        // Disable Convert button when the text in the input field is changed.
         reInputField.textProperty().addListener((observable, oldValue, newValue) -> {
             convertButton.setDisable(true);
         });
@@ -40,6 +50,7 @@ public class CreateREScreenController implements Initializable {
 
     /**
      * This method is called when the Help button is pressed. It opens a small window with help information.
+     *
      * @throws IOException
      */
     public void openHelpWindow() throws IOException {
@@ -58,22 +69,36 @@ public class CreateREScreenController implements Initializable {
      * updated accordingly. If the expression is invalid, an error message is shown and any currently displayed parse
      * tree is removed.
      */
-    public void parseRE(){
-        parseTreeContainer.setContent(null);
-        String regexString = reInputField.getText().replaceAll("\\s+","").trim();
+    public void parseRegexString() {
+        parseTreeContainer.setContent(new Label());     // Label makes sure that scroll bars disappear.
+        // Get the regex string and remove whitespace.
+        String regexString = reInputField.getText().replaceAll("\\s+", "").trim();
         try {
-            RegularExpression regex = Parser.parse(regexString);
+            regularExpression = Parser.parse(regexString);
             infoLabel.setText("Regular expression is valid!");
-            ParseTree parseTree = new ParseTree(regex);
+            parseTree = new ParseTree(regularExpression);
             parseTreeContainer.setContent(parseTree);
+            // Reset scroll bar position.
+            parseTreeContainer.setHvalue(0);
+            parseTreeContainer.setVvalue(0);
             convertButton.setDisable(false);
-            ArrayList<ParseTreeNode> list = parseTree.preorderTraversal(parseTree.getRoot());
-            System.out.println(list.stream().map(ParseTreeNode::toString).collect(Collectors.joining(",")));
         }
-        catch (IllegalArgumentException e){
+        catch (IllegalArgumentException e) {
             infoLabel.setText(e.getMessage());
             convertButton.setDisable(true);
         }
+    }
+
+    /**
+     * This method is called when the Convert button is pressed. It will change the window to the RE conversion window.
+     */
+    public void openConvertREWindow() throws IOException {
+        fxmlLoader = new FXMLLoader(App.class.getResource("convert_RE_screen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), convertButton.getScene().getWidth(), convertButton.getScene().getHeight());
+        Stage stage = (Stage) convertButton.getScene().getWindow();
+        stage.setScene(scene);
+        ConvertREScreenController convertREScreenController = fxmlLoader.getController();
+        convertREScreenController.setParseTree(parseTree);
     }
 
 }
