@@ -1,9 +1,9 @@
 package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.App;
-import dudzinski.kacper.farec.ParseTree;
-import dudzinski.kacper.farec.Parser;
-import dudzinski.kacper.farec.RegularExpression;
+import dudzinski.kacper.farec.regex.ParseTree;
+import dudzinski.kacper.farec.regex.Parser;
+import dudzinski.kacper.farec.regex.RegularExpression;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

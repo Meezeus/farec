@@ -1,4 +1,4 @@
-package dudzinski.kacper.farec;
+package dudzinski.kacper.farec.regex;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;

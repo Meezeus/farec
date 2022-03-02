@@ -1,4 +1,4 @@
-package dudzinski.kacper.farec;
+package dudzinski.kacper.farec.regex;
 
 /**
  * This class represents a simple regular expression object. A simple regular expression is a regular expression made up

@@ -1,7 +1,7 @@
 package dudzinski.kacper.farec.controllers;
 
-import dudzinski.kacper.farec.RegexOperator;
-import dudzinski.kacper.farec.RegexOperatorChars;
+import dudzinski.kacper.farec.regex.RegexOperator;
+import dudzinski.kacper.farec.regex.RegexOperatorChars;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 

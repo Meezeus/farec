@@ -1,5 +1,7 @@
 package dudzinski.kacper.farec;
 
+import dudzinski.kacper.farec.regex.RegexOperator;
+import dudzinski.kacper.farec.regex.RegexOperatorChars;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

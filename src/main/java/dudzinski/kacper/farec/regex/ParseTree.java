@@ -1,9 +1,9 @@
-package dudzinski.kacper.farec;
+package dudzinski.kacper.farec.regex;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
@@ -120,16 +120,16 @@ public class ParseTree extends StackPane {
         // Create the node
         Circle node = new Circle();
         node.setRadius(NODE_RADIUS);
-        node.setFill(Paint.valueOf("white"));
+        node.setFill(Color.WHITE);
         node.setStrokeWidth(2.0);
-        node.setStroke(Paint.valueOf("black"));
+        node.setStroke(Color.BLACK);
 
         // Create the node label.
         Label nodeTitle = new Label("" + title);
 
         // Create the node container and add the node and the label.
         StackPane nodePane = new StackPane();
-        nodePane.setMaxSize(NODE_RADIUS * 2, NODE_RADIUS * 2);
+        nodePane.setMaxSize(2 * NODE_RADIUS, 2 * NODE_RADIUS);
         nodePane.getChildren().addAll(node, nodeTitle);
         return nodePane;
     }
@@ -164,7 +164,8 @@ public class ParseTree extends StackPane {
     private void connectParentToChild(StackPane parent, StackPane child) {
         // Create the line.
         Line line = new Line();
-        line.setStyle("-fx-stroke: black;-fx-stroke-width:2px");
+        line.setStrokeWidth(2.0);
+        line.setStroke(Color.BLACK);
         line.setStartX(parent.getTranslateX());
         line.setStartY(parent.getTranslateY());
         line.setEndX(child.getTranslateX());

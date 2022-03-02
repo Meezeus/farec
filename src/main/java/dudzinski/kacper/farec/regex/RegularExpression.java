@@ -1,4 +1,4 @@
-package dudzinski.kacper.farec;
+package dudzinski.kacper.farec.regex;
 
 import java.util.ArrayList;
 
