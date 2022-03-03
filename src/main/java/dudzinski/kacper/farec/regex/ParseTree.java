@@ -36,7 +36,7 @@ public class ParseTree extends StackPane {
         connectNodes(root);
         // Initialise the container.
         this.setAlignment(Pos.TOP_CENTER);
-        this.setMinSize(2 * greatestX + 4 * NODE_RADIUS, greatestY + 4 * NODE_RADIUS);
+        this.setMinSize((2 * greatestX) + (4 * NODE_RADIUS), greatestY + NODE_RADIUS);
     }
 
     /**
@@ -92,6 +92,10 @@ public class ParseTree extends StackPane {
             else if (complexRegex.getOperator() == RegexOperator.CONCATENATION || complexRegex.getOperator() == RegexOperator.UNION) {
                 // Move to the left.
                 currentX -= xChange;
+                if (Math.abs(currentX) > greatestX) {
+                    greatestX = Math.abs(currentX);
+                }
+
                 // Build the subtree rooted at the left child and add it to the parse tree.
                 operatorNode.setLeftChild(createParseTree(complexRegex.getLeftOperand(), currentX, currentY));
 
@@ -100,6 +104,7 @@ public class ParseTree extends StackPane {
                 if (currentX > greatestX) {
                     greatestX = currentX;
                 }
+
                 // Build the subtree rooted at the right child and add it to the parse tree.
                 operatorNode.setRightChild(createParseTree(complexRegex.getRightOperand(), currentX, currentY));
             }
