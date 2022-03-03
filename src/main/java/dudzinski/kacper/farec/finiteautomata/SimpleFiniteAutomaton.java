@@ -10,11 +10,14 @@ public class SimpleFiniteAutomaton extends FiniteAutomaton {
 
     private StackPane transition;
 
-    public SimpleFiniteAutomaton(StackPane initialState, StackPane finalState, StackPane transition) {
+    public SimpleFiniteAutomaton(StackPane initialState, StackPane finalState, StackPane transition, double minWidth, double minHeight) {
         this.initialState = initialState;
         this.finalState = finalState;
         this.transition = transition;
-        finiteAutomatonContainer.getChildren().addAll(transition, initialState, finalState);
+        finiteAutomatonPane.getChildren().addAll(transition, initialState, finalState);
+        finiteAutomatonPane.setMinSize(minWidth, minHeight);
+        enableInitialState(true);
+        enableFinalState(true);
     }
 
 }

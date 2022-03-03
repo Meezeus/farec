@@ -13,13 +13,21 @@ public class ComplexFiniteAutomaton extends FiniteAutomaton {
     private StackPane leftFiniteAutomaton;
     private StackPane rightFiniteAutomaton;
 
-    public ComplexFiniteAutomaton(StackPane initialState, StackPane finalState, ArrayList<StackPane> transitions, StackPane leftFiniteAutomaton, StackPane rightFiniteAutomaton) {
+    public ComplexFiniteAutomaton(StackPane initialState, StackPane finalState,
+                                  StackPane leftFiniteAutomaton, ArrayList<StackPane> transitions, StackPane rightFiniteAutomaton,
+                                  double minWidth, double minHeight) {
         this.initialState = initialState;
         this.finalState = finalState;
         this.leftFiniteAutomaton = leftFiniteAutomaton;
         this.rightFiniteAutomaton = rightFiniteAutomaton;
-        finiteAutomatonContainer.getChildren().addAll(transitions);     // Has to be first so edges are hidden behind nodes.
-        finiteAutomatonContainer.getChildren().addAll(initialState, finalState, leftFiniteAutomaton, rightFiniteAutomaton);
+
+        if (transitions != null) {
+            finiteAutomatonPane.getChildren().addAll(transitions);
+        }
+        finiteAutomatonPane.getChildren().addAll(leftFiniteAutomaton, rightFiniteAutomaton, initialState, finalState);
+        finiteAutomatonPane.setMinSize(minWidth, minHeight);
+        enableInitialState(true);
+        enableFinalState(true);
     }
 
 }
