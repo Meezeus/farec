@@ -10,13 +10,13 @@ public abstract class FiniteAutomaton {
 
     protected StackPane initialState;
     protected StackPane finalState;
-    protected StackPane finiteAutomatonContainer = new StackPane();
+    protected StackPane finiteAutomatonPane = new StackPane();
 
     /**
-     * @return The container holding the finite automaton.
+     * @return The pane holding the finite automaton.
      */
-    public StackPane getFiniteAutomatonContainer() {
-        return finiteAutomatonContainer;
+    public StackPane getFiniteAutomatonPane() {
+        return finiteAutomatonPane;
     }
 
     /**
