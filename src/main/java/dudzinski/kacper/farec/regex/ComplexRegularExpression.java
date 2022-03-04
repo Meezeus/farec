@@ -14,6 +14,10 @@ public class ComplexRegularExpression extends RegularExpression {
         this.leftOperand = leftOperand;
         this.operator = operator;
         this.rightOperand = rightOperand;
+
+        if (operator == RegexOperator.STAR && rightOperand != null) {
+            throw new IllegalArgumentException();
+        }
     }
 
     public RegularExpression getLeftOperand() {
