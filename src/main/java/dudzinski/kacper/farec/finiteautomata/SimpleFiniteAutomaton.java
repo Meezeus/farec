@@ -8,13 +8,10 @@ import javafx.scene.layout.StackPane;
  */
 public class SimpleFiniteAutomaton extends FiniteAutomaton {
 
-    private StackPane transition;
-
-    public SimpleFiniteAutomaton(StackPane initialState, StackPane finalState, StackPane transition, double minWidth, double minHeight) {
+    public SimpleFiniteAutomaton(State initialState, State finalState, StackPane transition, double minWidth, double minHeight) {
         this.initialState = initialState;
         this.finalState = finalState;
-        this.transition = transition;
-        finiteAutomatonPane.getChildren().addAll(transition, initialState, finalState);
+        finiteAutomatonPane.getChildren().addAll(transition, initialState.getStatePane(), finalState.getStatePane());
         finiteAutomatonPane.setMinSize(minWidth, minHeight);
         enableInitialState(true);
         enableFinalState(true);
