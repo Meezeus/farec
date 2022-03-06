@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 public class FiniteAutomatonBuilder {
 
-    private static final double NODE_SEPARATION = 100;
+    private static final double NODE_SEPARATION = 60;
     private static final double NODE_RADIUS = 20;
     private static final double NODE_STROKE_RADIUS = 1;
     private static final double EDGE_STROKE_RADIUS = 1;
