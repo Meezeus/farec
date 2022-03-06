@@ -6,6 +6,7 @@ import dudzinski.kacper.farec.regex.RegularExpression;
 import dudzinski.kacper.farec.regex.SimpleRegularExpression;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -80,13 +81,13 @@ public class FiniteAutomatonBuilder {
 
         // Create the new initial state and move it into position.
         State initialState = createState("");
-        StackPane initialStatePane = initialState.getStatePane();
-        initialStatePane.setTranslateX(-(Math.abs(finiteAutomaton.initialState.getStatePane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION));
+        StackPane initialStatePane = initialState.getPane();
+        initialStatePane.setTranslateX(-(Math.abs(finiteAutomaton.initialState.getPane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION));
 
         // Create the new final state and move it into position.
         State finalState = createState("");
-        StackPane finalStatePane = finalState.getStatePane();
-        finalStatePane.setTranslateX(Math.abs(finiteAutomaton.finalState.getStatePane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION);
+        StackPane finalStatePane = finalState.getPane();
+        finalStatePane.setTranslateX(Math.abs(finiteAutomaton.finalState.getPane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION);
 
         // Create the list for holding the new transitions and create the transition variables.
         ArrayList<StackPane> transitions = new ArrayList<>();
@@ -94,7 +95,7 @@ public class FiniteAutomatonBuilder {
         double lineHeight;
 
         // Calculate line width and height for i to i and f to f transitions.
-        lineWidth = Math.abs(Math.abs(initialStatePane.getTranslateX()) - Math.abs(finiteAutomaton.initialState.getStatePane().getTranslateX()));
+        lineWidth = Math.abs(Math.abs(initialStatePane.getTranslateX()) - Math.abs(finiteAutomaton.initialState.getPane().getTranslateX()));
         lineHeight = 0;
 
         // Connect the new initial state to the old initial state.
@@ -108,12 +109,12 @@ public class FiniteAutomatonBuilder {
         transitions.add(fToF);
 
         // Calculate line width and height for f to i transition.
-        lineWidth = Math.abs(Math.abs(finiteAutomaton.finalState.getStatePane().getTranslateX()) + Math.abs(finiteAutomaton.initialState.getStatePane().getTranslateX()));
+        lineWidth = Math.abs(Math.abs(finiteAutomaton.finalState.getPane().getTranslateX()) + Math.abs(finiteAutomaton.initialState.getPane().getTranslateX()));
         lineHeight = 0.5 * finiteAutomatonPane.getMinHeight() + 2 * NODE_RADIUS;
 
         // Connect the old final state to the old initial state.
         StackPane fToIUp = createEdge("", 0, lineHeight, -90, false);
-        fToIUp.setTranslateX(finiteAutomaton.finalState.getStatePane().getTranslateX());
+        fToIUp.setTranslateX(finiteAutomaton.finalState.getPane().getTranslateX());
         fToIUp.setTranslateY(-(0.5 * lineHeight));
         transitions.add(fToIUp);
 
@@ -122,7 +123,7 @@ public class FiniteAutomatonBuilder {
         transitions.add(fToILeft);
 
         StackPane fToIDown = createEdge("", 0, lineHeight, 90, true);
-        fToIDown.setTranslateX(finiteAutomaton.initialState.getStatePane().getTranslateX());
+        fToIDown.setTranslateX(finiteAutomaton.initialState.getPane().getTranslateX());
         fToIDown.setTranslateY(-(0.5 * lineHeight));
         transitions.add(fToIDown);
 
@@ -170,7 +171,7 @@ public class FiniteAutomatonBuilder {
 
         // Set the initial state to the initial state of the left finite automaton.
         State initialState = leftFiniteAutomaton.initialState;
-        StackPane initialStatePane = initialState.getStatePane();
+        StackPane initialStatePane = initialState.getPane();
 
         // Remove the initial state from the left finite automaton.
         leftFiniteAutomatonPane.getChildren().remove(leftFiniteAutomaton.initialState);
@@ -189,7 +190,7 @@ public class FiniteAutomatonBuilder {
 
         // Set the final state to the final state of the right finite automaton.
         State finalState = rightFiniteAutomaton.finalState;
-        StackPane finalStatePane = finalState.getStatePane();
+        StackPane finalStatePane = finalState.getPane();
 
         // Remove the final state from the right finite automaton.
         rightFiniteAutomatonPane.getChildren().remove(rightFiniteAutomaton.finalState);
@@ -244,13 +245,13 @@ public class FiniteAutomatonBuilder {
 
         // Create the new initial state and move it into position.
         State initialState = createState("");
-        StackPane initialStatePane = initialState.getStatePane();
-        initialStatePane.setTranslateX(-(Math.abs(widestFiniteAutomaton.initialState.getStatePane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION));
+        StackPane initialStatePane = initialState.getPane();
+        initialStatePane.setTranslateX(-(Math.abs(widestFiniteAutomaton.initialState.getPane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION));
 
         // Create the new final state and move it into position.
         State finalState = createState("");
-        StackPane finalStatePane = finalState.getStatePane();
-        finalStatePane.setTranslateX(Math.abs(widestFiniteAutomaton.finalState.getStatePane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION);
+        StackPane finalStatePane = finalState.getPane();
+        finalStatePane.setTranslateX(Math.abs(widestFiniteAutomaton.finalState.getPane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION);
 
         // Create the list for holding the new transitions and create the transition variables.
         ArrayList<StackPane> transitions = new ArrayList<>();
@@ -259,7 +260,7 @@ public class FiniteAutomatonBuilder {
         double angle;
 
         // Calculate the width, height and angle of the new transitions for the top finite automaton.
-        lineWidth = Math.abs(Math.abs(initialStatePane.getTranslateX()) - Math.abs(topFiniteAutomaton.initialState.getStatePane().getTranslateX()));
+        lineWidth = Math.abs(Math.abs(initialStatePane.getTranslateX()) - Math.abs(topFiniteAutomaton.initialState.getPane().getTranslateX()));
         lineHeight = Math.abs(Math.abs(initialStatePane.getTranslateY()) - Math.abs(topFiniteAutomatonPane.getTranslateY()));
         angle = Math.toDegrees(Math.atan(lineHeight / lineWidth));
 
@@ -276,7 +277,7 @@ public class FiniteAutomatonBuilder {
         transitions.add(f1ToF);
 
         // Calculate the width, height and angle of the new transitions for the bottom finite automaton.
-        lineWidth = Math.abs(Math.abs(initialStatePane.getTranslateX()) - Math.abs(bottomFiniteAutomaton.initialState.getStatePane().getTranslateX()));
+        lineWidth = Math.abs(Math.abs(initialStatePane.getTranslateX()) - Math.abs(bottomFiniteAutomaton.initialState.getPane().getTranslateX()));
         lineHeight = Math.abs(Math.abs(initialStatePane.getTranslateY()) - Math.abs(bottomFiniteAutomatonPane.getTranslateY()));
         angle = Math.toDegrees(Math.atan(lineHeight / lineWidth));
 
@@ -312,12 +313,12 @@ public class FiniteAutomatonBuilder {
     private static SimpleFiniteAutomaton buildSimpleFiniteAutomaton(SimpleRegularExpression simpleRegularExpression) {
         // Create the initial state and move it into position.
         State initialState = createState("");
-        StackPane initialStatePane = initialState.getStatePane();
+        StackPane initialStatePane = initialState.getPane();
         initialStatePane.setTranslateX(-(NODE_RADIUS + NODE_STROKE_RADIUS + (0.5 * NODE_SEPARATION)));
 
         // Create the final state and move it into position.
         State finalState = createState("");
-        StackPane finalStatePane = finalState.getStatePane();
+        StackPane finalStatePane = finalState.getPane();
         finalStatePane.setTranslateX(NODE_RADIUS + NODE_STROKE_RADIUS + (0.5 * NODE_SEPARATION));
 
         // Create the transition.
@@ -403,7 +404,7 @@ public class FiniteAutomatonBuilder {
      * @param state The state to set as initial.
      */
     public static void setAsInitial(State state) {
-        StackPane statePane = state.getStatePane();
+        StackPane statePane = state.getPane();
 
         Line line = new Line(0, 0, INITIAL_EDGE_LENGTH, 0);
         line.setId("line");
@@ -428,7 +429,7 @@ public class FiniteAutomatonBuilder {
      * @param state The state to set as non-initial.
      */
     public static void setAsNonInitial(State state) {
-        StackPane statePane = state.getStatePane();
+        StackPane statePane = state.getPane();
 
         Line line = (Line) statePane.lookup("#line");
         statePane.getChildren().remove(line);
@@ -446,7 +447,7 @@ public class FiniteAutomatonBuilder {
      * @param state The state to set as final.
      */
     public static void setAsFinal(State state) {
-        StackPane statePane = state.getStatePane();
+        StackPane statePane = state.getPane();
 
         Circle innerCircle = new Circle();
         innerCircle.setId("innerCircle");
@@ -464,7 +465,7 @@ public class FiniteAutomatonBuilder {
      * @param state The state to set as non-final.
      */
     public static void setAsNonFinal(State state) {
-        StackPane statePane = state.getStatePane();
+        StackPane statePane = state.getPane();
 
         Circle innerCircle = (Circle) statePane.lookup("#innerCircle");
         statePane.getChildren().remove(innerCircle);
@@ -522,6 +523,34 @@ public class FiniteAutomatonBuilder {
         else {
             throw new IllegalArgumentException("Regular expression is neither Simple nor Complex!");
         }
+    }
+
+    /**
+     * Allows the given state to be dragged using the primary mouse button.
+     *
+     * @param state The state to enable dragging for.
+     */
+    public static void setAsDraggable(State state) {
+        class Offset {
+            double x, y;
+        }
+        Offset offset = new Offset();
+
+        StackPane statePane = state.getPane();
+
+        statePane.setOnMousePressed(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                offset.x = statePane.getTranslateX() - event.getSceneX();
+                offset.y = statePane.getTranslateY() - event.getSceneY();
+            }
+        });
+
+        statePane.setOnMouseDragged(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                statePane.setTranslateX(event.getSceneX() + offset.x);
+                statePane.setTranslateY(event.getSceneY() + offset.y);
+            }
+        });
     }
 
 }

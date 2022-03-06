@@ -11,7 +11,7 @@ public class SimpleFiniteAutomaton extends FiniteAutomaton {
     public SimpleFiniteAutomaton(State initialState, State finalState, StackPane transition, double minWidth, double minHeight) {
         this.initialState = initialState;
         this.finalState = finalState;
-        finiteAutomatonPane.getChildren().addAll(transition, initialState.getStatePane(), finalState.getStatePane());
+        finiteAutomatonPane.getChildren().addAll(transition, initialState.getPane(), finalState.getPane());
         finiteAutomatonPane.setMinSize(minWidth, minHeight);
         enableInitialState(true);
         enableFinalState(true);

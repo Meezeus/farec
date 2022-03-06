@@ -22,7 +22,7 @@ public class ComplexFiniteAutomaton extends FiniteAutomaton {
         if (finiteAutomaton2 != null) {
             finiteAutomatonPane.getChildren().add(finiteAutomaton2);
         }
-        finiteAutomatonPane.getChildren().addAll(finiteAutomaton1, initialState.getStatePane(), finalState.getStatePane());
+        finiteAutomatonPane.getChildren().addAll(finiteAutomaton1, initialState.getPane(), finalState.getPane());
         finiteAutomatonPane.setMinSize(minWidth, minHeight);
         enableInitialState(true);
         enableFinalState(true);

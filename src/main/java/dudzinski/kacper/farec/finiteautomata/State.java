@@ -1,5 +1,6 @@
 package dudzinski.kacper.farec.finiteautomata;
 
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
@@ -8,7 +9,7 @@ import javafx.scene.shape.Circle;
 /**
  * This class represents a state in a finite automaton.
  */
-public class State {
+public class State extends Control implements FiniteAutomatonComponent {
 
     private StackPane statePane = new StackPane();
     private Circle circle;
@@ -20,7 +21,7 @@ public class State {
      * Creates a state using the given components.
      *
      * @param circle The state circle.
-     * @param label The label of the state.
+     * @param label  The label of the state.
      */
     public State(Circle circle, Label label) {
         this.circle = circle;
@@ -31,7 +32,7 @@ public class State {
     /**
      * @return The StackPane holding the state.
      */
-    public StackPane getStatePane() {
+    public StackPane getPane() {
         return statePane;
     }
 
@@ -42,6 +43,29 @@ public class State {
      */
     public void setStroke(Paint paint) {
         circle.setStroke(paint);
+    }
+
+    /**
+     * Sets the text of the state label.
+     *
+     * @param labelText The new text of the label.
+     */
+    public void setLabel(String labelText) {
+        label.setText(labelText);
+    }
+
+    /**
+     * @return Whether the state is an initial state.
+     */
+    public boolean isInitial() {
+        return isInitial;
+    }
+
+    /**
+     * @return Whether the state is a final state.
+     */
+    public boolean isFinal() {
+        return isFinal;
     }
 
     /**
