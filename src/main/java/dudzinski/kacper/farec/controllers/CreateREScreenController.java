@@ -32,26 +32,21 @@ public class CreateREScreenController implements Initializable {
     public Button parseButton;
     public Button convertButton;
 
-    private RegularExpression regularExpression;
     private ParseTree parseTree;
 
     /**
-     * This method makes sure the input field starts off focused, and adds a listener to it so that any changes diasble
+     * This method makes sure the input field starts off focused, and adds a listener to it so that any changes disable
      * the convert button.
      */
     public void initialize(URL location, ResourceBundle resources) {
         // Make sure the text field starts off focused.
         Platform.runLater(() -> reInputField.requestFocus());
         // Disable Convert button when the text in the input field is changed.
-        reInputField.textProperty().addListener((observable, oldValue, newValue) -> {
-            convertButton.setDisable(true);
-        });
+        reInputField.textProperty().addListener((observable, oldValue, newValue) -> convertButton.setDisable(true));
     }
 
     /**
      * This method is called when the Help button is pressed. It opens a small window with help information.
-     *
-     * @throws IOException
      */
     public void openHelpWindow() throws IOException {
         Stage window = new Stage();
@@ -74,7 +69,7 @@ public class CreateREScreenController implements Initializable {
         // Get the regex string and remove whitespace.
         String regexString = reInputField.getText().replaceAll("\\s+", "").trim();
         try {
-            regularExpression = Parser.parse(regexString);
+            RegularExpression regularExpression = Parser.parse(regexString);
             infoLabel.setText("Regular expression is valid!");
             parseTree = new ParseTree(regularExpression);
             parseTreeContainer.setContent(parseTree);

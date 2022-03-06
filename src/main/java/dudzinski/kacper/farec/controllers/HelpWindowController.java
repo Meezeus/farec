@@ -20,11 +20,11 @@ public class HelpWindowController implements Initializable {
      * Sets the labels in the help window.
      */
     public void initialize(URL location, ResourceBundle resources) {
-        String operatorLabelText = "Available regex operators:\n";
+        StringBuilder operatorLabelText = new StringBuilder("Available regex operators:\n");
         for (RegexOperator operator : RegexOperator.values()) {
-            operatorLabelText += "  -" + operator + ", using the character \'" + RegexOperatorChars.getCharFromOperator(operator) + "\'\n";
+            operatorLabelText.append("  -").append(operator).append(", using the character '").append(RegexOperatorChars.getCharFromOperator(operator)).append("'\n");
         }
-        operatorsLabel.setText(operatorLabelText);
+        operatorsLabel.setText(operatorLabelText.toString());
 
         helpLabel.setText("A valid regular expression can only contain letters, number, brackets and regex operators. " +
                 "Valid regular expressions must have a root operator: an operator that is not contained within any " +

@@ -29,8 +29,6 @@ public class ConvertREScreenController implements Initializable {
     public Button prevButton;
     public Button nextButton;
 
-    private ParseTree parseTree;
-    private RegularExpression regularExpression;
     private int currentPreorderIndex;   // The index of the current preorder element.
     private int maxPreorderIndex;   // The max value of the current preorder index.
     private ArrayList<ParseTreeNode> parseTreeNodesPreorder;    // The parse tree nodes, in preorder.
@@ -52,15 +50,14 @@ public class ConvertREScreenController implements Initializable {
      */
     public void setParseTree(ParseTree parseTree) {
         // Set the data.
-        this.parseTree = parseTree;
+        RegularExpression regularExpression = parseTree.getRegularExpression();
         parseTreeNodesPreorder = ParseTree.preorderTraversal(parseTree.getRoot());
-        regularExpression = parseTree.getRegularExpression();
         regularExpressionsPreorder = RegularExpression.preorderTraversal(regularExpression);
         currentPreorderIndex = 0;
         maxPreorderIndex = parseTreeNodesPreorder.size() - 1;
 
         // Set the scene elements.
-        parseTreeContainer.setContent(this.parseTree);
+        parseTreeContainer.setContent(parseTree);
         regularExpressionLabel.setText(regularExpression.toString());
         prevButton.setDisable(true);
         if (currentPreorderIndex == maxPreorderIndex) {

@@ -32,10 +32,11 @@ public class StartScreenController implements Initializable {
         try {
             // Get and read the changelog file.
             URL changelogURL = App.class.getResource("changelog.txt");
+            assert changelogURL != null;
             List<String> changelogLines = Files.readAllLines(Paths.get(changelogURL.toURI()));
 
             // Get the latest entry in the changelog and set it to the label.
-            String changelogEntry = "";
+            StringBuilder changelogEntry = new StringBuilder();
             boolean readingLatestChanges = false;
             for (String line : changelogLines) {
                 if (!readingLatestChanges && line.matches("##\\s.*")) {
@@ -44,9 +45,9 @@ public class StartScreenController implements Initializable {
                 else if (readingLatestChanges && line.matches("##\\s.*")) {
                     break;
                 }
-                changelogEntry += line + "\n";
+                changelogEntry.append(line).append("\n");
             }
-            changelogChanges.setText(changelogEntry);
+            changelogChanges.setText(changelogEntry.toString());
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -56,8 +57,6 @@ public class StartScreenController implements Initializable {
     /**
      * This method is called when the Convert Finite Automata button is pressed. It opens the window for creating
      * finite automata.
-     *
-     * @throws IOException
      */
     public void openCreateFAWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_FA_screen.fxml"));
@@ -69,8 +68,6 @@ public class StartScreenController implements Initializable {
     /**
      * This method is called when the Convert Regular Expression button is pressed. It opens the window for creating
      * regular expressions.
-     *
-     * @throws IOException
      */
     public void openCreateREWindow() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource("create_RE_screen.fxml"));
