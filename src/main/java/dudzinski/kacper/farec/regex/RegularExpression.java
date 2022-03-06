@@ -7,6 +7,9 @@ import java.util.ArrayList;
  */
 public abstract class RegularExpression {
 
+    /**
+     * @return The depth of the regular expression.
+     */
     public abstract int getDepth();
 
     /**

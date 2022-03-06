@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RegularExpressionTest {
+
     @Nested
     @DisplayName("The depth of a regular expression is returned correctly when the regex string is")
     class GetDepthTest {

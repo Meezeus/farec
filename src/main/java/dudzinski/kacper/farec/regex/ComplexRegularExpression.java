@@ -16,7 +16,7 @@ public class ComplexRegularExpression extends RegularExpression {
         this.rightOperand = rightOperand;
 
         if (operator == RegexOperator.STAR && rightOperand != null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("STAR operator cannot have a right operand!");
         }
     }
 
