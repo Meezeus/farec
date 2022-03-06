@@ -21,13 +21,13 @@ import java.util.ArrayList;
  */
 public class FiniteAutomatonBuilder {
 
-    private static final double NODE_SEPARATION = 60;
-    private static final double NODE_RADIUS = 20;
-    private static final double NODE_STROKE_RADIUS = 1;
-    private static final double EDGE_STROKE_RADIUS = 1;
-    private static final double ARROWHEAD_SIZE = 10;
-    private static final double INITIAL_EDGE_LENGTH = 25;
-    private static final String EPSILON = "\u03B5";
+    public static final double NODE_SEPARATION = 60;
+    public static final double NODE_RADIUS = 20;
+    public static final double NODE_STROKE_RADIUS = 1;
+    public static final double EDGE_STROKE_RADIUS = 1;
+    public static final double ARROWHEAD_SIZE = 10;
+    public static final double INITIAL_EDGE_LENGTH = 25;
+    public static final String EPSILON = "\u03B5";
 
     /**
      * Builds the finite automaton for the given regular expression.
@@ -326,7 +326,7 @@ public class FiniteAutomatonBuilder {
      * @param labelText The state label.
      * @return Labelled state.
      */
-    private static StackPane createState(String labelText) {
+    public static StackPane createState(String labelText) {
         // Create the node
         Circle node = new Circle();
         node.setRadius(NODE_RADIUS);
@@ -354,7 +354,7 @@ public class FiniteAutomatonBuilder {
      * @param directed   Whether to include an arrowhead.
      * @return The edge.
      */
-    private static StackPane createEdge(String labelText, double lineWidth, double lineHeight, double angle, boolean directed) {
+    public static StackPane createEdge(String labelText, double lineWidth, double lineHeight, double angle, boolean directed) {
         // Get the length of the line.
         double lineLength = Math.sqrt(Math.pow(lineWidth, 2) + Math.pow(lineHeight, 2));
 
