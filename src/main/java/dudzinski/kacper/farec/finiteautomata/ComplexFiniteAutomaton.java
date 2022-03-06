@@ -10,21 +10,24 @@ import java.util.ArrayList;
  */
 public class ComplexFiniteAutomaton extends FiniteAutomaton {
 
-    private StackPane leftFiniteAutomaton;
-    private StackPane rightFiniteAutomaton;
+    private StackPane finiteAutomaton1;
+    private StackPane finiteAutomaton2;
 
     public ComplexFiniteAutomaton(StackPane initialState, StackPane finalState,
-                                  StackPane leftFiniteAutomaton, ArrayList<StackPane> transitions, StackPane rightFiniteAutomaton,
+                                  StackPane finiteAutomaton1, ArrayList<StackPane> transitions, StackPane finiteAutomaton2,
                                   double minWidth, double minHeight) {
         this.initialState = initialState;
         this.finalState = finalState;
-        this.leftFiniteAutomaton = leftFiniteAutomaton;
-        this.rightFiniteAutomaton = rightFiniteAutomaton;
+        this.finiteAutomaton1 = finiteAutomaton1;
+        this.finiteAutomaton2 = finiteAutomaton2;
 
         if (transitions != null) {
             finiteAutomatonPane.getChildren().addAll(transitions);
         }
-        finiteAutomatonPane.getChildren().addAll(leftFiniteAutomaton, rightFiniteAutomaton, initialState, finalState);
+        if (finiteAutomaton2 != null) {
+            finiteAutomatonPane.getChildren().add(finiteAutomaton2);
+        }
+        finiteAutomatonPane.getChildren().addAll(finiteAutomaton1, initialState, finalState);
         finiteAutomatonPane.setMinSize(minWidth, minHeight);
         enableInitialState(true);
         enableFinalState(true);
