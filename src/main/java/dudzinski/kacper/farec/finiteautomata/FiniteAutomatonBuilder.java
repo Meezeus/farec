@@ -6,7 +6,6 @@ import dudzinski.kacper.farec.regex.RegularExpression;
 import dudzinski.kacper.farec.regex.SimpleRegularExpression;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -523,34 +522,6 @@ public class FiniteAutomatonBuilder {
         else {
             throw new IllegalArgumentException("Regular expression is neither Simple nor Complex!");
         }
-    }
-
-    /**
-     * Allows the given state to be dragged using the primary mouse button.
-     *
-     * @param state The state to enable dragging for.
-     */
-    public static void setAsDraggable(State state) {
-        class Offset {
-            double x, y;
-        }
-        Offset offset = new Offset();
-
-        StackPane statePane = state.getPane();
-
-        statePane.setOnMousePressed(event -> {
-            if (event.getButton().equals(MouseButton.PRIMARY)) {
-                offset.x = statePane.getTranslateX() - event.getSceneX();
-                offset.y = statePane.getTranslateY() - event.getSceneY();
-            }
-        });
-
-        statePane.setOnMouseDragged(event -> {
-            if (event.getButton().equals(MouseButton.PRIMARY)) {
-                statePane.setTranslateX(event.getSceneX() + offset.x);
-                statePane.setTranslateY(event.getSceneY() + offset.y);
-            }
-        });
     }
 
 }
