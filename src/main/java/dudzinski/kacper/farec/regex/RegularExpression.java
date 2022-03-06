@@ -17,8 +17,7 @@ public abstract class RegularExpression {
      */
     public static ArrayList<RegularExpression> preorderTraversal(RegularExpression regularExpression) {
         ArrayList<RegularExpression> currentList = new ArrayList<>();
-        if (regularExpression instanceof ComplexRegularExpression) {
-            ComplexRegularExpression complexRegularExpression = (ComplexRegularExpression) regularExpression;
+        if (regularExpression instanceof ComplexRegularExpression complexRegularExpression) {
             RegularExpression leftChild = complexRegularExpression.getLeftOperand();
             RegularExpression rightChild = complexRegularExpression.getRightOperand();
             if (leftChild != null) {

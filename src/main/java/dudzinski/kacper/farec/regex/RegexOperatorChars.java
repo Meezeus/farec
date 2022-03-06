@@ -2,7 +2,7 @@ package dudzinski.kacper.farec.regex;
 
 public class RegexOperatorChars {
 
-    private static String validOperatorSymbolPattern = "^[!£$%^&*\\-+=:;@~#|<>,.?]$";
+    private static final String validOperatorSymbolPattern = "^[!£$%^&*\\-+=:;@~#|<>,.?]$";
     private static char starOperatorChar = '*';
     private static char concatenationOperatorChar = '|';
     private static char unionOperatorChar = '+';
@@ -35,8 +35,7 @@ public class RegexOperatorChars {
      * Given a regex operator, returns the char corresponding to that operator or throws an exception.
      *
      * @param operator The regex operator for which to find the corresponding char.
-     * @return The char corresponding to the given regex operator.
-     * @throws IllegalArgumentException
+     * @return The char corresponding to the given regex operator
      */
     public static char getCharFromOperator(RegexOperator operator) throws IllegalArgumentException {
         if (operator == RegexOperator.STAR) {
@@ -59,7 +58,6 @@ public class RegexOperatorChars {
      *
      * @param operatorChar A char representing the operator.
      * @return An enum constant representing the operator.
-     * @throws IllegalArgumentException
      */
     public static RegexOperator getOperatorFromChar(char operatorChar) throws IllegalArgumentException {
         if (operatorChar == starOperatorChar) {

@@ -7,8 +7,8 @@ import javafx.util.Pair;
  */
 public class Parser {
 
-    private static String alphanumericPattern = "^[a-zA-Z0-9]*$";
-    private static String validRegexPattern = "^[a-zA-Z0-9()" +
+    private static final String alphanumericPattern = "^[a-zA-Z0-9]*$";
+    private static final String validRegexPattern = "^[a-zA-Z0-9()" +
             RegexOperatorChars.getStarOperatorChar() +
             RegexOperatorChars.getConcatenationOperatorChar() +
             RegexOperatorChars.getUnionOperatorChar() +
@@ -105,20 +105,15 @@ public class Parser {
                 starIndex = index;
             }
         }
-        // If a CONCATENATION or UNION root operator was not found, return the STAR root operator if available.
-        if (starIndex != -1) {
-            return starIndex;
-        }
-        return -1;
+        return starIndex;
     }
 
     /**
      * Given a string representing a regular expression, parses the string into a regular expression object.
-     * If the regalar expression is invalid, throws an exception.
+     * If the regular expression is invalid, throws an exception.
      *
      * @param regexString The string to be parsed.
      * @return The regular expression
-     * @throws IllegalArgumentException
      */
     public static RegularExpression parse(String regexString) throws IllegalArgumentException {
         // Check if regex string is valid.

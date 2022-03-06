@@ -6,7 +6,7 @@ package dudzinski.kacper.farec.regex;
  */
 public class SimpleRegularExpression extends RegularExpression {
 
-    private char symbol;
+    private final char symbol;
 
     public SimpleRegularExpression(char symbol) {
         this.symbol = symbol;

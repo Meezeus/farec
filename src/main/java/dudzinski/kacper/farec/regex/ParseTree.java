@@ -15,11 +15,11 @@ import java.util.ArrayList;
  */
 public class ParseTree extends StackPane {
 
-    private RegularExpression regularExpression;
-    private ParseTreeNode root;
-    private int NODE_RADIUS = 20;   // The radius of a node.
-    private int BASE_X_CHANGE = 50; // The minimum horizontal separation between two nodes.
-    private int BASE_Y_CHANGE = 80; // The minimum vertical separation between two nodes.
+    private final RegularExpression regularExpression;
+    private final ParseTreeNode root;
+    private final int NODE_RADIUS = 20;   // The radius of a node.
+    private final int BASE_X_CHANGE = 50; // The minimum horizontal separation between two nodes.
+    private final int BASE_Y_CHANGE = 80; // The minimum vertical separation between two nodes.
     private double greatestX = 0;   // The greatest horizontal separation between two nodes.
     private double greatestY = 0;   // The greatest vertical separation between two nodes.
 
@@ -45,26 +45,20 @@ public class ParseTree extends StackPane {
      * @param regularExpression The regular expression for which to build a parse tree.
      * @param currentX          The horizontal separation used for the previous depth. Initially 0.
      * @param currentY          The vertical separation used for the previous depth. Initially 0.
-     * @throws IllegalArgumentException
      */
     private ParseTreeNode createParseTree(RegularExpression regularExpression, double currentX, double currentY) throws IllegalArgumentException {
         // If the regular expression is simple, its parse tree is just a single node.
-        if (regularExpression instanceof SimpleRegularExpression) {
-            // Get the simple regular expression.
-            SimpleRegularExpression simpleRegex = (SimpleRegularExpression) regularExpression;
+        if (regularExpression instanceof SimpleRegularExpression simpleRegex) {
             // Create the node.
             StackPane leafNodePane = createNode(simpleRegex.getSymbol());
             // Move the node into position and add it to the parse tree.
             leafNodePane.setTranslateX(currentX);
             leafNodePane.setTranslateY(currentY);
             this.getChildren().add(leafNodePane);
-            ParseTreeNode leafNode = new ParseTreeNode(leafNodePane, null, null);
-            return leafNode;
+            return new ParseTreeNode(leafNodePane, null, null);
         }
         // If the regular is complex, its parse tree will include an operator node and one or two children.
-        else if (regularExpression instanceof ComplexRegularExpression) {
-            // Get the complex regular expression.
-            ComplexRegularExpression complexRegex = (ComplexRegularExpression) regularExpression;
+        else if (regularExpression instanceof ComplexRegularExpression complexRegex) {
             // Create the operator node.
             StackPane operatorNodePane = createNode(RegexOperatorChars.getCharFromOperator(complexRegex.getOperator()));
             // Move the operator node into position and add it to the parse tree.
@@ -76,10 +70,9 @@ public class ParseTree extends StackPane {
             // Calculate the horizontal and vertical distance between the operator node and its children.
             double maxDepth = complexRegex.getDepth();
             double xChange = Math.pow(2, maxDepth - 1) * BASE_X_CHANGE;
-            double yChange = BASE_Y_CHANGE;
 
             // Move downwards.
-            currentY += yChange;
+            currentY += BASE_Y_CHANGE;
             if (currentY > greatestY) {
                 greatestY = currentY;
             }
@@ -111,7 +104,7 @@ public class ParseTree extends StackPane {
             return operatorNode;
         }
         else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Regular Expression is neither Simple nor Complex!");
         }
     }
 

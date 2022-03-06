@@ -6,9 +6,9 @@ package dudzinski.kacper.farec.regex;
  */
 public class ComplexRegularExpression extends RegularExpression {
 
-    private RegularExpression leftOperand;
-    private RegexOperator operator;
-    private RegularExpression rightOperand;
+    private final RegularExpression leftOperand;
+    private final RegexOperator operator;
+    private final RegularExpression rightOperand;
 
     public ComplexRegularExpression(RegularExpression leftOperand, RegexOperator operator, RegularExpression rightOperand) {
         this.leftOperand = leftOperand;
