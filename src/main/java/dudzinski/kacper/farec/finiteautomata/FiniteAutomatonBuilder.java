@@ -89,7 +89,7 @@ public class FiniteAutomatonBuilder {
         finalStatePane.setTranslateX(Math.abs(finiteAutomaton.finalState.getPane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION);
 
         // Create the list for holding the new transitions and create the transition variables.
-        ArrayList<StackPane> transitions = new ArrayList<>();
+        ArrayList<Edge> transitions = new ArrayList<>();
         double lineWidth;
         double lineHeight;
 
@@ -98,13 +98,15 @@ public class FiniteAutomatonBuilder {
         lineHeight = 0;
 
         // Connect the new initial state to the old initial state.
-        StackPane iToI = createEdge(EPSILON, lineWidth, lineHeight, 0, true);
-        iToI.setTranslateX(initialStatePane.getTranslateX() + (0.5 * lineWidth));
+        Edge iToI = createEdge(EPSILON, lineWidth, lineHeight, 0, true);
+        StackPane iToIPane = iToI.getPane();
+        iToIPane.setTranslateX(initialStatePane.getTranslateX() + (0.5 * lineWidth));
         transitions.add(iToI);
 
         // Connect the old final state to the new final state.
-        StackPane fToF = createEdge(EPSILON, lineWidth, lineHeight, 0, true);
-        fToF.setTranslateX(finalStatePane.getTranslateX() - (0.5 * lineWidth));
+        Edge fToF = createEdge(EPSILON, lineWidth, lineHeight, 0, true);
+        StackPane fToFPane = fToF.getPane();
+        fToFPane.setTranslateX(finalStatePane.getTranslateX() - (0.5 * lineWidth));
         transitions.add(fToF);
 
         // Calculate line width and height for f to i transition.
@@ -112,18 +114,21 @@ public class FiniteAutomatonBuilder {
         lineHeight = 0.5 * finiteAutomatonPane.getMinHeight() + 2 * NODE_RADIUS;
 
         // Connect the old final state to the old initial state.
-        StackPane fToIUp = createEdge("", 0, lineHeight, -90, false);
-        fToIUp.setTranslateX(finiteAutomaton.finalState.getPane().getTranslateX());
-        fToIUp.setTranslateY(-(0.5 * lineHeight));
+        Edge fToIUp = createEdge("", 0, lineHeight, -90, false);
+        StackPane fToIUpPane = fToIUp.getPane();
+        fToIUpPane.setTranslateX(finiteAutomaton.finalState.getPane().getTranslateX());
+        fToIUpPane.setTranslateY(-(0.5 * lineHeight));
         transitions.add(fToIUp);
 
-        StackPane fToILeft = createEdge(EPSILON, lineWidth, 0, 180, false);
-        fToILeft.setTranslateY(-lineHeight);
+        Edge fToILeft = createEdge(EPSILON, lineWidth, 0, 180, false);
+        StackPane fToILeftPane = fToILeft.getPane();
+        fToILeftPane.setTranslateY(-lineHeight);
         transitions.add(fToILeft);
 
-        StackPane fToIDown = createEdge("", 0, lineHeight, 90, true);
-        fToIDown.setTranslateX(finiteAutomaton.initialState.getPane().getTranslateX());
-        fToIDown.setTranslateY(-(0.5 * lineHeight));
+        Edge fToIDown = createEdge("", 0, lineHeight, 90, true);
+        StackPane fToIDownPane = fToIDown.getPane();
+        fToIDownPane.setTranslateX(finiteAutomaton.initialState.getPane().getTranslateX());
+        fToIDownPane.setTranslateY(-(0.5 * lineHeight));
         transitions.add(fToIDown);
 
         // Calculate line width and height for i to f transition.
@@ -131,18 +136,21 @@ public class FiniteAutomatonBuilder {
         lineHeight = 0.5 * finiteAutomatonPane.getMinHeight() + 2 * NODE_RADIUS;
 
         // Connect the new initial state to the new final state.
-        StackPane iToFDown = createEdge("", 0, lineHeight, 90, false);
-        iToFDown.setTranslateX(initialStatePane.getTranslateX());
-        iToFDown.setTranslateY(0.5 * lineHeight);
+        Edge iToFDown = createEdge("", 0, lineHeight, 90, false);
+        StackPane iToFDownPane = iToFDown.getPane();
+        iToFDownPane.setTranslateX(initialStatePane.getTranslateX());
+        iToFDownPane.setTranslateY(0.5 * lineHeight);
         transitions.add(iToFDown);
 
-        StackPane iToFRight = createEdge(EPSILON, lineWidth, 0, 0, false);
-        iToFRight.setTranslateY(lineHeight);
+        Edge iToFRight = createEdge(EPSILON, lineWidth, 0, 0, false);
+        StackPane iToFRightPane = iToFRight.getPane();
+        iToFRightPane.setTranslateY(lineHeight);
         transitions.add(iToFRight);
 
-        StackPane iToFUp = createEdge("", 0, lineHeight, -90, true);
-        iToFUp.setTranslateX(finalStatePane.getTranslateX());
-        iToFUp.setTranslateY(0.5 * lineHeight);
+        Edge iToFUp = createEdge("", 0, lineHeight, -90, true);
+        StackPane iToFUpPane = iToFUp.getPane();
+        iToFUpPane.setTranslateX(finalStatePane.getTranslateX());
+        iToFUpPane.setTranslateY(0.5 * lineHeight);
         transitions.add(iToFUp);
 
         // Create the new complex finite automaton.
@@ -253,7 +261,7 @@ public class FiniteAutomatonBuilder {
         finalStatePane.setTranslateX(Math.abs(widestFiniteAutomaton.finalState.getPane().getTranslateX()) + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS) + NODE_SEPARATION);
 
         // Create the list for holding the new transitions and create the transition variables.
-        ArrayList<StackPane> transitions = new ArrayList<>();
+        ArrayList<Edge> transitions = new ArrayList<>();
         double lineWidth;
         double lineHeight;
         double angle;
@@ -264,15 +272,17 @@ public class FiniteAutomatonBuilder {
         angle = Math.toDegrees(Math.atan(lineHeight / lineWidth));
 
         // Create the transition from the new initial state to the old initial state of the top finite automaton.
-        StackPane iToI1 = FiniteAutomatonBuilder.createEdge(EPSILON, lineWidth, lineHeight, -angle, true);
-        iToI1.setTranslateX(initialStatePane.getTranslateX() + (0.5 * lineWidth));
-        iToI1.setTranslateY(-(0.5 * lineHeight));
+        Edge iToI1 = FiniteAutomatonBuilder.createEdge(EPSILON, lineWidth, lineHeight, -angle, true);
+        StackPane iToI1Pane = iToI1.getPane();
+        iToI1Pane.setTranslateX(initialStatePane.getTranslateX() + (0.5 * lineWidth));
+        iToI1Pane.setTranslateY(-(0.5 * lineHeight));
         transitions.add(iToI1);
 
         // Create the transition from the old final state of the top finite automaton to the new final state.
-        StackPane f1ToF = FiniteAutomatonBuilder.createEdge(EPSILON, lineWidth, lineHeight, angle, true);
-        f1ToF.setTranslateX(finalStatePane.getTranslateX() - (0.5 * lineWidth));
-        f1ToF.setTranslateY(-(0.5 * lineHeight));
+        Edge f1ToF = FiniteAutomatonBuilder.createEdge(EPSILON, lineWidth, lineHeight, angle, true);
+        StackPane f1ToFPane = f1ToF.getPane();
+        f1ToFPane.setTranslateX(finalStatePane.getTranslateX() - (0.5 * lineWidth));
+        f1ToFPane.setTranslateY(-(0.5 * lineHeight));
         transitions.add(f1ToF);
 
         // Calculate the width, height and angle of the new transitions for the bottom finite automaton.
@@ -281,15 +291,17 @@ public class FiniteAutomatonBuilder {
         angle = Math.toDegrees(Math.atan(lineHeight / lineWidth));
 
         // Create the transition from the new initial state to the old initial state of the bottom finite automaton.
-        StackPane iToI2 = FiniteAutomatonBuilder.createEdge(EPSILON, lineWidth, lineHeight, angle, true);
-        iToI2.setTranslateX(initialStatePane.getTranslateX() + (0.5 * lineWidth));
-        iToI2.setTranslateY(0.5 * lineHeight);
+        Edge iToI2 = FiniteAutomatonBuilder.createEdge(EPSILON, lineWidth, lineHeight, angle, true);
+        StackPane iToI2Pane = iToI2.getPane();
+        iToI2Pane.setTranslateX(initialStatePane.getTranslateX() + (0.5 * lineWidth));
+        iToI2Pane.setTranslateY(0.5 * lineHeight);
         transitions.add(iToI2);
 
         // Create the transition from the old final state of the bottom finite automaton to the new final state.
-        StackPane f2ToF = FiniteAutomatonBuilder.createEdge(EPSILON, lineWidth, lineHeight, -angle, true);
-        f2ToF.setTranslateX(finalStatePane.getTranslateX() - (0.5 * lineWidth));
-        f2ToF.setTranslateY(0.5 * lineHeight);
+        Edge f2ToF = FiniteAutomatonBuilder.createEdge(EPSILON, lineWidth, lineHeight, -angle, true);
+        StackPane f2ToFPane = f2ToF.getPane();
+        f2ToFPane.setTranslateX(finalStatePane.getTranslateX() - (0.5 * lineWidth));
+        f2ToFPane.setTranslateY(0.5 * lineHeight);
         transitions.add(f2ToF);
 
         // Create the new complex finite automaton.
@@ -322,7 +334,7 @@ public class FiniteAutomatonBuilder {
 
         // Create the transition.
         double lineWidth = Math.abs(Math.abs(initialStatePane.getTranslateX()) + Math.abs(finalStatePane.getTranslateX()));
-        StackPane transition = createEdge("" + simpleRegularExpression.getSymbol(), lineWidth, 0, 0, true);
+        Edge transition = createEdge("" + simpleRegularExpression.getSymbol(), lineWidth, 0, 0, true);
 
         // Create the simple finite automaton.
         double minWidth = (finalStatePane.getTranslateX() - initialStatePane.getTranslateX() + (2 * NODE_STROKE_RADIUS) + (2 * NODE_RADIUS));
@@ -360,7 +372,7 @@ public class FiniteAutomatonBuilder {
      * @param directed   Whether to include an arrowhead.
      * @return The edge.
      */
-    public static StackPane createEdge(String labelText, double lineWidth, double lineHeight, double angle, boolean directed) {
+    public static Edge createEdge(String labelText, double lineWidth, double lineHeight, double angle, boolean directed) {
         // Get the length of the line.
         double lineLength = Math.sqrt(Math.pow(lineWidth, 2) + Math.pow(lineHeight, 2));
 
@@ -388,12 +400,8 @@ public class FiniteAutomatonBuilder {
         Label label = new Label(labelText);
         label.setTranslateY(-label.getFont().getSize());
 
-        // Create the edge container and add the edge and label.
-        StackPane edgePane = new StackPane();
-        edgePane.setMaxSize(lineWidth, lineHeight);  // Prevents it being resized past its size.
-        edgePane.getChildren().addAll(edgeGroup, label);
-
-        return edgePane;
+        // Create the edge.
+        return new Edge(edgeGroup, label);
     }
 
     /**

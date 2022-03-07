@@ -11,13 +11,13 @@ import java.util.ArrayList;
 public class ComplexFiniteAutomaton extends FiniteAutomaton {
 
     public ComplexFiniteAutomaton(State initialState, State finalState,
-                                  StackPane finiteAutomaton1, ArrayList<StackPane> transitions, StackPane finiteAutomaton2,
+                                  StackPane finiteAutomaton1, ArrayList<Edge> transitions, StackPane finiteAutomaton2,
                                   double minWidth, double minHeight) {
         this.initialState = initialState;
         this.finalState = finalState;
 
         if (transitions != null) {
-            finiteAutomatonPane.getChildren().addAll(transitions);
+            transitions.forEach(transition -> finiteAutomatonPane.getChildren().add(transition.getPane()));
         }
         if (finiteAutomaton2 != null) {
             finiteAutomatonPane.getChildren().add(finiteAutomaton2);
