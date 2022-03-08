@@ -27,6 +27,7 @@ public class State extends Control implements FiniteAutomatonComponent {
         this.circle = circle;
         this.label = label;
         statePane.getChildren().addAll(circle, label);
+        statePane.setId("selectable");
     }
 
     /**
