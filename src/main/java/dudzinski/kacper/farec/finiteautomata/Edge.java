@@ -1,17 +1,13 @@
 package dudzinski.kacper.farec.finiteautomata;
 
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Shape;
 
 /**
  * This class represents an edge in a finite automaton.
  */
-public class Edge extends Control implements FiniteAutomatonComponent {
+public class Edge {
 
     private StackPane edgePane = new StackPane();
     private Group edgeGroup;
@@ -34,18 +30,6 @@ public class Edge extends Control implements FiniteAutomatonComponent {
      */
     public StackPane getPane() {
         return edgePane;
-    }
-
-    /**
-     * Set the stroke colour of the edge.
-     *
-     * @param paint The new stroke colour.
-     */
-    public void setStroke(Paint paint) {
-        for (Node node : edgeGroup.getChildren()) {
-            Shape shape = (Shape) node;
-            shape.setStroke(paint);
-        }
     }
 
     /**
