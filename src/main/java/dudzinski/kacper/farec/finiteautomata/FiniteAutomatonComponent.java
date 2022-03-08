@@ -1,5 +1,6 @@
 package dudzinski.kacper.farec.finiteautomata;
 
+import javafx.scene.Group;
 import javafx.scene.paint.Paint;
 
 /**
@@ -20,5 +21,10 @@ public interface FiniteAutomatonComponent {
      * @param labelText The new text of the label.
      */
     void setLabel(String labelText);
+
+    /**
+     * @return The Group holding the finite automaton component.
+     */
+    Group getContainer();
 
 }
