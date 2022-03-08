@@ -10,6 +10,17 @@ import java.util.ArrayList;
  */
 public class ComplexFiniteAutomaton extends FiniteAutomaton {
 
+    /**
+     * Create a complex finite automaton.
+     *
+     * @param initialState     The initial state of the complex finite automaton.
+     * @param finalState       The final state of the complex finite automaton.
+     * @param finiteAutomaton1 The finite automaton used in the construction of the complex finite automaton.
+     * @param transitions      List of transitions used in the construction of the complex finite automaton.
+     * @param finiteAutomaton2 The final automaton used in the construction of the complex finite automaton. May be null.
+     * @param minWidth         The minimum width of the complex finite automaton.
+     * @param minHeight        The minimum height of the complex finite automaton.
+     */
     public ComplexFiniteAutomaton(State initialState, State finalState,
                                   StackPane finiteAutomaton1, ArrayList<Edge> transitions, StackPane finiteAutomaton2,
                                   double minWidth, double minHeight) {

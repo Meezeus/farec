@@ -10,6 +10,13 @@ public class ComplexRegularExpression extends RegularExpression {
     private final RegexOperator operator;
     private final RegularExpression rightOperand;
 
+    /**
+     * Create the complex regular expression.
+     *
+     * @param leftOperand  The left operand of the complex regular expression.
+     * @param operator     The operator of the complex regular expression.
+     * @param rightOperand The right operand of the complex regular expression. May be null.
+     */
     public ComplexRegularExpression(RegularExpression leftOperand, RegexOperator operator, RegularExpression rightOperand) {
         this.leftOperand = leftOperand;
         this.operator = operator;
@@ -20,18 +27,30 @@ public class ComplexRegularExpression extends RegularExpression {
         }
     }
 
+    /**
+     * @return The left operand of the complex regular expression.
+     */
     public RegularExpression getLeftOperand() {
         return leftOperand;
     }
 
+    /**
+     * @return The operator of the complex regular expression.
+     */
     public RegexOperator getOperator() {
         return operator;
     }
 
+    /**
+     * @return The right operand of the complex regular expression.
+     */
     public RegularExpression getRightOperand() {
         return rightOperand;
     }
 
+    /**
+     * @return The depth of the complex regular expression.
+     */
     public int getDepth() {
         if (operator == RegexOperator.STAR) {
             return leftOperand.getDepth() + 1;
@@ -42,6 +61,9 @@ public class ComplexRegularExpression extends RegularExpression {
     }
 
     @Override
+    /**
+     * @return The string representation of the complex regular expression.
+     */
     public String toString() {
         String regexString = "(" + leftOperand + ")" + RegexOperatorChars.getCharFromOperator(operator);
         if (rightOperand != null) {

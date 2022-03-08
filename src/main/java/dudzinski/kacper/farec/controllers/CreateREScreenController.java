@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The controller for the screen used to create regular expressions.
+ * This is the controller for the screen used to create regular expressions.
  */
 public class CreateREScreenController implements Initializable {
 

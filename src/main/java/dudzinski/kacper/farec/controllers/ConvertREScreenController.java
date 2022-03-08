@@ -16,6 +16,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * This is the controller for the screen used to convert regular expressions into finite automata.
+ */
 public class ConvertREScreenController implements Initializable {
 
     public HBox centralContainer;

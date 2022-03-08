@@ -6,6 +6,14 @@ package dudzinski.kacper.farec.finiteautomata;
  */
 public class SimpleFiniteAutomaton extends FiniteAutomaton {
 
+    /**
+     * Create a complex finite automaton.
+     *
+     * @param initialState The initial state of the simple finite automaton.
+     * @param finalState   The final state of the simple finite automaton.
+     * @param minWidth     The minimum width of the simple finite automaton.
+     * @param minHeight    The minimum height of the simple finite automaton.
+     */
     public SimpleFiniteAutomaton(State initialState, State finalState, Edge transition, double minWidth, double minHeight) {
         this.initialState = initialState;
         this.finalState = finalState;
