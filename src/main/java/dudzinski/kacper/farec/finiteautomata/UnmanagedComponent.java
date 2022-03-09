@@ -6,7 +6,7 @@ import javafx.scene.paint.Paint;
 /**
  * This interface represents a finite automaton component, i.e. a state or an edge.
  */
-public interface FiniteAutomatonComponent {
+public interface UnmanagedComponent {
 
     /**
      * Set the stroke colour of the finite automaton component.
