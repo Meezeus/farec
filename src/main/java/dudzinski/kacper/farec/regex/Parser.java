@@ -123,7 +123,9 @@ public class Parser {
         }
 
         // Remove outer brackets.
-        regexString = removeOuterBrackets(regexString);
+        while (regexString != removeOuterBrackets(regexString)) {
+            regexString = removeOuterBrackets(regexString);
+        }
 
         // Check if regex string is a symbol.
         if (regexString.length() == 1 && regexString.matches(alphanumericPattern)) {
