@@ -3,6 +3,7 @@ package dudzinski.kacper.farec.controllers;
 import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonBuilder;
 import dudzinski.kacper.farec.regex.ParseTree;
 import dudzinski.kacper.farec.regex.ParseTreeNode;
+import dudzinski.kacper.farec.regex.Parser;
 import dudzinski.kacper.farec.regex.RegularExpression;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -61,7 +62,7 @@ public class ConvertREScreenController implements Initializable {
 
         // Set the scene elements.
         parseTreeContainer.setContent(parseTree);
-        regularExpressionLabel.setText(regularExpression.toString());
+        regularExpressionLabel.setText("Regular Expression: " + Parser.simplifyRegexString(regularExpression.toString()));
         prevButton.setDisable(true);
         if (currentPreorderIndex == maxPreorderIndex) {
             nextButton.setDisable(true);
@@ -73,7 +74,7 @@ public class ConvertREScreenController implements Initializable {
 
         // Set the info label with the first regular expression in the preorder traversal.
         RegularExpression currentRegularExpression = regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText("Showing the finite automaton for " + currentRegularExpression.toString() + ".");
+        infoLabel.setText("Showing the finite automaton for " + Parser.simplifyRegexString(currentRegularExpression.toString()) + ".");
 
         // Set the explanation label.
         explanationLabel.setText(FiniteAutomatonBuilder.getExplanationText(currentRegularExpression));
@@ -105,7 +106,7 @@ public class ConvertREScreenController implements Initializable {
 
         // Update the info label.
         RegularExpression nextRegularExpression = regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText("Showing the finite automaton for " + nextRegularExpression.toString() + ".");
+        infoLabel.setText("Showing the finite automaton for " + Parser.simplifyRegexString(nextRegularExpression.toString()) + ".");
 
         // Update the explanation label.
         explanationLabel.setText(FiniteAutomatonBuilder.getExplanationText(nextRegularExpression));
@@ -137,7 +138,7 @@ public class ConvertREScreenController implements Initializable {
 
         // Update the info label.
         RegularExpression previousRegularExpression = regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText("Showing the finite automaton for " + previousRegularExpression.toString() + ".");
+        infoLabel.setText("Showing the finite automaton for " + Parser.simplifyRegexString(previousRegularExpression.toString()) + ".");
 
         // Update the explanation label.
         explanationLabel.setText(FiniteAutomatonBuilder.getExplanationText(previousRegularExpression));
