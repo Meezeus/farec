@@ -22,12 +22,14 @@ public class RegexOperatorCharsTest {
                 boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '*');
                 assertTrue(result);
             }
+
             @Test
             @DisplayName("CONCATENATION as |")
             void test2() {
                 boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '|');
                 assertTrue(result);
             }
+
             @Test
             @DisplayName("UNION as +")
             void test3() {
@@ -35,6 +37,7 @@ public class RegexOperatorCharsTest {
                 assertTrue(result);
             }
         }
+
         @Nested
         @DisplayName("false when setting")
         class SetOperatorCharNegativeTest {
@@ -60,6 +63,7 @@ public class RegexOperatorCharsTest {
                 char regexOperatorChar = RegexOperatorChars.getCharFromOperator(regexOperator);
                 assertEquals('*', regexOperatorChar);
             }
+
             @Test
             @DisplayName("CONCATENATION")
             void test2() {
@@ -67,6 +71,7 @@ public class RegexOperatorCharsTest {
                 char regexOperatorChar = RegexOperatorChars.getCharFromOperator(regexOperator);
                 assertEquals('|', regexOperatorChar);
             }
+
             @Test
             @DisplayName("UNION")
             void test3() {
@@ -90,6 +95,7 @@ public class RegexOperatorCharsTest {
                 RegexOperator regexOperator = RegexOperatorChars.getOperatorFromChar(regexOperatorChar);
                 assertEquals(RegexOperator.STAR, regexOperator);
             }
+
             @Test
             @DisplayName("|")
             void test2() {
@@ -97,6 +103,7 @@ public class RegexOperatorCharsTest {
                 RegexOperator regexOperator = RegexOperatorChars.getOperatorFromChar(regexOperatorChar);
                 assertEquals(RegexOperator.CONCATENATION, regexOperator);
             }
+
             @Test
             @DisplayName("+")
             void test3() {
@@ -105,6 +112,7 @@ public class RegexOperatorCharsTest {
                 assertEquals(RegexOperator.UNION, regexOperator);
             }
         }
+
         @Nested
         @DisplayName("throws an error when the char is")
         class getOperatorFromCharNegativeTest {

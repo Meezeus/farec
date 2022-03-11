@@ -16,7 +16,8 @@ class ParseTreeTest {
 
     @BeforeAll
     static void startJavaFX() {
-        Platform.startup(() -> {});
+        Platform.startup(() -> {
+        });
     }
 
     @Nested
@@ -33,6 +34,7 @@ class ParseTreeTest {
                 ArrayList<ParseTreeNode> nodeList = ParseTree.preorderTraversal(parseTree.getRoot());
                 assertEquals("1", nodeList.stream().map(ParseTreeNode::getLabelText).collect(Collectors.joining(",")));
             }
+
             @Test
             @DisplayName("1*")
             void test2() {
@@ -41,6 +43,7 @@ class ParseTreeTest {
                 ArrayList<ParseTreeNode> nodeList = ParseTree.preorderTraversal(parseTree.getRoot());
                 assertEquals("1,*", nodeList.stream().map(ParseTreeNode::getLabelText).collect(Collectors.joining(",")));
             }
+
             @Test
             @DisplayName("1+2")
             void test3() {
@@ -49,6 +52,7 @@ class ParseTreeTest {
                 ArrayList<ParseTreeNode> nodeList = ParseTree.preorderTraversal(parseTree.getRoot());
                 assertEquals("1,2,+", nodeList.stream().map(ParseTreeNode::getLabelText).collect(Collectors.joining(",")));
             }
+
             @Test
             @DisplayName("(1+2)|(3*+(4|5))")
             void test4() {

@@ -23,6 +23,7 @@ public class RegularExpressionTest {
             int depth = regularExpression.getDepth();
             assertEquals(0, depth);
         }
+
         @Test
         @DisplayName("a*")
         void test2() {
@@ -30,6 +31,7 @@ public class RegularExpressionTest {
             int depth = regularExpression.getDepth();
             assertEquals(1, depth);
         }
+
         @Test
         @DisplayName("a+b")
         void test3() {
@@ -37,6 +39,7 @@ public class RegularExpressionTest {
             int depth = regularExpression.getDepth();
             assertEquals(1, depth);
         }
+
         @Test
         @DisplayName("a*+b")
         void test4() {
@@ -44,6 +47,7 @@ public class RegularExpressionTest {
             int depth = regularExpression.getDepth();
             assertEquals(2, depth);
         }
+
         @Test
         @DisplayName("a+b+c")
         void test5() {
@@ -51,6 +55,7 @@ public class RegularExpressionTest {
             int depth = regularExpression.getDepth();
             assertEquals(2, depth);
         }
+
         @Test
         @DisplayName("(a+b)+(c+d)")
         void test6() {
@@ -58,6 +63,7 @@ public class RegularExpressionTest {
             int depth = regularExpression.getDepth();
             assertEquals(2, depth);
         }
+
         @Test
         @DisplayName("(a+b)*+(c+d)")
         void test7() {
@@ -65,6 +71,7 @@ public class RegularExpressionTest {
             int depth = regularExpression.getDepth();
             assertEquals(3, depth);
         }
+
         @Test
         @DisplayName("((a*)*)*")
         void test8() {
@@ -94,6 +101,7 @@ public class RegularExpressionTest {
                     assertEquals(trueRegexStringList.get(index), testRegexList.get(index).toString());
                 }
             }
+
             @Test
             @DisplayName("1*")
             void test2() {
@@ -109,6 +117,7 @@ public class RegularExpressionTest {
                     assertEquals(trueRegexStringList.get(index), testRegexList.get(index).toString());
                 }
             }
+
             @Test
             @DisplayName("1+2")
             void test3() {
@@ -125,6 +134,7 @@ public class RegularExpressionTest {
                     assertEquals(trueRegexStringList.get(index), testRegexList.get(index).toString());
                 }
             }
+
             @Test
             @DisplayName("(1+2)|(3*+(4|5))")
             void test4() {
