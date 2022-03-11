@@ -2,6 +2,8 @@ package dudzinski.kacper.farec.regex;
 
 import javafx.util.Pair;
 
+import java.util.Objects;
+
 /**
  * The parser is used to parse strings representing regular expressions and turn them into regular expression objects.
  */
@@ -163,6 +165,78 @@ public class Parser {
         }
 
         return new ComplexRegularExpression(leftOperand, operator, rightOperand);
+    }
+
+    /**
+     * Simplifies the given regex string by removing all brackets that can be safely removed without altering the
+     * regular expression. It checks that the regular expression is not altered by parsing the new regex string and
+     * checking that the resulting regular expression is equal to the original regular expression.
+     *
+     * @param regexString The regex string to simplify.
+     */
+    public static String simplifyRegexString(String regexString) {
+        // Get the string representation of the regular expression of the original regex string.
+        String originalRegularExpressionString = parse(regexString).toString();
+
+        int offset = 0;
+        while (offset < regexString.length()) {
+            int currentDepth = 0;
+            int openBracketDepth = -1;
+            int openBracketIndex = -1;
+            int closeBracketIndex = -1;
+            // Find the positions of matching open and closing brackets.
+            for (int index = 0 + offset; index < regexString.length(); index++) {
+                // The current char being examined.
+                char currentChar = regexString.charAt(index);
+
+                // If the current char is an open bracket, increase the depth.
+                if (currentChar == '(') {
+                    currentDepth++;
+                }
+
+                // If we haven't found an open bracket yet and the current char is an open bracket, take note of the
+                // depth and index.
+                if ((openBracketIndex == -1) && (currentChar == '(')) {
+                    openBracketDepth = currentDepth;
+                    openBracketIndex = index;
+                }
+                // If we have found an open bracket but not a close bracket, and the current depth matches the depth
+                // of the open bracket found, and the current char is a close bracket, take note of the index and stop.
+                else if ((openBracketIndex != -1) && (closeBracketIndex == -1) && (currentDepth == openBracketDepth) && (currentChar == ')')) {
+                    closeBracketIndex = index;
+                    break;
+                }
+
+                // If the current char is a close bracket, decrease the depth.
+                if (currentChar == ')') {
+                    currentDepth--;
+                }
+            }
+
+            // If we found open and close bracket indices, we can attempt to remove the found brackets.
+            if ((openBracketIndex != -1) && (closeBracketIndex != -1)) {
+                // Remove the brackets from the string.
+                StringBuilder newRegexStringBuilder = new StringBuilder(regexString);
+                newRegexStringBuilder.deleteCharAt(closeBracketIndex).deleteCharAt(openBracketIndex);
+
+                // Get the string representation of the regular expression of the new regex string.
+                String newRegularExpressionString = parse(newRegexStringBuilder.toString()).toString();
+
+                // If the regular expression has not changed, update the regex string.
+                if (Objects.equals(originalRegularExpressionString, newRegularExpressionString)) {
+                    regexString = newRegexStringBuilder.toString();
+                }
+                // If the regular expression has changed, increase the offset.
+                else {
+                    offset += 1;
+                }
+            }
+            // If we have not found open and close bracket indices, there are no brackets to simplify. Stop searching.
+            else {
+                break;
+            }
+        }
+        return regexString;
     }
 
 }
