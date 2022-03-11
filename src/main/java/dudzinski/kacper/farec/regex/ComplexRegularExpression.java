@@ -60,10 +60,10 @@ public class ComplexRegularExpression extends RegularExpression {
         }
     }
 
-    @Override
     /**
      * @return The string representation of the complex regular expression.
      */
+    @Override
     public String toString() {
         String regexString = "(" + leftOperand + ")" + RegexOperatorChars.getCharFromOperator(operator);
         if (rightOperand != null) {

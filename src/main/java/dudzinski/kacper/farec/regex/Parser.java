@@ -125,7 +125,7 @@ public class Parser {
         }
 
         // Remove outer brackets.
-        while (regexString != removeOuterBrackets(regexString)) {
+        while (!regexString.equals(removeOuterBrackets(regexString))) {
             regexString = removeOuterBrackets(regexString);
         }
 
@@ -185,7 +185,7 @@ public class Parser {
             int openBracketIndex = -1;
             int closeBracketIndex = -1;
             // Find the positions of matching open and closing brackets.
-            for (int index = 0 + offset; index < regexString.length(); index++) {
+            for (int index = offset; index < regexString.length(); index++) {
                 // The current char being examined.
                 char currentChar = regexString.charAt(index);
 

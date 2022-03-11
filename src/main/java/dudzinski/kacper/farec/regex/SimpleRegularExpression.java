@@ -31,10 +31,10 @@ public class SimpleRegularExpression extends RegularExpression {
         return 0;
     }
 
-    @Override
     /**
      * @return The string representation of the simple regular expression.
      */
+    @Override
     public String toString() {
         return String.valueOf(symbol);
     }

@@ -11,7 +11,7 @@ import javafx.scene.shape.Circle;
  */
 public class ParseTreeNode {
 
-    private StackPane nodePane;
+    private final StackPane nodePane;
     private ParseTreeNode leftChild;
     private ParseTreeNode rightChild;
 
