@@ -82,32 +82,54 @@ public class Parser {
     }
 
     /**
-     * Given a regular expression, finds the index of the root operator. This is the operator that is not inside any
-     * brackets. Will prefer a CONCATENATION or UNION operator over a STAR operator, otherwise returns the index of
-     * the first root operator found.
+     * Given a regex string, finds the index of the root operator. This is the operator that is not inside any
+     * brackets.
+     *
+     * The regex operators have a certain order of operations, with the STAR operator having the highest
+     * precedence, then CONCATENATION, and then UNION. However, the root operator is the operator with the lowest
+     * precedence, so this method will return UNION over CONCATENATION and CONCATENATION over STAR.
+     *
+     * The regex string is parsed right to left, so chains such as a|b|c are parsed as (a|b)|c instead of a|(b|c).
      *
      * @param regexString A regex string, without outer brackets.
      * @return The index of the root operator, or -1 if not found.
      */
     public static int findRootIndex(String regexString) {
-        int openBracketCount = 0;
+        int depth = 0;
+        int unionIndex = -1;
+        int concatenationIndex = -1;
         int starIndex = -1;
-        for (int index = 0; index < regexString.length(); ++index) {
+        for (int index = regexString.length() - 1; index >= 0; --index) {
             char currentChar = regexString.charAt(index);
-            if (currentChar == '(') {
-                openBracketCount++;
+            if (currentChar == ')') {
+                depth++;
             }
-            else if (currentChar == ')') {
-                openBracketCount--;
+            else if (currentChar == '(') {
+                depth--;
             }
-            else if (openBracketCount == 0 && (currentChar == RegexOperatorChars.getUnionOperatorChar() || currentChar == RegexOperatorChars.getConcatenationOperatorChar())) {
-                return index;
+            else if ((depth == 0) && (unionIndex == -1) && (currentChar == RegexOperatorChars.getUnionOperatorChar())) {
+                unionIndex = index;
             }
-            else if (openBracketCount == 0 && starIndex == -1 && currentChar == RegexOperatorChars.getStarOperatorChar()) {
+            else if ((depth == 0) && (concatenationIndex == -1) && (currentChar == RegexOperatorChars.getConcatenationOperatorChar())) {
+                concatenationIndex = index;
+            }
+            else if ((depth == 0) && (starIndex == -1) && (currentChar == RegexOperatorChars.getStarOperatorChar())) {
                 starIndex = index;
             }
         }
-        return starIndex;
+
+        if (unionIndex != -1) {
+            return unionIndex;
+        }
+        else if (concatenationIndex != -1) {
+            return concatenationIndex;
+        }
+        else if (starIndex != -1) {
+            return starIndex;
+        }
+        else {
+            return -1;
+        }
     }
 
     /**

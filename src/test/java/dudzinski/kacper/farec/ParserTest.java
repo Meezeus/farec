@@ -243,6 +243,46 @@ class ParserTest {
                 int rootIndex = Parser.findRootIndex(regexString);
                 assertEquals(2, rootIndex);
             }
+
+            @Test
+            @DisplayName("a+b|c")
+            void test9() {
+                String regexString = "a+b|c";
+                int rootIndex = Parser.findRootIndex(regexString);
+                assertEquals(1, rootIndex);
+            }
+
+            @Test
+            @DisplayName("a|b+c")
+            void test10() {
+                String regexString = "a|b+c";
+                int rootIndex = Parser.findRootIndex(regexString);
+                assertEquals(3, rootIndex);
+            }
+
+            @Test
+            @DisplayName("a|b+c|d")
+            void test11() {
+                String regexString = "a|b+c|d";
+                int rootIndex = Parser.findRootIndex(regexString);
+                assertEquals(3, rootIndex);
+            }
+
+            @Test
+            @DisplayName("a**")
+            void test12() {
+                String regexString = "a**";
+                int rootIndex = Parser.findRootIndex(regexString);
+                assertEquals(2, rootIndex);
+            }
+
+            @Test
+            @DisplayName("a|b|c")
+            void test13() {
+                String regexString = "a|b|c";
+                int rootIndex = Parser.findRootIndex(regexString);
+                assertEquals(3, rootIndex);
+            }
         }
 
         @Nested
@@ -349,7 +389,7 @@ class ParserTest {
             void test10() {
                 String regexString = "a+a*+a";
                 RegularExpression regularExpression = Parser.parse(regexString);
-                assertEquals("(a)+(((a)*)+(a))", regularExpression.toString());
+                assertEquals("((a)+((a)*))+(a)", regularExpression.toString());
             }
 
             @Test
@@ -442,15 +482,8 @@ class ParserTest {
             }
 
             @Test
-            @DisplayName("a**")
-            void tes12() {
-                String regexString = "a**";
-                assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
-            }
-
-            @Test
             @DisplayName("a*+")
-            void tes13() {
+            void tes12() {
                 String regexString = "a*+";
                 assertThrows(IllegalArgumentException.class, () -> Parser.parse(regexString));
             }
@@ -484,7 +517,7 @@ class ParserTest {
             void test3() {
                 String testString = "((a+b)+c)";
                 String resultString = Parser.simplifyRegexString(testString);
-                assertEquals("(a+b)+c", resultString);
+                assertEquals("a+b+c", resultString);
             }
 
             @Test
@@ -492,7 +525,7 @@ class ParserTest {
             void test4() {
                 String testString = "(c+(a+b))";
                 String resultString = Parser.simplifyRegexString(testString);
-                assertEquals("c+a+b", resultString);
+                assertEquals("c+(a+b)", resultString);
             }
 
             @Test
@@ -500,7 +533,7 @@ class ParserTest {
             void test5() {
                 String testString = "((a+b)+(c+d))";
                 String resultString = Parser.simplifyRegexString(testString);
-                assertEquals("(a+b)+c+d", resultString);
+                assertEquals("a+b+(c+d)", resultString);
             }
 
             @Test
@@ -568,7 +601,7 @@ class ParserTest {
             void test5() {
                 String testString = "(a+b)+c";
                 String resultString = Parser.simplifyRegexString(testString);
-                assertEquals("(a+b)+c", resultString);
+                assertEquals("a+b+c", resultString);
             }
         }
     }
