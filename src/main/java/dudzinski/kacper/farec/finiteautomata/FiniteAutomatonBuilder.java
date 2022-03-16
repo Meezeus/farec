@@ -1,9 +1,7 @@
 package dudzinski.kacper.farec.finiteautomata;
 
-import dudzinski.kacper.farec.regex.ComplexRegularExpression;
-import dudzinski.kacper.farec.regex.RegexOperator;
-import dudzinski.kacper.farec.regex.RegularExpression;
-import dudzinski.kacper.farec.regex.SimpleRegularExpression;
+import dudzinski.kacper.farec.regex.*;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -12,6 +10,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.StrokeType;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
@@ -358,8 +358,85 @@ public class FiniteAutomatonBuilder {
 
         // Create the node label.
         Label label = new Label(labelText);
+        label.setAlignment(Pos.CENTER);
+        label.setTextAlignment(TextAlignment.CENTER);
 
         return new State(circle, label);
+    }
+
+    /**
+     * Sets the given state as initial. The state must already belong to a finite automaton, so that the min width of
+     * the finite automaton can be adjusted accordingly.
+     *
+     * @param state The state to set as initial.
+     */
+    public static void setAsInitial(State state) {
+        StackPane statePane = state.getPane();
+
+        Line line = new Line(0, 0, INITIAL_EDGE_LENGTH, 0);
+        line.setId("line");
+        line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
+        line.setStroke(Color.BLACK);
+        line.setTranslateX(-(NODE_RADIUS + NODE_STROKE_RADIUS + (INITIAL_EDGE_LENGTH / 2)));
+
+        Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE, 0, -ARROWHEAD_SIZE, ARROWHEAD_SIZE, 0);
+        arrowhead.setId("arrowhead");
+        arrowhead.setTranslateX(-(NODE_RADIUS + (ARROWHEAD_SIZE / 2)));
+
+        statePane.getChildren().add(0, line);
+        statePane.getChildren().add(0, arrowhead);
+
+        Pane parentPane = (Pane) statePane.getParent();
+        parentPane.setMinWidth(parentPane.getMinWidth() + (2 * (INITIAL_EDGE_LENGTH + EDGE_STROKE_RADIUS)));
+    }
+
+    /**
+     * Sets the given state as non-initial. The state must already belong to a finite automaton, so that the min width
+     * of the finite automaton can be adjusted accordingly.
+     *
+     * @param state The state to set as non-initial.
+     */
+    public static void setAsNonInitial(State state) {
+        StackPane statePane = state.getPane();
+
+        Line line = (Line) statePane.lookup("#line");
+        statePane.getChildren().remove(line);
+
+        Polygon arrowhead = (Polygon) statePane.lookup("#arrowhead");
+        statePane.getChildren().remove(arrowhead);
+
+        Pane parentPane = (Pane) statePane.getParent();
+        parentPane.setMinWidth(parentPane.getMinWidth() - (2 * (INITIAL_EDGE_LENGTH + EDGE_STROKE_RADIUS)));
+    }
+
+    /**
+     * Sets the given state as final.
+     *
+     * @param state The state to set as final.
+     */
+    public static void setAsFinal(State state) {
+        StackPane statePane = state.getPane();
+
+        Circle innerCircle = new Circle();
+        innerCircle.setId("innerCircle");
+        innerCircle.setRadius(NODE_RADIUS - 5);
+        innerCircle.setFill(Color.TRANSPARENT);
+        innerCircle.setStrokeWidth(NODE_STROKE_RADIUS);
+        innerCircle.setStrokeType(StrokeType.OUTSIDE);
+        innerCircle.setStroke(Color.BLACK);
+
+        statePane.getChildren().add(innerCircle);
+    }
+
+    /**
+     * Sets the given state as non-final.
+     *
+     * @param state The state to set as non-final.
+     */
+    public static void setAsNonFinal(State state) {
+        StackPane statePane = state.getPane();
+        Circle innerCircle = (Circle) statePane.lookup("#innerCircle");
+        statePane.getChildren().remove(innerCircle);
     }
 
     /**
@@ -370,7 +447,7 @@ public class FiniteAutomatonBuilder {
      * @param lineHeight The height of the edge.
      * @param angle      The clockwise angle used to rotate the edge, in degrees.
      * @param directed   Whether to include an arrowhead.
-     * @return The edge.
+     * @return An edge.
      */
     public static Edge createEdge(String labelText, double lineWidth, double lineHeight, double angle, boolean directed) {
         // Get the length of the line.
@@ -405,80 +482,6 @@ public class FiniteAutomatonBuilder {
     }
 
     /**
-     * Sets the given state as initial. The state must already belong to a finite automaton, so that the min width of
-     * the finite automaton can be adjusted accordingly.
-     *
-     * @param state The state to set as initial.
-     */
-    public static void setAsInitial(State state) {
-        StackPane statePane = state.getPane();
-
-        Line line = new Line(0, 0, INITIAL_EDGE_LENGTH, 0);
-        line.setId("line");
-        line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
-        line.setStroke(Color.BLACK);
-        line.setTranslateX(-(NODE_RADIUS + (INITIAL_EDGE_LENGTH / 2)));
-
-        Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE, 0, -ARROWHEAD_SIZE, ARROWHEAD_SIZE, 0);
-        arrowhead.setId("arrowhead");
-        arrowhead.setTranslateX(-(NODE_RADIUS + (ARROWHEAD_SIZE / 2)));
-
-        statePane.getChildren().addAll(line, arrowhead);
-
-        Pane parentPane = (Pane) statePane.getParent();
-        parentPane.setMinWidth(parentPane.getMinWidth() + (2 * INITIAL_EDGE_LENGTH));
-    }
-
-    /**
-     * Sets the given state as non-initial. The state must already belong to a finite automaton, so that the min width
-     * of the finite automaton can be adjusted accordingly.
-     *
-     * @param state The state to set as non-initial.
-     */
-    public static void setAsNonInitial(State state) {
-        StackPane statePane = state.getPane();
-
-        Line line = (Line) statePane.lookup("#line");
-        statePane.getChildren().remove(line);
-
-        Polygon arrowhead = (Polygon) statePane.lookup("#arrowhead");
-        statePane.getChildren().remove(arrowhead);
-
-        Pane parentPane = (Pane) statePane.getParent();
-        parentPane.setMinWidth(parentPane.getMinWidth() - (2 * INITIAL_EDGE_LENGTH));
-    }
-
-    /**
-     * Sets the given state as final.
-     *
-     * @param state The state to set as final.
-     */
-    public static void setAsFinal(State state) {
-        StackPane statePane = state.getPane();
-
-        Circle innerCircle = new Circle();
-        innerCircle.setId("innerCircle");
-        innerCircle.setRadius(NODE_RADIUS - 5);
-        innerCircle.setFill(Color.TRANSPARENT);
-        innerCircle.setStrokeWidth(NODE_STROKE_RADIUS);
-        innerCircle.setStroke(Color.BLACK);
-
-        statePane.getChildren().add(innerCircle);
-    }
-
-    /**
-     * Sets the given state as non-final.
-     *
-     * @param state The state to set as non-final.
-     */
-    public static void setAsNonFinal(State state) {
-        StackPane statePane = state.getPane();
-
-        Circle innerCircle = (Circle) statePane.lookup("#innerCircle");
-        statePane.getChildren().remove(innerCircle);
-    }
-
-    /**
      * Generates text explaining how the finite automaton for the given regular expression is built from the finite
      * automata for its subexpressions.
      *
@@ -488,7 +491,7 @@ public class FiniteAutomatonBuilder {
     public static String getExplanationText(RegularExpression regularExpression) {
         if (regularExpression instanceof SimpleRegularExpression simpleRegularExpression) {
             return "The finite automaton for the regular expression \"" + simpleRegularExpression +
-                    "\" is built by creating an initial state i and final state f with a labelled transition between " +
+                    "\" is built by creating an initial state and final state with a labelled transition between " +
                     "them. The label of the transition is \"" + simpleRegularExpression.getSymbol() + "\".";
         }
         else if (regularExpression instanceof ComplexRegularExpression complexRegularExpression) {
@@ -496,31 +499,34 @@ public class FiniteAutomatonBuilder {
             RegexOperator regexOperator = complexRegularExpression.getOperator();
 
             if (regexOperator == RegexOperator.UNION) {
-                RegularExpression leftOperand = complexRegularExpression.getLeftOperand();
-                RegularExpression rightOperand = complexRegularExpression.getRightOperand();
-                explanation = "The finite automaton for the regular expression \"" + complexRegularExpression +
-                        "\" is built by combining the finite automata of its two subexpressions: \"" + leftOperand +
-                        "\" and \"" + rightOperand + "\". A new initial state and a new final state are created. " +
-                        "The new initial state is connected to the previous initial states by epsilon-transitions " +
-                        "and the previous final states are connected to the new final state by epsilon-transitions.";
+                String regexString = Parser.simplifyRegexString(complexRegularExpression.toString());
+                String leftOperand = Parser.simplifyRegexString(complexRegularExpression.getLeftOperand().toString());
+                String rightOperand = Parser.simplifyRegexString(complexRegularExpression.getRightOperand().toString());
+                explanation = "The finite automaton for the regular expression \"" + regexString + "\" is built by" +
+                        " combining the finite automata of its two subexpressions: \"" + leftOperand + "\" and" +
+                        " \"" + rightOperand + "\". A new initial state and a new final state are created." +
+                        " The new initial state is connected to the previous initial states by epsilon-transitions" +
+                        " and the previous final states are connected to the new final state by epsilon-transitions.";
             }
             else if (regexOperator == RegexOperator.CONCATENATION) {
-                RegularExpression leftOperand = complexRegularExpression.getLeftOperand();
-                RegularExpression rightOperand = complexRegularExpression.getRightOperand();
-                explanation = "The finite automaton for the regular expression \"" + complexRegularExpression +
-                        "\" is built by combining the finite automata of its two subexpressions: \"" + leftOperand +
-                        "\" and \"" + rightOperand + "\". The final state of the finite automaton for \"" + leftOperand +
-                        "\" and the initial state of the finite automaton for \"" + rightOperand + "\" are merged together.";
+                String regexString = Parser.simplifyRegexString(complexRegularExpression.toString());
+                String leftOperand = Parser.simplifyRegexString(complexRegularExpression.getLeftOperand().toString());
+                String rightOperand = Parser.simplifyRegexString(complexRegularExpression.getRightOperand().toString());
+                explanation = "The finite automaton for the regular expression \"" + regexString + "\" is built by" +
+                        " combining the finite automata of its two subexpressions: \"" + leftOperand + "\" and" +
+                        " \"" + rightOperand + "\". The final state of the finite automaton for \"" + leftOperand + "\"" +
+                        " and the initial state of the finite automaton for \"" + rightOperand + "\" are merged together.";
             }
             else if (regexOperator == RegexOperator.STAR) {
-                RegularExpression leftOperand = complexRegularExpression.getLeftOperand();
-                explanation = "The finite automaton for the regular expression " + complexRegularExpression +
-                        " is built by expanding the finite automaton of its subexpression \"" + leftOperand + "\"." +
-                        " A new initial state and a new final state are created. The new initial state is " +
-                        "connected to the previous initial state by an epsilon-transition and the previous final " +
-                        "state is connected to the new final state by an epsilon transition. In addition, the " +
-                        "previous final state is connected to the previous initial state by an epsilon-transition " +
-                        "and the new initial state is connected to the new final state by an epsilon-transition.";
+                String regexString = Parser.simplifyRegexString(complexRegularExpression.toString());
+                String leftOperand = Parser.simplifyRegexString(complexRegularExpression.getLeftOperand().toString());
+                explanation = "The finite automaton for the regular expression \"" + regexString + "\" is built by" +
+                        " expanding the finite automaton of its subexpression \"" + leftOperand + "\"." +
+                        " A new initial state and a new final state are created. The new initial state is" +
+                        " connected to the previous initial state by an epsilon-transition and the previous final" +
+                        " state is connected to the new final state by an epsilon-transition. In addition, the" +
+                        " previous final state is connected to the previous initial state by an epsilon-transition" +
+                        " and the new initial state is connected to the new final state by an epsilon-transition.";
             }
             else {
                 throw new IllegalArgumentException("Regex operator is not STAR, CONCATENATION or UNION!");
