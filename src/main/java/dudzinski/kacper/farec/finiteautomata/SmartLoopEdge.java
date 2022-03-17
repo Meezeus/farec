@@ -19,7 +19,7 @@ public class SmartLoopEdge extends SmartEdge {
     private boolean topside = true;
 
     /**
-     * Creates a smart loop edge for the given state.
+     * Creates a loop edge for the given state.
      *
      * @param edgeShape the curve of this loop edge
      * @param arrowhead the arrowhead at the end of this loop edge
@@ -37,7 +37,7 @@ public class SmartLoopEdge extends SmartEdge {
      */
     public void flip() {
         topside = !topside;
-        SmartFiniteAutomatonBuilder.setSmartLoopEdgeBindings(
+        SmartFiniteAutomatonBuilder.setLoopEdgeBindings(
                 (CubicCurve) edgeShape, arrowhead, label, startState, topside);
     }
 

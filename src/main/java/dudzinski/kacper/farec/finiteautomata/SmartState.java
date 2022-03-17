@@ -14,11 +14,13 @@ import java.util.ArrayList;
  * <p>
  * A state is a circular, labelled node. It is connected to other states by
  * directed edges (transitions). States keeps track of their incoming and
- * outgoing edges. A state may be marked as initial or final (but not both). An
- * initial state has a short, incoming edge that is not connected to any other
- * state. A final state has a second, inner circle.
+ * outgoing edges. A state may be marked as initial or final. An initial state
+ * has a short, incoming edge that is not connected to any other state. A final
+ * state has a second, inner circle.
+ *
+ * @see GraphicalState
  */
-public class SmartState implements SmartComponent {
+public class SmartState extends SmartComponent {
 
     private final Group container = new Group();
     private final Circle circle;
@@ -42,11 +44,11 @@ public class SmartState implements SmartComponent {
     }
 
     /**
-     * Returns the container of this smart state. The container contains the
-     * state circle and label, as well as any extra marking (if the state is an
+     * Returns the container of this state. The container contains the state
+     * circle and label, as well as any extra marking (if the state is an
      * initial or final state).
      *
-     * @return the container of this smart state
+     * @return the container of this state
      */
     public Group getContainer() {
         return container;
@@ -91,10 +93,10 @@ public class SmartState implements SmartComponent {
 
     /**
      * Enables and disables this state as an initial state. If
-     * <code>enable</code> is set to true, this state will be marked as an
-     * initial state (if it is not already). If <code>enable</code> is set to
-     * false, the initial state marking will be removed from this state (if it
-     * is present).
+     * <code>setInitial</code> is set to true, this state will be marked as an
+     * initial state (if it is not already). If <code>setInitial</code> is set
+     * to false, the initial state marking will be removed from this state (if
+     * it is present).
      * <p>
      * The marking for an initial state is a short, incoming edge that is not
      * connected to any other state.
@@ -113,15 +115,14 @@ public class SmartState implements SmartComponent {
     }
 
     /**
-     * Enables and disables the state as a final state. If <code>enable</code>
+     * Enables and disables the state as a final state. If <code>setFinal</code>
      * is set to true, this state will be marked as a final state (if it is not
-     * already). If <code>enable</code> is set to false, the final state marking
-     * will be removed from this state (if it is present).
+     * already). If <code>setFinal</code> is set to false, the final state
+     * marking will be removed from this state (if it is present).
      * <p>
      * The marking for a final state is a second, inner circle.
      *
-     * @param setFinal whether to mark the initial state as a final state or
-     *                 not
+     * @param setFinal whether to mark the state as a final state or not
      */
     public void setAsFinal(boolean setFinal) {
         if (!isFinal && setFinal) {
@@ -135,7 +136,7 @@ public class SmartState implements SmartComponent {
     }
 
     /**
-     * Adds an edge to the list of incoming edges.
+     * Adds the given edge to the list of incoming edges.
      *
      * @param edge the incoming edge
      */
@@ -144,7 +145,7 @@ public class SmartState implements SmartComponent {
     }
 
     /**
-     * Adds an edge to the list of outgoing edges.
+     * Adds the given edge to the list of outgoing edges.
      *
      * @param edge the outgoing edge
      */
@@ -153,7 +154,7 @@ public class SmartState implements SmartComponent {
     }
 
     /**
-     * Removes an edge from the list of incoming edges.
+     * Removes the edge from the list of incoming edges.
      *
      * @param edge the incoming edge
      */
@@ -162,7 +163,7 @@ public class SmartState implements SmartComponent {
     }
 
     /**
-     * Removes an edge from the list of outgoing edges.
+     * Removes the edge from the list of outgoing edges.
      *
      * @param edge the outgoing edge
      */
@@ -171,7 +172,7 @@ public class SmartState implements SmartComponent {
     }
 
     /**
-     * Returns a list of all edges incoming to this state.
+     * Returns the list of all edges incoming to this state.
      *
      * @return the list of incoming edges
      */
@@ -180,7 +181,7 @@ public class SmartState implements SmartComponent {
     }
 
     /**
-     * Returns a list of all outgoing edges from this state.
+     * Returns the list of all outgoing edges from this state.
      *
      * @return the list of outgoing edges
      */

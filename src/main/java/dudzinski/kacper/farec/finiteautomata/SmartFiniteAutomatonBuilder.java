@@ -14,7 +14,9 @@ import javafx.scene.text.TextAlignment;
 
 /**
  * This class contains methods for building and manipulating smart finite
- * automaton components
+ * automaton components.
+ *
+ * @see GraphicalFiniteAutomatonBuilder
  */
 public class SmartFiniteAutomatonBuilder {
 
@@ -23,8 +25,8 @@ public class SmartFiniteAutomatonBuilder {
     public static final double NODE_STROKE_RADIUS = 1;
     public static final Color NODE_STROKE_COLOR = Color.BLACK;
 
-    public static final double INITIAL_STATE_LENGTH = 30;
-    public static final double FINAL_STATE_RADIUS = NODE_RADIUS - 5;
+    public static final double INITIAL_STATE_EDGE_LENGTH = 30;
+    public static final double FINAL_STATE_CIRCLE_RADIUS = NODE_RADIUS - 5;
 
     public static final double EDGE_STROKE_RADIUS = 1;
     public static final Color EDGE_STROKE_COLOR = Color.BLACK;
@@ -35,12 +37,12 @@ public class SmartFiniteAutomatonBuilder {
     public static final String EPSILON = "\u03B5";
 
     /**
-     * Creates a smart state.
+     * Creates a state.
      *
-     * @param labelText the text for the smart state's label
-     * @return a smart state
+     * @param labelText the text for the state's label
+     * @return a state
      */
-    public static SmartState createSmartState(String labelText) {
+    public static SmartState createState(String labelText) {
         // Create the circle.
         Circle circle = new Circle();
         circle.setRadius(NODE_RADIUS);
@@ -57,27 +59,27 @@ public class SmartFiniteAutomatonBuilder {
         label.translateYProperty().bind
                 (label.heightProperty().divide(2).multiply(-1));
 
-        // Create the smart state.
+        // Create the state.
         return new SmartState(circle, label);
     }
 
     /**
-     * Sets the smart state as an initial state, by adding the initial state
+     * Sets the given state as an initial state, by adding the initial state
      * marking. The marking consists of a short incoming edge that is not
      * connected to any other state.
      *
-     * @param state the smart state to set as initial
+     * @param state the state to set as initial
      */
     public static void setAsInitial(SmartState state) {
         // Get the container.
         Group container = state.getContainer();
 
         // Create the line.
-        Line line = new Line(0, 0, INITIAL_STATE_LENGTH, 0);
+        Line line = new Line(0, 0, INITIAL_STATE_EDGE_LENGTH, 0);
         line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
         line.setStroke(EDGE_STROKE_COLOR);
-        line.setTranslateX(-(NODE_RADIUS + NODE_STROKE_RADIUS
-                + INITIAL_STATE_LENGTH + EDGE_STROKE_RADIUS));
+        line.setTranslateX(-(EDGE_STROKE_RADIUS + NODE_RADIUS
+                + NODE_STROKE_RADIUS + INITIAL_STATE_EDGE_LENGTH));
         line.setId("line");
 
         // Create the arrowhead.
@@ -93,11 +95,11 @@ public class SmartFiniteAutomatonBuilder {
     }
 
     /**
-     * Sets the smart state as a non-initial state, by removing the initial
+     * Sets the given state as a non-initial state, by removing the initial
      * state marking. The marking consists of a short incoming edge that is not
      * connected to any other state.
      *
-     * @param state the smart state to set as non-initial
+     * @param state the state to set as non-initial
      */
     public static void setAsNonInitial(SmartState state) {
         // Get the container.
@@ -113,10 +115,10 @@ public class SmartFiniteAutomatonBuilder {
     }
 
     /**
-     * Sets the smart state as a final state, by adding the final state marking.
+     * Sets the given state as a final state, by adding the final state marking.
      * The marking consists of a second, inner circle.
      *
-     * @param state the smart state to set as final
+     * @param state the state to set as final
      */
     public static void setAsFinal(SmartState state) {
         // Get the container.
@@ -124,7 +126,7 @@ public class SmartFiniteAutomatonBuilder {
 
         // Create the circle.
         Circle innerCircle = new Circle();
-        innerCircle.setRadius(FINAL_STATE_RADIUS);
+        innerCircle.setRadius(FINAL_STATE_CIRCLE_RADIUS);
         innerCircle.setFill(Color.TRANSPARENT);
         innerCircle.setStrokeType(StrokeType.OUTSIDE);
         innerCircle.setStrokeWidth(NODE_STROKE_RADIUS);
@@ -136,10 +138,10 @@ public class SmartFiniteAutomatonBuilder {
     }
 
     /**
-     * Sets the smart state as a non-final state, by removing the final state
+     * Sets the given state as a non-final state, by removing the final state
      * marking. The marking consists of a second, inner circle.
      *
-     * @param state the smart state to set as non-final
+     * @param state the state to set as non-final
      */
     public static void setAsNonFinal(SmartState state) {
         // Get the container.
@@ -151,16 +153,16 @@ public class SmartFiniteAutomatonBuilder {
     }
 
     /**
-     * Creates a smart edge.
+     * Creates an edge.
      *
      * @param labelText  the text for the edge's label
      * @param startState the start state of the edge
      * @param endState   the end state of the edge
-     * @return a smart edge
+     * @return an edge
      */
-    public static SmartEdge createSmartEdge(String labelText,
-                                            SmartState startState,
-                                            SmartState endState) {
+    public static SmartEdge createEdge(String labelText,
+                                       SmartState startState,
+                                       SmartState endState) {
         // Create the line.
         Line line = new Line();
         line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
@@ -287,16 +289,16 @@ public class SmartFiniteAutomatonBuilder {
     }
 
     /**
-     * Creates a smart curved edge.
+     * Creates a curved edge.
      *
      * @param labelText  the text for the edge's label
      * @param startState the start state of the edge
      * @param endState   the end state of the edge
-     * @return a smart curved edge
+     * @return a curved edge
      */
-    public static SmartEdge createSmartCurvedEdge(String labelText,
-                                                  SmartState startState,
-                                                  SmartState endState) {
+    public static SmartEdge createCurvedEdge(String labelText,
+                                             SmartState startState,
+                                             SmartState endState) {
         // Create the curve.
         QuadCurve curve = new QuadCurve();
         curve.setFill(Color.TRANSPARENT);
@@ -498,14 +500,14 @@ public class SmartFiniteAutomatonBuilder {
     }
 
     /**
-     * Creates a smart loop edge.
+     * Creates a loop edge.
      *
      * @param labelText the text for the edge's label
      * @param state     the state the edge is connected to
-     * @return a smart loop edge
+     * @return a loop edge
      */
-    public static SmartLoopEdge createSmartLoopEdge(String labelText,
-                                                    SmartState state) {
+    public static SmartLoopEdge createLoopEdge(String labelText,
+                                               SmartState state) {
         // Create the curve.
         CubicCurve curve = new CubicCurve();
         curve.setFill(Color.TRANSPARENT);
@@ -530,14 +532,14 @@ public class SmartFiniteAutomatonBuilder {
                                            Insets.EMPTY)));
 
         // Set the bindings
-        setSmartLoopEdgeBindings(curve, arrowhead, label, state, true);
+        setLoopEdgeBindings(curve, arrowhead, label, state, true);
 
         // Create the edge.
         return new SmartLoopEdge(curve, arrowhead, label, state);
     }
 
     /**
-     * Sets the bindings for the components of a smart loop edge. This includes
+     * Sets the bindings for the components of a loop edge. This includes
      * binding the start, end and control points of the curve, the position and
      * angle of the arrowhead and the position of the label. These bindings may
      * be above the state or below the state depending on the value of the
@@ -550,11 +552,11 @@ public class SmartFiniteAutomatonBuilder {
      * @param topside   whether to bind the components above or below the state
      *                  (true for above, false for below)
      */
-    public static void setSmartLoopEdgeBindings(CubicCurve curve,
-                                                Polygon arrowhead,
-                                                Label label,
-                                                SmartState state,
-                                                boolean topside) {
+    public static void setLoopEdgeBindings(CubicCurve curve,
+                                           Polygon arrowhead,
+                                           Label label,
+                                           SmartState state,
+                                           boolean topside) {
         // Create the side multiplier.
         final int SIDE_MULTIPLIER = topside ? 1 : -1;
 

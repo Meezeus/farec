@@ -20,6 +20,8 @@ import java.util.Iterator;
  * itself, called a loop, but multiple loops for the same state are not allowed.
  * One of the states is designated as the initial state and a second, different
  * state is designated as the final state.
+ *
+ * @see GraphicalFiniteAutomaton
  */
 public class SmartFiniteAutomaton {
 
@@ -32,9 +34,9 @@ public class SmartFiniteAutomaton {
     private SmartState finalState;
 
     /**
-     * Creates a new smart finite automaton and sets the controller. The
-     * controller is during construction of this finite automaton, to define how
-     * the user can interact with the components.
+     * Creates a new finite automaton and sets the controller. The controller is
+     * during construction of this finite automaton, to define how the user can
+     * interact with the components.
      *
      * @param controller the controller for finite automaton construction
      *                   window
@@ -73,8 +75,8 @@ public class SmartFiniteAutomaton {
     }
 
     /**
-     * Adds a state to this finite automaton. The state is added to the list of
-     * states and its container is added to the container of this finite
+     * Adds the given state to this finite automaton. The state is added to the
+     * list of states and its container is added to the container of this finite
      * automaton. If this finite automaton is still under construction, the
      * controller is used to define the mouse control behaviour for the state.
      *
@@ -89,12 +91,12 @@ public class SmartFiniteAutomaton {
     }
 
     /**
-     * Removes a state from this finite automaton. The state is removed from the
-     * list of states and its container is removed from the container of this
-     * finite automaton. If the state is the initial state or the final state of
-     * this finite automaton, the corresponding class variables will be set to
-     * <code>null</code>. Removing a state will also remove any edges connected
-     * to that state.
+     * Removes the given state from this finite automaton. The state is removed
+     * from the list of states and its container is removed from the container
+     * of this finite automaton. If the state is the initial state or the final
+     * state of this finite automaton, the corresponding class variables will be
+     * set to <code>null</code>. Removing the state will also remove any edges
+     * connected to it.
      *
      * @param state the state to remove
      */
@@ -129,8 +131,8 @@ public class SmartFiniteAutomaton {
     }
 
     /**
-     * Adds an edge to this finite automaton. The edge is added to the list of
-     * edges and its container is added to the container of this finite
+     * Adds the given edge to this finite automaton. The edge is added to the
+     * list of edges and its container is added to the container of this finite
      * automaton. If there is already an edge that has the same start state and
      * end state, it is replaced by the new edge. The list of outgoing edges of
      * the start state and the list of incoming edges of the end state is
@@ -175,13 +177,13 @@ public class SmartFiniteAutomaton {
     }
 
     /**
-     * Removes an edge from this finite automaton. The edge is removed from the
-     * list of edges and its container is removed from the container of this
-     * finite automaton. The list of outgoing edges of the start state and the
-     * list of incoming edges of the end state is updated to reflect the removal
-     * of the edge. If the edge to be removed is a symmetric edge (edges in both
-     * directions between two states), the other symmetric edge is removed and
-     * replaced with a straight edge.
+     * Removes the given edge from this finite automaton. The edge is removed
+     * from the list of edges and its container is removed from the container of
+     * this finite automaton. The list of outgoing edges of the start state and
+     * the list of incoming edges of the end state is updated to reflect the
+     * removal of the edge. If the edge to be removed is a symmetric edge (edges
+     * in both directions between two states), the other symmetric edge is
+     * removed and replaced with a straight edge.
      *
      * @param edge the edge to remove from this finite automaton
      */
@@ -297,7 +299,7 @@ public class SmartFiniteAutomaton {
      *
      * @param edge the edge being added
      */
-    public void addSymmetricEdges(SmartEdge edge) {
+    private void addSymmetricEdges(SmartEdge edge) {
         // Get the states connected to the edge.
         SmartState state1 = edge.getStartState();
         SmartState state2 = edge.getEndState();
@@ -318,7 +320,7 @@ public class SmartFiniteAutomaton {
             removeEdge(edge1, false);
             // Add the new edge.
             SmartEdge curvedEdge1 =
-                    SmartFiniteAutomatonBuilder.createSmartCurvedEdge(
+                    SmartFiniteAutomatonBuilder.createCurvedEdge(
                             edge1.getLabelText(),
                             edge1.getStartState(),
                             edge1.getEndState());
@@ -329,7 +331,7 @@ public class SmartFiniteAutomaton {
             removeEdge(edge2, false);
             // Add the new edge.
             SmartEdge curvedEdge2 =
-                    SmartFiniteAutomatonBuilder.createSmartCurvedEdge(
+                    SmartFiniteAutomatonBuilder.createCurvedEdge(
                             edge2.getLabelText(),
                             edge2.getStartState(),
                             edge2.getEndState());
@@ -339,14 +341,15 @@ public class SmartFiniteAutomaton {
 
     /**
      * Checks for and removes symmetric edges between two states, as a result of
-     * an edge being removed between them. Symmetric edges are edges between two
-     * states in both directions. Symmetric edges must be curved so as not to
-     * overlap each other. If the edge being removed is a symmetric edge, the
-     * other symmetric edge is replaced by an equivalent straight edge.
+     * the given edge being removed between them. Symmetric edges are edges
+     * between two states in both directions. Symmetric edges must be curved so
+     * as not to overlap each other. If the edge being removed is a symmetric
+     * edge, the other symmetric edge is replaced by an equivalent straight
+     * edge.
      *
      * @param edge the edge being removed
      */
-    public void removeSymmetricEdges(SmartEdge edge) {
+    private void removeSymmetricEdges(SmartEdge edge) {
         // Get the states connected to the edge.
         SmartState state1 = edge.getStartState();
         SmartState state2 = edge.getEndState();
@@ -368,7 +371,7 @@ public class SmartFiniteAutomaton {
             if (curvedEdge1 != edge) {
                 // Replace the edge with an equivalent straight edge.
                 removeEdge(curvedEdge1, false);
-                SmartEdge edge1 = SmartFiniteAutomatonBuilder.createSmartEdge(
+                SmartEdge edge1 = SmartFiniteAutomatonBuilder.createEdge(
                         curvedEdge1.getLabelText(),
                         curvedEdge1.getStartState(),
                         curvedEdge1.getEndState());
@@ -381,7 +384,7 @@ public class SmartFiniteAutomaton {
             if (curvedEdge2 != edge) {
                 // Replace the edge with an equivalent straight edge.
                 removeEdge(curvedEdge2, false);
-                SmartEdge edge2 = SmartFiniteAutomatonBuilder.createSmartEdge(
+                SmartEdge edge2 = SmartFiniteAutomatonBuilder.createEdge(
                         curvedEdge2.getLabelText(),
                         curvedEdge2.getStartState(),
                         curvedEdge2.getEndState());

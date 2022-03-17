@@ -24,8 +24,10 @@ import javafx.scene.shape.Shape;
  * The start state and end state of the edge may be the same state. In this
  * case, the edge is called a loop. For a loop, the straight line is replaced by
  * a cubic curve. The cubic curve may go above or below the state.
+ *
+ * @see GraphicalEdge
  */
-public class SmartEdge implements SmartComponent {
+public class SmartEdge extends SmartComponent {
 
     protected final Group container = new Group();
     protected final Shape edgeShape;
@@ -35,7 +37,7 @@ public class SmartEdge implements SmartComponent {
     protected final SmartState endState;
 
     /**
-     * Creates a smart edge between two (not necessarily unique) states.
+     * Creates an edge between two (not necessarily unique) states.
      *
      * @param edgeShape  the shape of the edge (a line or a curve)
      * @param arrowhead  the arrowhead at the end of the edge
@@ -55,10 +57,10 @@ public class SmartEdge implements SmartComponent {
     }
 
     /**
-     * Returns the container of this smart edge. The container contains the edge
+     * Returns the container of this edge. The container contains the edge
      * shape, arrowhead and label.
      *
-     * @return the container of this smart edge
+     * @return the container of this edge
      */
     public Group getContainer() {
         return container;
