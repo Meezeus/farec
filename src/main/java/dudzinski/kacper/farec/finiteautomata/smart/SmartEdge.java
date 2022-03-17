@@ -1,5 +1,6 @@
-package dudzinski.kacper.farec.finiteautomata;
+package dudzinski.kacper.farec.finiteautomata.smart;
 
+import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalEdge;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Paint;

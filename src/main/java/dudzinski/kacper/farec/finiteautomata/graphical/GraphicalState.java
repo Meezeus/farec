@@ -1,5 +1,6 @@
-package dudzinski.kacper.farec.finiteautomata;
+package dudzinski.kacper.farec.finiteautomata.graphical;
 
+import dudzinski.kacper.farec.finiteautomata.smart.SmartState;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 

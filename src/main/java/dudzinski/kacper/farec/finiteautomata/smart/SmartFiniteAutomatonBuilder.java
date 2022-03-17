@@ -1,5 +1,7 @@
-package dudzinski.kacper.farec.finiteautomata;
+package dudzinski.kacper.farec.finiteautomata.smart;
 
+import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonBuilder;
+import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalFiniteAutomatonBuilder;
 import javafx.beans.binding.DoubleBinding;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,25 +18,13 @@ import javafx.scene.text.TextAlignment;
  * This class contains methods for building and manipulating smart finite
  * automaton components.
  *
+ * @see FiniteAutomatonBuilder
  * @see GraphicalFiniteAutomatonBuilder
  */
-public class SmartFiniteAutomatonBuilder {
+public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
-    public static final double NODE_RADIUS = 20;
-    public static final Color NODE_FILL = Color.WHITE;
-    public static final double NODE_STROKE_RADIUS = 1;
-    public static final Color NODE_STROKE_COLOR = Color.BLACK;
-
-    public static final double INITIAL_STATE_EDGE_LENGTH = 30;
-    public static final double FINAL_STATE_CIRCLE_RADIUS = NODE_RADIUS - 5;
-
-    public static final double EDGE_STROKE_RADIUS = 1;
-    public static final Color EDGE_STROKE_COLOR = Color.BLACK;
     public static final double CONTROL_POINT_OFFSET = 25;
-    public static final double ARROWHEAD_SIZE = 10;
     public static final Color EDGE_LABEL_COLOR = Color.WHITESMOKE;
-
-    public static final String EPSILON = "\u03B5";
 
     /**
      * Creates a state.

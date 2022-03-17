@@ -1,5 +1,7 @@
-package dudzinski.kacper.farec.finiteautomata;
+package dudzinski.kacper.farec.finiteautomata.graphical;
 
+import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonBuilder;
+import dudzinski.kacper.farec.finiteautomata.smart.SmartFiniteAutomatonBuilder;
 import dudzinski.kacper.farec.regex.*;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -18,24 +20,12 @@ import java.util.ArrayList;
  * This class contains methods for building and manipulating graphical finite
  * automata and their components.
  *
+ * @see FiniteAutomatonBuilder
  * @see SmartFiniteAutomatonBuilder
  */
-public class GraphicalFiniteAutomatonBuilder {
+public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
     public static final double NODE_SEPARATION = 60;
-    public static final double NODE_RADIUS = 20;
-    public static final Color NODE_FILL = Color.WHITE;
-    public static final double NODE_STROKE_RADIUS = 1;
-    public static final Color NODE_STROKE_COLOR = Color.BLACK;
-
-    public static final double INITIAL_STATE_EDGE_LENGTH = 30;
-    public static final double FINAL_STATE_CIRCLE_RADIUS = NODE_RADIUS - 5;
-
-    public static final double EDGE_STROKE_RADIUS = 1;
-    public static final Color EDGE_STROKE_COLOR = Color.BLACK;
-    public static final double ARROWHEAD_SIZE = 10;
-
-    public static final String EPSILON = "\u03B5";
 
     /**
      * Builds a finite automaton for the given regular expression.

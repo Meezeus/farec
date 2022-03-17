@@ -1,4 +1,4 @@
-package dudzinski.kacper.farec.finiteautomata;
+package dudzinski.kacper.farec.finiteautomata.smart;
 
 import javafx.scene.control.Label;
 import javafx.scene.shape.CubicCurve;

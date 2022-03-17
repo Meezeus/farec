@@ -10,4 +10,8 @@ module dudzinski.kacper.farec {
     opens dudzinski.kacper.farec.regex to javafx.fxml;
     exports dudzinski.kacper.farec.finiteautomata;
     opens dudzinski.kacper.farec.finiteautomata to javafx.fxml;
+    exports dudzinski.kacper.farec.finiteautomata.smart;
+    opens dudzinski.kacper.farec.finiteautomata.smart to javafx.fxml;
+    exports dudzinski.kacper.farec.finiteautomata.graphical;
+    opens dudzinski.kacper.farec.finiteautomata.graphical to javafx.fxml;
 }

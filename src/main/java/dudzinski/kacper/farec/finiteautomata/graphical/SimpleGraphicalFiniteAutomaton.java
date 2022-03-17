@@ -1,4 +1,4 @@
-package dudzinski.kacper.farec.finiteautomata;
+package dudzinski.kacper.farec.finiteautomata.graphical;
 
 /**
  * This class represents a simple graphical finite automaton. A simple finite

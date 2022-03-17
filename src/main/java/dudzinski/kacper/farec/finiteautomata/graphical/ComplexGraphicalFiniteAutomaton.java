@@ -1,4 +1,4 @@
-package dudzinski.kacper.farec.finiteautomata;
+package dudzinski.kacper.farec.finiteautomata.graphical;
 
 import javafx.scene.layout.StackPane;
 

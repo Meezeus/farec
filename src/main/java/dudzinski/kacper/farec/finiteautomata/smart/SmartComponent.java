@@ -1,4 +1,4 @@
-package dudzinski.kacper.farec.finiteautomata;
+package dudzinski.kacper.farec.finiteautomata.smart;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Paint;

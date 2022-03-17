@@ -1,6 +1,7 @@
-package dudzinski.kacper.farec.finiteautomata;
+package dudzinski.kacper.farec.finiteautomata.smart;
 
 import dudzinski.kacper.farec.controllers.CreateFAScreenController;
+import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalFiniteAutomaton;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
