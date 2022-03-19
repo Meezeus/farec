@@ -44,8 +44,8 @@ public class ComplexGraphicalFiniteAutomaton extends GraphicalFiniteAutomaton {
         // Add the transition containers to the container of this finite
         // automaton.
         edges.forEach(transition ->
-                              container.getChildren().
-                                       add(transition.getContainer()));
+                              container.getChildren()
+                                       .add(transition.getContainer()));
         // If the second finite automaton container is not null, add it to the
         // container of this finite automaton.
         if (faContainer2 != null) {

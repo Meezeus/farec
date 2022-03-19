@@ -428,11 +428,11 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Get the offset of the initial state and final state of the widest
         // finite automaton.
         double widestInitialStateOffset =
-                widestFiniteAutomaton.initialState.
-                        getContainer().getTranslateX();
+                widestFiniteAutomaton.initialState
+                        .getContainer().getTranslateX();
         double widestFinalStateOffset =
-                widestFiniteAutomaton.finalState.
-                        getContainer().getTranslateX();
+                widestFiniteAutomaton.finalState
+                        .getContainer().getTranslateX();
 
         // Calculate the offset needed to move a state from the position of
         // some other state to its new position, in the positive direction.
@@ -463,15 +463,15 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         StackPane topInitialStateContainer =
                 topFiniteAutomaton.initialState.getContainer();
         lineWidth = Math.abs(
-                Math.abs(newInitialStateContainer.
-                                 getTranslateX())
-                        - Math.abs(topInitialStateContainer.
-                                           getTranslateX()));
+                Math.abs(newInitialStateContainer
+                                 .getTranslateX())
+                        - Math.abs(topInitialStateContainer
+                                           .getTranslateX()));
         lineHeight = Math.abs(
-                Math.abs(newInitialStateContainer.
-                                 getTranslateY())
-                        - Math.abs(topFiniteAutomatonContainer.
-                                           getTranslateY()));
+                Math.abs(newInitialStateContainer
+                                 .getTranslateY())
+                        - Math.abs(topFiniteAutomatonContainer
+                                           .getTranslateY()));
         angleInDegrees = Math.toDegrees(Math.atan(lineHeight / lineWidth));
 
         // Create the edge from the new initial state to the old initial state
@@ -505,10 +505,10 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         StackPane bottomInitialStateContainer =
                 bottomFiniteAutomaton.initialState.getContainer();
         lineWidth = Math.abs(
-                Math.abs(newInitialStateContainer.
-                                 getTranslateX())
-                        - Math.abs(bottomInitialStateContainer.
-                                           getTranslateX()));
+                Math.abs(newInitialStateContainer
+                                 .getTranslateX())
+                        - Math.abs(bottomInitialStateContainer
+                                           .getTranslateX()));
         lineHeight = Math.abs(
                 Math.abs(
                         newInitialStateContainer.getTranslateY())

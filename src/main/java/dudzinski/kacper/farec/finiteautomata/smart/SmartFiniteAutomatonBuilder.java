@@ -248,12 +248,12 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Bind the arrowhead's position and angle so that the tip is always
         // touching the end state and aiming at its centre.
         arrowhead.translateXProperty().bind(
-                line.endXProperty().
-                    subtract(0.5 * ARROWHEAD_SIZE).
-                    add(arrowheadXOffset));
+                line.endXProperty()
+                    .subtract(0.5 * ARROWHEAD_SIZE)
+                    .add(arrowheadXOffset));
         arrowhead.translateYProperty().bind(
-                line.endYProperty().
-                    add(arrowheadYOffset));
+                line.endYProperty()
+                    .add(arrowheadYOffset));
         arrowhead.rotateProperty().bind(angleInDegrees);
 
         // Create the label.
@@ -268,11 +268,11 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
         // Bind the label to the centre of the edge.
         label.translateXProperty().bind(
-                line.startXProperty().add(line.endXProperty()).divide(2).
-                    subtract(label.widthProperty().divide(2)));
+                line.startXProperty().add(line.endXProperty()).divide(2)
+                    .subtract(label.widthProperty().divide(2)));
         label.translateYProperty().bind(
-                line.startYProperty().add(line.endYProperty()).divide(2).
-                    subtract(label.heightProperty().divide(2)));
+                line.startYProperty().add(line.endYProperty()).divide(2)
+                    .subtract(label.heightProperty().divide(2)));
 
         // Create the edge.
         return new SmartEdge(line, arrowhead, label, startState, endState);
@@ -459,12 +459,12 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Bind the arrowhead's position and angle so that the tip is always
         // touching the end state and aiming at its centre.
         arrowhead.translateXProperty().bind(
-                curve.endXProperty().
-                     subtract(ARROWHEAD_SIZE / 2).
-                     add(arrowheadXOffset));
+                curve.endXProperty()
+                     .subtract(ARROWHEAD_SIZE / 2)
+                     .add(arrowheadXOffset));
         arrowhead.translateYProperty().bind(
-                curve.endYProperty().
-                     add(arrowheadYOffset));
+                curve.endYProperty()
+                     .add(arrowheadYOffset));
         arrowhead.rotateProperty().bind(angleInDegrees);
 
         // Create the label.
@@ -479,11 +479,11 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
         // Bind the label to the control point.
         label.translateXProperty().bind(
-                curve.controlXProperty().
-                     subtract(label.widthProperty().divide(2)));
+                curve.controlXProperty()
+                     .subtract(label.widthProperty().divide(2)));
         label.translateYProperty().bind(
-                curve.controlYProperty().
-                     subtract(label.heightProperty().divide(2)));
+                curve.controlYProperty()
+                     .subtract(label.heightProperty().divide(2)));
 
         // Create the edge.
         return new SmartEdge(curve, arrowhead, label, startState, endState);
@@ -553,13 +553,13 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Bind the start of the curve to the left side of the state and the
         // end of the curve to the right side of the state.
         curve.startXProperty().bind(
-                state.getContainer().translateXProperty().
-                     subtract(NODE_RADIUS));
+                state.getContainer().translateXProperty()
+                     .subtract(NODE_RADIUS));
         curve.startYProperty().bind(
                 state.getContainer().translateYProperty());
         curve.endXProperty().bind(
-                state.getContainer().translateXProperty().
-                     add(NODE_RADIUS));
+                state.getContainer().translateXProperty()
+                     .add(NODE_RADIUS));
         curve.endYProperty().bind(
                 state.getContainer().translateYProperty());
 
@@ -567,13 +567,13 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         curve.controlX1Property().bind(
                 curve.startXProperty().subtract(1 * NODE_RADIUS));
         curve.controlY1Property().bind(
-                curve.startYProperty().
-                     subtract(2 * SIDE_MULTIPLIER * CONTROL_POINT_OFFSET));
+                curve.startYProperty()
+                     .subtract(2 * SIDE_MULTIPLIER * CONTROL_POINT_OFFSET));
         curve.controlX2Property().bind(
                 curve.endXProperty().add(1 * NODE_RADIUS));
         curve.controlY2Property().bind(
-                curve.endYProperty().
-                     subtract(2 * SIDE_MULTIPLIER * CONTROL_POINT_OFFSET));
+                curve.endYProperty()
+                     .subtract(2 * SIDE_MULTIPLIER * CONTROL_POINT_OFFSET));
 
         // Create the bindings for the translation needed to get from the
         // control point to the end of the curve.
@@ -646,23 +646,23 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Bind the arrowhead's position and angle so that the tip is always
         // touching the state and aiming at its centre.
         arrowhead.translateXProperty().bind(
-                curve.endXProperty().
-                     subtract(ARROWHEAD_SIZE / 2).
-                     add(arrowheadXOffset));
+                curve.endXProperty()
+                     .subtract(ARROWHEAD_SIZE / 2)
+                     .add(arrowheadXOffset));
         arrowhead.translateYProperty().bind(
-                curve.endYProperty().
-                     add(arrowheadYOffset));
+                curve.endYProperty()
+                     .add(arrowheadYOffset));
         arrowhead.rotateProperty().bind(angleInDegrees);
 
         // Bind the label to the middle of the curve.
         label.translateXProperty().bind(
-                state.getContainer().translateXProperty().
-                     subtract(label.widthProperty().divide(2)));
+                state.getContainer().translateXProperty()
+                     .subtract(label.widthProperty().divide(2)));
         label.translateYProperty().bind(
-                state.getContainer().translateYProperty().
-                     subtract(label.heightProperty().divide(2).
-                                   add(2 * SIDE_MULTIPLIER *
-                                               CONTROL_POINT_OFFSET)));
+                state.getContainer().translateYProperty()
+                     .subtract(label.heightProperty().divide(2)
+                                    .add(2 * SIDE_MULTIPLIER *
+                                                 CONTROL_POINT_OFFSET)));
     }
 
 }
