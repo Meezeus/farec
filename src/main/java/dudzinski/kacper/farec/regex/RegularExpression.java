@@ -3,34 +3,57 @@ package dudzinski.kacper.farec.regex;
 import java.util.ArrayList;
 
 /**
- * This abstract class represents a regular expression. A regular expression may be simple or complex.
+ * This abstract class represents a regular expression (regex). A regular
+ * expression is a pattern consisting of regex operators applied to operands.
+ * Operators are special symbols while operands are other regular expressions or
+ * alphanumeric characters.
+ *
+ * @see SimpleRegularExpression
+ * @see ComplexRegularExpression
+ * @see RegexOperator
  */
 public abstract class RegularExpression {
 
     /**
-     * @return The depth of the regular expression.
+     * Returns the depth of this regular expression. The depth of a regular
+     * expression is equivalent to the depth of the parse tree representing the
+     * regular expression.
+     *
+     * @return the depth of the regular expression
      */
     public abstract int getDepth();
 
     /**
-     * Performs a preorder traversal of the given regular expression, considering its component subexpressions.
+     * Returns the preorder traversal of the subexpressions of this regular
+     * expression.
      *
-     * @param regularExpression The regular expression to traverse.
-     * @return A list of component regular expressions, in preorder.
+     * @return the preorder traversal of the subexpressions of this regular
+     * expression
      */
-    public static ArrayList<RegularExpression> preorderTraversal(RegularExpression regularExpression) {
+    public ArrayList<RegularExpression> preorderTraversal() {
+        // Create the list.
         ArrayList<RegularExpression> currentList = new ArrayList<>();
-        if (regularExpression instanceof ComplexRegularExpression complexRegularExpression) {
-            RegularExpression leftChild = complexRegularExpression.getLeftOperand();
-            RegularExpression rightChild = complexRegularExpression.getRightOperand();
+
+        // If this regular expression is complex, add the preorder traversal of
+        // its left child followed by its right child to the list.
+        if (this instanceof ComplexRegularExpression complexRegularExpression) {
+            // Get the children.
+            RegularExpression leftChild =
+                    complexRegularExpression.getLeftOperand();
+            RegularExpression rightChild =
+                    complexRegularExpression.getRightOperand();
+
+            // If they are not null, add their preorder traversal to the list.
             if (leftChild != null) {
-                currentList.addAll(preorderTraversal(leftChild));
+                currentList.addAll(leftChild.preorderTraversal());
             }
             if (rightChild != null) {
-                currentList.addAll(preorderTraversal(rightChild));
+                currentList.addAll(rightChild.preorderTraversal());
             }
         }
-        currentList.add(regularExpression);
+
+        // Add this regular expression to the list and return it.
+        currentList.add(this);
         return currentList;
     }
 

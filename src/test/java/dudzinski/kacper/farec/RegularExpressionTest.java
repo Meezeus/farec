@@ -94,7 +94,7 @@ public class RegularExpressionTest {
                 trueRegexStringList.add("1");
 
                 RegularExpression regularExpression = Parser.parse("1");
-                ArrayList<RegularExpression> testRegexList = RegularExpression.preorderTraversal(regularExpression);
+                ArrayList<RegularExpression> testRegexList = regularExpression.preorderTraversal();
 
                 assertEquals(trueRegexStringList.size(), testRegexList.size());
                 for (int index = 0; index < trueRegexStringList.size(); index++) {
@@ -110,7 +110,7 @@ public class RegularExpressionTest {
                 trueRegexStringList.add("(1)*");
 
                 RegularExpression regularExpression = Parser.parse("1*");
-                ArrayList<RegularExpression> testRegexList = RegularExpression.preorderTraversal(regularExpression);
+                ArrayList<RegularExpression> testRegexList = regularExpression.preorderTraversal();
 
                 assertEquals(trueRegexStringList.size(), testRegexList.size());
                 for (int index = 0; index < trueRegexStringList.size(); index++) {
@@ -127,7 +127,7 @@ public class RegularExpressionTest {
                 trueRegexStringList.add("(1)+(2)");
 
                 RegularExpression regularExpression = Parser.parse("1+2");
-                ArrayList<RegularExpression> testRegexList = RegularExpression.preorderTraversal(regularExpression);
+                ArrayList<RegularExpression> testRegexList = regularExpression.preorderTraversal();
 
                 assertEquals(trueRegexStringList.size(), testRegexList.size());
                 for (int index = 0; index < trueRegexStringList.size(); index++) {
@@ -151,7 +151,7 @@ public class RegularExpressionTest {
                 trueRegexStringList.add("((1)+(2))|(((3)*)+((4)|(5)))");
 
                 RegularExpression regularExpression = Parser.parse("(1+2)|(3*+(4|5))");
-                ArrayList<RegularExpression> testRegexList = RegularExpression.preorderTraversal(regularExpression);
+                ArrayList<RegularExpression> testRegexList = regularExpression.preorderTraversal();
 
                 assertEquals(trueRegexStringList.size(), testRegexList.size());
                 for (int index = 0; index < trueRegexStringList.size(); index++) {

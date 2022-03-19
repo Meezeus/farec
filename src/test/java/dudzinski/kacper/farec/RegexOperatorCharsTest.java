@@ -2,6 +2,7 @@ package dudzinski.kacper.farec;
 
 import dudzinski.kacper.farec.regex.RegexOperator;
 import dudzinski.kacper.farec.regex.RegexOperatorChars;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,23 +18,23 @@ public class RegexOperatorCharsTest {
         @DisplayName("true when setting")
         class SetOperatorCharPositiveTest {
             @Test
-            @DisplayName("STAR as *")
+            @DisplayName("STAR as ^")
             void test1() {
-                boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '*');
+                boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '^');
                 assertTrue(result);
             }
 
             @Test
-            @DisplayName("CONCATENATION as |")
+            @DisplayName("CONCATENATION as ,")
             void test2() {
-                boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '|');
+                boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, ',');
                 assertTrue(result);
             }
 
             @Test
-            @DisplayName("UNION as +")
+            @DisplayName("UNION as ?")
             void test3() {
-                boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.UNION, '+');
+                boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.UNION, '?');
                 assertTrue(result);
             }
         }
@@ -45,6 +46,20 @@ public class RegexOperatorCharsTest {
             @DisplayName("CONCATENATION as /")
             void test1() {
                 boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '/');
+                assertFalse(result);
+            }
+            @Test
+            @DisplayName("CONCATENATION as ! when ! is already linked to STAR")
+            void test2() {
+                RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '!');
+                boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '!');
+                assertFalse(result);
+            }
+            @Test
+            @DisplayName("CONCATENATION as ! when ! is already linked to CONCATENATION")
+            void test3() {
+                RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '!');
+                boolean result = RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '!');
                 assertFalse(result);
             }
         }
@@ -123,6 +138,13 @@ public class RegexOperatorCharsTest {
                 assertThrows(IllegalArgumentException.class, () -> RegexOperatorChars.getOperatorFromChar(regexOperatorChar));
             }
         }
+    }
+
+    @AfterAll
+    static void resetOperatorChars() {
+        RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '*');
+        RegexOperatorChars.setOperatorChar(RegexOperator.UNION, '+');
+        RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '|');
     }
 
 }

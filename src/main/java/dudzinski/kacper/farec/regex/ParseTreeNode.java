@@ -2,96 +2,108 @@ package dudzinski.kacper.farec.regex;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
- * This class represents a node in the parse tree. A node consists of a Pane object that holds the actual node itself
- * as well as references to the node's children.
+ * This class represents a node in a regular expression parse tree. A node
+ * consists of a container that holds the actual node itself as well as
+ * references to the node's children.
  */
 public class ParseTreeNode {
 
-    private final StackPane nodePane;
-    private ParseTreeNode leftChild;
-    private ParseTreeNode rightChild;
+    private final StackPane container;
+    private ParseTreeNode leftChild = null;
+    private ParseTreeNode rightChild = null;
 
     /**
-     * Create the parse tree node for a leaf node.
+     * Creates a parse tree node with <code>null</code> children.
      *
-     * @param nodePane The node pane containing the parse tree node.
+     * @param container the container of the parse tree node
      */
-    public ParseTreeNode(StackPane nodePane) {
-        this.nodePane = nodePane;
+    public ParseTreeNode(StackPane container) {
+        this.container = container;
     }
 
     /**
-     * Create the parse tree node for an internal node.
+     * Creates a parse tree node.
      *
-     * @param nodePane   The node pane containing the parse tree node.
-     * @param leftChild  The left child of the parse tree node.
-     * @param rightChild The right child of the parse tree node.
+     * @param container  the container of the parse tree node
+     * @param leftChild  the left child of the parse tree node
+     * @param rightChild the right child of the parse tree node
      */
-    public ParseTreeNode(StackPane nodePane, ParseTreeNode leftChild, ParseTreeNode rightChild) {
-        this.nodePane = nodePane;
+    public ParseTreeNode(StackPane container, ParseTreeNode leftChild,
+                         ParseTreeNode rightChild) {
+        this.container = container;
         this.leftChild = leftChild;
         this.rightChild = rightChild;
     }
 
     /**
-     * @return The node pane containing the parse tree node.
+     * Returns the container of this parse tree node.
+     *
+     * @return the container of this parse tree node
      */
-    public StackPane getNodePane() {
-        return nodePane;
+    public StackPane getContainer() {
+        return container;
     }
 
     /**
-     * @return The left child of the parse tree node.
+     * Returns the left child of this parse tree node.
+     *
+     * @return the left child of this parse tree node
      */
     public ParseTreeNode getLeftChild() {
         return leftChild;
     }
 
     /**
-     * @return The right child of the parse tree node.
+     * Returns the right child of this parse tree node.
+     *
+     * @return the right child of this parse tree node
      */
     public ParseTreeNode getRightChild() {
         return rightChild;
     }
 
     /**
-     * Set the left child of the parse tree node.
+     * Sets the left child of this parse tree node.
      *
-     * @param leftChild The new left child.
+     * @param leftChild the new left child
      */
     public void setLeftChild(ParseTreeNode leftChild) {
         this.leftChild = leftChild;
     }
 
     /**
-     * Set the right child of the parse tree node.
+     * Sets the right child of the parse tree node.
      *
-     * @param rightChild The new left child.
+     * @param rightChild the new right child
      */
     public void setRightChild(ParseTreeNode rightChild) {
         this.rightChild = rightChild;
     }
 
     /**
-     * @return The node label.
+     * Returns the label of this parse tree node.
+     *
+     * @return the label of this parse tree node
      */
     public String getLabelText() {
-        Label label = (Label) nodePane.getChildren().stream().filter(child -> child instanceof Label).findFirst().get();
+        Label label = (Label) container.getChildren().stream().filter(
+                child -> child instanceof Label).findFirst().get();
         return label.getText();
     }
 
     /**
-     * Sets the stroke colour of the node.
+     * Sets the stroke colour of this parse tree node.
      *
-     * @param colour The new colour.
+     * @param color the new colour of this parse tree node
      */
-    public void setCircleStrokeColour(String colour) {
-        Circle circle = (Circle) nodePane.getChildren().stream().filter(child -> child instanceof Circle).findFirst().get();
-        circle.setStroke(Paint.valueOf(colour));
+    public void setStroke(Color color) {
+        Circle circle = (Circle) container.getChildren().stream().filter(
+                child -> child instanceof Circle).findFirst().get();
+        circle.setStroke(color);
     }
 
 }

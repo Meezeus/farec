@@ -1,43 +1,63 @@
 package dudzinski.kacper.farec.regex;
 
+/**
+ * This class contains methods for converting between regex operators and their
+ * char representations, as well as changing the char representations.
+ *
+ * @see RegexOperator
+ */
 public class RegexOperatorChars {
 
-    private static final String validOperatorSymbolPattern = "^[!£$%^&*\\-+=:;@~#|<>,.?]$";
+    private static final String validOperatorSymbolPattern =
+            "^[!£$%^&*\\-+=:;@~#|<>,.?]$";
     private static char starOperatorChar = '*';
     private static char concatenationOperatorChar = '|';
     private static char unionOperatorChar = '+';
 
     /**
-     * Given a REOperator and a char, links the REOperator to that char and returns true if the char is a valid symbol.
-     * If the char is not a valid symbol, returns false.
+     * Attempts to link the given regex operator to the given char. The char
+     * must be a valid symbol in order for the link to be successful. The char
+     * cannot be linked to any other regex operator.
      *
-     * @param operator     The REOperator to set the char for.
-     * @param operatorChar The char that will represent the REOperator.
-     * @return True if the char was valid and set successfully, false otherwise.
+     * @param regexOperator the regex operator to set the char for
+     * @param operatorChar  the char that will represent the regex operator
+     * @return true if the char was valid and set successfully, false otherwise
      */
-    public static Boolean setOperatorChar(RegexOperator operator, char operatorChar) {
+    public static Boolean setOperatorChar(RegexOperator regexOperator,
+                                          char operatorChar) {
+        // Check the char is a valid symbol.
         if (!("" + operatorChar).matches(validOperatorSymbolPattern)) {
             return false;
         }
-        if (operator == RegexOperator.STAR) {
+        // Check the char is not already linked.
+        if ((starOperatorChar == operatorChar)
+                || (concatenationOperatorChar == operatorChar)
+                || (unionOperatorChar == operatorChar)) {
+            return false;
+        }
+
+        // Link the regex operator to the char.
+        if (regexOperator == RegexOperator.STAR) {
             starOperatorChar = operatorChar;
         }
-        else if (operator == RegexOperator.CONCATENATION) {
+        else if (regexOperator == RegexOperator.CONCATENATION) {
             concatenationOperatorChar = operatorChar;
         }
-        else if (operator == RegexOperator.UNION) {
+        else if (regexOperator == RegexOperator.UNION) {
             unionOperatorChar = operatorChar;
         }
         return true;
     }
 
     /**
-     * Given a regex operator, returns the char corresponding to that operator or throws an exception.
+     * Returns the char linked to the given regex operator.
      *
-     * @param operator The regex operator for which to find the corresponding char.
-     * @return The char corresponding to the given regex operator
+     * @param operator the regex operator for which to find the linked char
+     * @return the char linked to the given regex operator
+     * @throws IllegalArgumentException if the operator is not a regex operator
      */
-    public static char getCharFromOperator(RegexOperator operator) throws IllegalArgumentException {
+    public static char getCharFromOperator(RegexOperator operator)
+            throws IllegalArgumentException {
         if (operator == RegexOperator.STAR) {
             return starOperatorChar;
         }
@@ -48,18 +68,21 @@ public class RegexOperatorChars {
             return unionOperatorChar;
         }
         else {
-            throw new IllegalArgumentException("Argument is not an REOperator!");
+            throw new IllegalArgumentException(
+                    "Argument is not an REOperator!");
         }
     }
 
     /**
-     * Given a char representation a regex operator, returns an enum constant representation for that operator, or
-     * throws an exception if the char does not represent any operator.
+     * Returns the regex operator linked to the given char.
      *
-     * @param operatorChar A char representing the operator.
-     * @return An enum constant representing the operator.
+     * @param operatorChar the char representation of an operator
+     * @return the regex operator linked to the char
+     * @throws IllegalArgumentException if the char is not linked to any regex
+     *                                  operator
      */
-    public static RegexOperator getOperatorFromChar(char operatorChar) throws IllegalArgumentException {
+    public static RegexOperator getOperatorFromChar(char operatorChar)
+            throws IllegalArgumentException {
         if (operatorChar == starOperatorChar) {
             return RegexOperator.STAR;
         }
@@ -70,30 +93,36 @@ public class RegexOperatorChars {
             return RegexOperator.UNION;
         }
         else {
-            throw new IllegalArgumentException("The given char is not linked to any regex operator!");
+            throw new IllegalArgumentException(
+                    "The given char is not linked to any regex operator!");
         }
     }
 
     /**
-     * @return The char associated with the STAR operator.
+     * Returns the char linked to the STAR operator.
+     *
+     * @return the char linked to the STAR operator
      */
     public static char getStarOperatorChar() {
         return starOperatorChar;
     }
 
     /**
-     * @return The char associated with the CONCATENATION operator.
+     * Returns the char linked to the CONCATENATION operator.
+     *
+     * @return the char linked to the CONCATENATION operator
      */
     public static char getConcatenationOperatorChar() {
         return concatenationOperatorChar;
     }
 
     /**
-     * @return The char associated with the UNION operator.
+     * Returns the char linked to the UNION operator.
+     *
+     * @return the char linked to the UNION operator
      */
     public static char getUnionOperatorChar() {
         return unionOperatorChar;
     }
-
 
 }

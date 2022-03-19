@@ -31,7 +31,7 @@ class ParseTreeTest {
             void test1() {
                 RegularExpression regularExpression = Parser.parse("1");
                 ParseTree parseTree = new ParseTree(regularExpression);
-                ArrayList<ParseTreeNode> nodeList = ParseTree.preorderTraversal(parseTree.getRoot());
+                ArrayList<ParseTreeNode> nodeList = parseTree.preorderTraversal();
                 assertEquals("1", nodeList.stream().map(ParseTreeNode::getLabelText).collect(Collectors.joining(",")));
             }
 
@@ -40,7 +40,7 @@ class ParseTreeTest {
             void test2() {
                 RegularExpression regularExpression = Parser.parse("1*");
                 ParseTree parseTree = new ParseTree(regularExpression);
-                ArrayList<ParseTreeNode> nodeList = ParseTree.preorderTraversal(parseTree.getRoot());
+                ArrayList<ParseTreeNode> nodeList = parseTree.preorderTraversal();
                 assertEquals("1,*", nodeList.stream().map(ParseTreeNode::getLabelText).collect(Collectors.joining(",")));
             }
 
@@ -49,7 +49,7 @@ class ParseTreeTest {
             void test3() {
                 RegularExpression regularExpression = Parser.parse("1+2");
                 ParseTree parseTree = new ParseTree(regularExpression);
-                ArrayList<ParseTreeNode> nodeList = ParseTree.preorderTraversal(parseTree.getRoot());
+                ArrayList<ParseTreeNode> nodeList = parseTree.preorderTraversal();
                 assertEquals("1,2,+", nodeList.stream().map(ParseTreeNode::getLabelText).collect(Collectors.joining(",")));
             }
 
@@ -58,7 +58,7 @@ class ParseTreeTest {
             void test4() {
                 RegularExpression regularExpression = Parser.parse("(1+2)|(3*+(4|5))");
                 ParseTree parseTree = new ParseTree(regularExpression);
-                ArrayList<ParseTreeNode> nodeList = ParseTree.preorderTraversal(parseTree.getRoot());
+                ArrayList<ParseTreeNode> nodeList = parseTree.preorderTraversal();
                 assertEquals("1,2,+,3,*,4,5,|,+,|", nodeList.stream().map(ParseTreeNode::getLabelText).collect(Collectors.joining(",")));
             }
         }

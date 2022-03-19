@@ -5,7 +5,11 @@ import javafx.util.Pair;
 import java.util.Objects;
 
 /**
- * The parser is used to parse strings representing regular expressions and turn them into regular expression objects.
+ * This class is responsible for parsing strings representing regular
+ * expressions (regex strings) and converting them into regular expression
+ * objects.
+ *
+ * @see RegularExpression
  */
 public class Parser {
 
@@ -17,107 +21,140 @@ public class Parser {
             "]*$";
 
     /**
-     * Tests is a string is a valid regex string, by checking that it contains only alphanumeric characters, brackets
-     * and regex operators. Also checks that all opened brackets are closed.
+     * Tests if a string is a valid regex string. A valid regex string contains
+     * only alphanumeric characters, brackets and regex operators. The number
+     * and placement of brackets must be valid. This method DOES NOT test if
+     * this string represents a valid regular expression.
      *
-     * @param regexString The string to be tested.
-     * @return True if the string is valid, false otherwise.
+     * @param regexString the regex string to test for validity
+     * @return a pair (K, V) where K is a boolean representing whether the regex
+     * string is valid, and V is an error message in the case that it is not
      */
     public static Pair<Boolean, String> isValid(String regexString) {
-        // Check if string contains only alphanumeric characters and operators.
+        // Check that string contains only alphanumeric characters and
+        // regex operators.
         if (!regexString.matches(validRegexPattern)) {
-            return new Pair<>(false, "Regular expressions can only contain alphanumeric characters and operators!");
+            return new Pair<>(false, "Regular expressions can only contain" +
+                    " alphanumeric characters and operators!");
         }
 
-        // Check if number of opened brackets matches number of closed brackets.
-        int openBracketCount = 0;
+        // Check that the number and placement of brackets is valid.
+        int openingBracketCount = 0;
         for (int index = 0; index < regexString.length(); ++index) {
             char currentChar = regexString.charAt(index);
             if (currentChar == '(') {
-                openBracketCount++;
+                openingBracketCount++;
             }
             else if (currentChar == ')') {
-                openBracketCount--;
-                if (openBracketCount < 0) {
-                    return new Pair<>(false, "The regular expression has a closing bracket without an opening bracket!");
+                openingBracketCount--;
+                if (openingBracketCount < 0) {
+                    return new Pair<>(false, "The regular expression has a" +
+                            " closing bracket without an opening bracket!");
                 }
             }
         }
-        if (openBracketCount != 0) {
-            return new Pair<>(false, "The regular expression has different numbers of opening and closing brackets!");
+        if (openingBracketCount != 0) {
+            return new Pair<>(false, "The regular expression has different" +
+                    " numbers of opening and closing brackets!");
         }
 
+        // At this point, the regex string is considered valid.
         return new Pair<>(true, "");
     }
 
     /**
-     * Given a regex string, removes the outer brackets if they are linked.
+     * Removes the outer brackets of the given regex string, if they are
+     * linked.
      *
-     * @param regexString The string to be trimmed.
-     * @return The same string, without the outer brackets.
+     * @param regexString the string from which to remove outer brackets
+     * @return the same string, without the outer brackets
      */
     public static String removeOuterBrackets(String regexString) {
-        // If string does not start and end with brackets, it cannot be trimmed.
+        // If the string does not have an opening bracket at the start and a
+        // closing bracket at the end, it cannot be trimmed.
         if (!(regexString.startsWith("(") && regexString.endsWith(")"))) {
             return regexString;
         }
 
-        int openBracketCount = 0;
+        // See if the outer brackets are linked.
+        int openingBracketCount = 0;
         for (int index = 0; index < regexString.length(); ++index) {
             char currentChar = regexString.charAt(index);
             if (currentChar == '(') {
-                openBracketCount++;
+                openingBracketCount++;
             }
             else if (currentChar == ')') {
-                openBracketCount--;
-                // If we have closed all brackets but are not at the end, the open bracket at the start and the close
-                // bracket at the end are not linked. Return the string.
-                if (openBracketCount == 0 && index != regexString.length() - 1) {
+                openingBracketCount--;
+                // If we have closed all brackets but are not at the end, the
+                // opening bracket at the start and the closing bracket at the
+                // end are not linked.
+                if ((openingBracketCount == 0)
+                        && (index != regexString.length() - 1)) {
                     return regexString;
                 }
             }
         }
 
+        // At this point, the outer brackets must be linked: remove them.
         return regexString.substring(1, regexString.length() - 1);
     }
 
     /**
-     * Given a regex string, finds the index of the root operator. This is the operator that is not inside any
-     * brackets.
+     * Finds the index of the root operator of the given regex string. The root
+     * operator is the operator with the lowest precedence that is not inside
+     * any brackets.
+     * <p>
+     * Regex operators have a certain order of operations, with the STAR
+     * operator having the highest precedence, then CONCATENATION, and then
+     * UNION. However, the root operator is the operator with the lowest
+     * precedence, so this method will return UNION over CONCATENATION and
+     * CONCATENATION over STAR.
+     * <p>
+     * The regex string is parsed right to left, so chains such as a|b|c are
+     * parsed as (a|b)|c instead of a|(b|c).
      *
-     * The regex operators have a certain order of operations, with the STAR operator having the highest
-     * precedence, then CONCATENATION, and then UNION. However, the root operator is the operator with the lowest
-     * precedence, so this method will return UNION over CONCATENATION and CONCATENATION over STAR.
-     *
-     * The regex string is parsed right to left, so chains such as a|b|c are parsed as (a|b)|c instead of a|(b|c).
-     *
-     * @param regexString A regex string, without outer brackets.
-     * @return The index of the root operator, or -1 if not found.
+     * @param regexString the regex string, without outer brackets
+     * @return the index of the root operator, or -1 if not found
      */
     public static int findRootIndex(String regexString) {
         int depth = 0;
         int unionIndex = -1;
         int concatenationIndex = -1;
         int starIndex = -1;
+
+        // Find the index of the first regex operator of each type which is not
+        // contained within any brackets, going right to left.
         for (int index = regexString.length() - 1; index >= 0; --index) {
             char currentChar = regexString.charAt(index);
+
             if (currentChar == ')') {
                 depth++;
             }
             else if (currentChar == '(') {
                 depth--;
             }
-            else if ((depth == 0) && (unionIndex == -1) && (currentChar == RegexOperatorChars.getUnionOperatorChar())) {
+            else if ((depth == 0)
+                    && (unionIndex == -1)
+                    && (currentChar == RegexOperatorChars
+                    .getUnionOperatorChar())) {
                 unionIndex = index;
             }
-            else if ((depth == 0) && (concatenationIndex == -1) && (currentChar == RegexOperatorChars.getConcatenationOperatorChar())) {
+            else if ((depth == 0)
+                    && (concatenationIndex == -1)
+                    && (currentChar == RegexOperatorChars
+                    .getConcatenationOperatorChar())) {
                 concatenationIndex = index;
             }
-            else if ((depth == 0) && (starIndex == -1) && (currentChar == RegexOperatorChars.getStarOperatorChar())) {
+            else if ((depth == 0)
+                    && (starIndex == -1)
+                    && (currentChar == RegexOperatorChars
+                    .getStarOperatorChar())) {
                 starIndex = index;
             }
         }
 
+        // Return the index of the regex operators found, starting with the
+        // regex operator with the lowest precedence.
         if (unionIndex != -1) {
             return unionIndex;
         }
@@ -127,20 +164,27 @@ public class Parser {
         else if (starIndex != -1) {
             return starIndex;
         }
+        // If no regex operators were found at the root, return -1.
         else {
             return -1;
         }
     }
 
     /**
-     * Given a string representing a regular expression, parses the string into a regular expression object.
-     * If the regular expression is invalid, throws an exception.
+     * Parses the given regex string into a regular expression object. For
+     * information about how the regex string is parsed, see {@link
+     * #findRootIndex(String)}.
      *
-     * @param regexString The string to be parsed.
-     * @return The regular expression
+     * @param regexString the string to be parsed
+     * @return the regular expression represented by the regex string
+     * @throws IllegalArgumentException if the regex string is invalid or does
+     *                                  not represent a valid regular
+     *                                  expression
+     * @see #findRootIndex(String)
      */
-    public static RegularExpression parse(String regexString) throws IllegalArgumentException {
-        // Check if regex string is valid.
+    public static RegularExpression parse(String regexString)
+            throws IllegalArgumentException {
+        // Check that regex string is valid.
         Pair<Boolean, String> isValid = isValid(regexString);
         if (!isValid.getKey()) {
             throw new IllegalArgumentException(isValid.getValue());
@@ -151,113 +195,158 @@ public class Parser {
             regexString = removeOuterBrackets(regexString);
         }
 
-        // Check if regex string is a symbol.
-        if (regexString.length() == 1 && regexString.matches(alphanumericPattern)) {
+        // If the regex string is a single alphanumeric character, it represents
+        // a simple regular expression.
+        if ((regexString.length() == 1)
+                && (regexString.matches(alphanumericPattern))) {
             return new SimpleRegularExpression(regexString.charAt(0));
         }
 
-        // Find root operator
+        // Find the index of the root operator.
         int rootIndex = findRootIndex(regexString);
         if (rootIndex == -1) {
-            throw new IllegalArgumentException("The expression \"" + regexString + "\" does not have a root operator!");
+            throw new IllegalArgumentException(
+                    "The expression \"" + regexString + "\" does not have a" +
+                            " root operator!");
         }
 
-        // Find left operand
+        // Parse the left operand substring.
         String leftSubstring = regexString.substring(0, rootIndex);
         if (leftSubstring.length() == 0) {
-            throw new IllegalArgumentException("The expression \"" + regexString + "\" contains an empty left operand!");
+            throw new IllegalArgumentException(
+                    "The expression \"" + regexString + "\" contains an" +
+                            " empty left operand!");
         }
         RegularExpression leftOperand = parse(leftSubstring);
 
         // Get the operator
-        RegexOperator operator = RegexOperatorChars.getOperatorFromChar(regexString.charAt(rootIndex));
+        RegexOperator operator = RegexOperatorChars.getOperatorFromChar(
+                regexString.charAt(rootIndex));
 
-        // Find right operand
+        // Parse the right operand substring, if it exists.
         RegularExpression rightOperand = null;
-        if (operator == RegexOperator.CONCATENATION || operator == RegexOperator.UNION) {
+        // If the regex operator is CONCATENATION or UNION, there should be a
+        // right operand substring.
+        if ((operator == RegexOperator.CONCATENATION)
+                || (operator == RegexOperator.UNION)) {
             if (rootIndex == regexString.length() - 1) {
-                throw new IllegalArgumentException("The expression \"" + regexString + "\" contains an empty right operand!");
+                throw new IllegalArgumentException(
+                        "The expression \"" + regexString + "\" contains an" +
+                                " empty right operand!");
             }
             else {
                 rightOperand = parse(regexString.substring(rootIndex + 1));
             }
         }
-        else if (operator == RegexOperator.STAR && rootIndex != regexString.length() - 1) {
-            throw new IllegalArgumentException("The expression \"" + regexString + "\" contains a STAR operator with a right operand!");
+        // If the regex operator is STAR, there shouldn't be a right operand
+        // substring.
+        else if (operator == RegexOperator.STAR) {
+            if (rootIndex != regexString.length() - 1) {
+                throw new IllegalArgumentException(
+                        "The expression \"" + regexString + "\" contains a" +
+                                " STAR operator with a right operand!");
+            }
         }
 
-        return new ComplexRegularExpression(leftOperand, operator, rightOperand);
+        // Return the complex regular expression.
+        return new ComplexRegularExpression(leftOperand,
+                                            operator,
+                                            rightOperand);
     }
 
     /**
-     * Simplifies the given regex string by removing all brackets that can be safely removed without altering the
-     * regular expression. It checks that the regular expression is not altered by parsing the new regex string and
-     * checking that the resulting regular expression is equal to the original regular expression.
+     * Simplifies the given regex string by removing all brackets that can be
+     * safely removed without altering the regular expression.
+     * <p>
+     * The regular expression is checked to see that it is not altered by
+     * parsing the new regex string and checking that the resulting regular
+     * expression is equal to the original regular expression.
      *
-     * @param regexString The regex string to simplify.
+     * @param regexString the regex string to simplify
+     * @return an equivalent regex string with all superfluous brackets removed
      */
     public static String simplifyRegexString(String regexString) {
-        // Get the string representation of the regular expression of the original regex string.
-        String originalRegularExpressionString = parse(regexString).toString();
+        // Get the regular expression represented by the regex string as a
+        // string.
+        String originalRegularExpressionAsString =
+                parse(regexString).toString();
 
         int offset = 0;
+        // Iterate through the regex string to find brackets to remove.
         while (offset < regexString.length()) {
             int currentDepth = 0;
-            int openBracketDepth = -1;
-            int openBracketIndex = -1;
-            int closeBracketIndex = -1;
-            // Find the positions of matching open and closing brackets.
+            int openingBracketDepth = -1;
+            int openingBracketIndex = -1;
+            int closingBracketIndex = -1;
+
+            // Find the positions of matching opening and closing brackets to
+            // try and remove.
             for (int index = offset; index < regexString.length(); index++) {
                 // The current char being examined.
                 char currentChar = regexString.charAt(index);
 
-                // If the current char is an open bracket, increase the depth.
+                // If the current char is an opening bracket, increase the
+                // depth.
                 if (currentChar == '(') {
                     currentDepth++;
+                    // If this is the first opening bracket found, take note of
+                    // its depth and index.
+                    if (openingBracketIndex == -1) {
+                        openingBracketDepth = currentDepth;
+                        openingBracketIndex = index;
+                    }
                 }
-
-                // If we haven't found an open bracket yet and the current char is an open bracket, take note of the
-                // depth and index.
-                if ((openBracketIndex == -1) && (currentChar == '(')) {
-                    openBracketDepth = currentDepth;
-                    openBracketIndex = index;
-                }
-                // If we have found an open bracket but not a close bracket, and the current depth matches the depth
-                // of the open bracket found, and the current char is a close bracket, take note of the index and stop.
-                else if ((openBracketIndex != -1) && (closeBracketIndex == -1) && (currentDepth == openBracketDepth) && (currentChar == ')')) {
-                    closeBracketIndex = index;
+                // If the current char is a closing bracket at the same depth as
+                // the found opening bracket, take note of its index and stop
+                // searching.
+                if ((currentChar == ')')
+                        && (openingBracketIndex != -1)
+                        && (currentDepth == openingBracketDepth)) {
+                    closingBracketIndex = index;
                     break;
                 }
 
-                // If the current char is a close bracket, decrease the depth.
+                // If the current char is a closing bracket, decrease the depth.
                 if (currentChar == ')') {
                     currentDepth--;
                 }
             }
 
-            // If we found open and close bracket indices, we can attempt to remove the found brackets.
-            if ((openBracketIndex != -1) && (closeBracketIndex != -1)) {
+            // If opening and closing brackets were found, attempt to remove
+            // them.
+            if ((openingBracketIndex != -1) && (closingBracketIndex != -1)) {
                 // Remove the brackets from the string.
-                StringBuilder newRegexStringBuilder = new StringBuilder(regexString);
-                newRegexStringBuilder.deleteCharAt(closeBracketIndex).deleteCharAt(openBracketIndex);
+                StringBuilder newRegexStringBuilder =
+                        new StringBuilder(regexString);
+                newRegexStringBuilder.deleteCharAt(closingBracketIndex)
+                                     .deleteCharAt(openingBracketIndex);
+                String newRegexString = newRegexStringBuilder.toString();
 
-                // Get the string representation of the regular expression of the new regex string.
-                String newRegularExpressionString = parse(newRegexStringBuilder.toString()).toString();
+                // Get the regular expression represented by the new regex
+                // string as a string.
+                String newRegularExpressionAsString =
+                        parse(newRegexString).toString();
 
-                // If the regular expression has not changed, update the regex string.
-                if (Objects.equals(originalRegularExpressionString, newRegularExpressionString)) {
-                    regexString = newRegexStringBuilder.toString();
+                // If the regular expression has not changed, set the regex
+                // string to the new regex string.
+                if (Objects.equals(
+                        originalRegularExpressionAsString,
+                        newRegularExpressionAsString)) {
+                    regexString = newRegexString;
                 }
                 // If the regular expression has changed, increase the offset.
                 else {
                     offset += 1;
                 }
             }
-            // If we have not found open and close bracket indices, there are no brackets to simplify. Stop searching.
+            // If we have not found opening and closing brackets, there are no
+            // more brackets to simplify. Stop searching.
             else {
                 break;
             }
         }
+
+        // Return the (potentially simplified) regex string.
         return regexString;
     }
 
