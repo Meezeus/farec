@@ -14,7 +14,7 @@ import javafx.scene.paint.Color;
 public abstract class FiniteAutomatonBuilder {
 
     public static final double NODE_RADIUS = 20;
-    public static final Color NODE_FILL = Color.WHITE;
+    public static final Color NODE_FILL_COLOR = Color.WHITE;
     public static final double NODE_STROKE_RADIUS = 1;
     public static final Color NODE_STROKE_COLOR = Color.BLACK;
     public static final double INITIAL_STATE_EDGE_LENGTH = 30;

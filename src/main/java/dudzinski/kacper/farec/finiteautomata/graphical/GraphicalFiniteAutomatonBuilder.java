@@ -567,7 +567,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Create the circle.
         Circle circle = new Circle();
         circle.setRadius(NODE_RADIUS);
-        circle.setFill(NODE_FILL);
+        circle.setFill(NODE_FILL_COLOR);
         circle.setStrokeWidth(2 * NODE_STROKE_RADIUS);
         circle.setStroke(NODE_STROKE_COLOR);
 
