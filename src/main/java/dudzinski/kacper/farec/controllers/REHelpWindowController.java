@@ -9,9 +9,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * This is the controller for the help window. The help window is displayed when
- * the help button is pressed in the view for creating regular expressions. It
- * contains information to help the user create valid regular expressions.
+ * This is the controller for the regular expression help window. The help
+ * window is displayed when the help button is pressed in the view for creating
+ * regular expressions. It contains information to help the user create valid
+ * regular expressions.
  */
 public class REHelpWindowController implements Initializable {
 
