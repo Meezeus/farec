@@ -80,6 +80,7 @@ public class SmartFiniteAutomaton {
      * list of states and its container is added to the container of this finite
      * automaton. If this finite automaton is still under construction, the
      * controller is used to define the mouse control behaviour for the state.
+     * The minimum size of the finite automaton container is also updated.
      *
      * @param state the state to add to this finite automaton
      */
@@ -89,6 +90,7 @@ public class SmartFiniteAutomaton {
         if (underConstruction) {
             controller.setStateMouseControl(state);
         }
+        updateContainerSize();
     }
 
     /**
@@ -393,4 +395,46 @@ public class SmartFiniteAutomaton {
             }
         }
     }
+
+    /**
+     * Updates the minimum size of the container of this finite automaton such
+     * that all the components are within the new minimum size. The minimum
+     * height can only increase: it will not decrease.
+     */
+    public void updateContainerSize() {
+        // Find the greatest translateX and translateY of any state in the
+        // finite automaton.
+        double greatestX = Double.NEGATIVE_INFINITY;
+        double greatestY = Double.NEGATIVE_INFINITY;
+
+        for (SmartState state : states) {
+            double stateX = state.getContainer().getTranslateX();
+            double stateY = state.getContainer().getTranslateY();
+            if (stateX > greatestX) {
+                greatestX = stateX;
+            }
+            if (stateY > greatestY) {
+                greatestY = stateY;
+            }
+        }
+
+        // Calculate the new minimum width and height.
+        double newMinWidth = greatestX
+                + SmartFiniteAutomatonBuilder.NODE_RADIUS
+                + SmartFiniteAutomatonBuilder.NODE_STROKE_RADIUS;
+        double newMinHeight = greatestY
+                + SmartFiniteAutomatonBuilder.NODE_RADIUS
+                + SmartFiniteAutomatonBuilder.NODE_STROKE_RADIUS;
+
+        // If the new minimum width or height has increased, update the
+        // container.
+        if (newMinWidth > container.getMinWidth()) {
+            container.setMinWidth(newMinWidth);
+
+        }
+        if (newMinHeight > container.getMinHeight()) {
+            container.setMinHeight(newMinHeight);
+        }
+    }
+
 }
