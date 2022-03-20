@@ -8,23 +8,27 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * The main class of the application. Sets everything off by displaying the start screen.
+ * This is the main class of the application. It sets everything off by
+ * displaying the start screen.
  */
 public class App extends Application {
 
     /**
-     * Launch the app.
+     * Launches the app.
      */
     public static void main(String[] args) {
         launch();
     }
 
-    @Override
     /**
-     * Create the start screen window.
+     * Creates the stage and sets the view to the start screen window.
+     *
+     * @throws IOException if the view fxml file cannot be found
      */
+    @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("start_screen.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(
+                "start_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("FAREC");
         stage.setScene(scene);

@@ -4,7 +4,6 @@ import dudzinski.kacper.farec.App;
 import dudzinski.kacper.farec.regex.ParseTree;
 import dudzinski.kacper.farec.regex.Parser;
 import dudzinski.kacper.farec.regex.RegularExpression;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -20,12 +19,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * This is the controller for the screen used to create regular expressions.
+ * This is the controller for the view used for creating regular expressions.
+ * This view is displayed when the user wants to create a regular expression, so
+ * that it can be converted into a finite automaton. It allows the user to enter
+ * a regex string to be parsed and displayed as a parse tree.
  */
 public class CreateREScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
-    public TextField reInputField;
+    public TextField regexStringTextField;
     public ScrollPane parseTreeContainer;
     public Label infoLabel;
     public Button helpButton;
@@ -35,64 +37,95 @@ public class CreateREScreenController implements Initializable {
     private ParseTree parseTree;
 
     /**
-     * This method makes sure the input field starts off focused, and adds a listener to it so that any changes disable
-     * the convert button.
+     * Adds a listener to the regex string text field so that any changes to it
+     * disable the convert button.
      */
     public void initialize(URL location, ResourceBundle resources) {
-        // Make sure the text field starts off focused.
-        Platform.runLater(() -> reInputField.requestFocus());
-        // Disable Convert button when the text in the input field is changed.
-        reInputField.textProperty().addListener((observable, oldValue, newValue) -> convertButton.setDisable(true));
+        regexStringTextField.textProperty()
+                            .addListener(
+                                    (observable, oldValue, newValue)
+                                            -> convertButton.setDisable(true));
     }
 
     /**
-     * This method is called when the Help button is pressed. It opens a small window with help information.
+     * Opens a small window with help information. The window will block events
+     * to other application window. This method is called when the help button
+     * is pressed.
+     *
+     * @throws IOException if the view fxml file cannot be found
      */
     public void openHelpWindow() throws IOException {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Help: Regular Expressions");
-        fxmlLoader = new FXMLLoader(App.class.getResource("help_window.fxml"));
+        fxmlLoader = new FXMLLoader(App.class.getResource
+                                                     ("re_help_window.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 400, 400);
         window.setScene(scene);
         window.showAndWait();
     }
 
     /**
-     * This method is called when the Parse button is pressed. It will get the parser to parse the regular expression
-     * entered in the text field. If the expression is valid, a parse tree is built and displayed and the info label is
-     * updated accordingly. If the expression is invalid, an error message is shown and any currently displayed parse
-     * tree is removed.
+     * Parses the regex string from the regex string text field into a regular
+     * expression. If parsing is successful, a parse tree is built and
+     * displayed, and the info label is updated accordingly. If parsing is
+     * unsuccessful, an error message is shown in the info label and any
+     * currently displayed parse tree is removed. This method is called when the
+     * parse button is pressed.
      */
     public void parseRegexString() {
-        parseTreeContainer.setContent(new Label());     // Label makes sure that scroll bars disappear.
+        // Remove the current parse tree. By setting it to an empty label, it
+        // ensures the scroll bars will disappear.
+        parseTreeContainer.setContent(new Label());
+
         // Get the regex string and remove whitespace.
-        String regexString = reInputField.getText().replaceAll("\\s+", "").trim();
+        String regexString = regexStringTextField.getText()
+                                                 .replaceAll("\\s+", "")
+                                                 .trim();
         try {
+            // Parse the regex string.
             RegularExpression regularExpression = Parser.parse(regexString);
+
+            // Updated the info label and build and display the parse tree.
             infoLabel.setText("Regular expression is valid!");
             parseTree = new ParseTree(regularExpression);
-            parseTreeContainer.setContent(parseTree);
+            parseTreeContainer.setContent(parseTree.getContainer());
+
             // Reset scroll bar position.
             parseTreeContainer.setHvalue(0);
             parseTreeContainer.setVvalue(0);
+
+            // Enable the convert button.
             convertButton.setDisable(false);
         }
         catch (IllegalArgumentException e) {
+            // Update the info label.
             infoLabel.setText(e.getMessage());
+
+            // Disable the convert button.
             convertButton.setDisable(true);
         }
     }
 
     /**
-     * This method is called when the Convert button is pressed. It will change the window to the RE conversion window.
+     * Changes the view to the screen for converting a regular expression into a
+     * finite automaton and passes the parse tree to the controller of the new
+     * view. This method is called when the convert button is pressed.
+     *
+     * @throws IOException if the view fxml file cannot be found
      */
     public void openConvertREWindow() throws IOException {
-        fxmlLoader = new FXMLLoader(App.class.getResource("convert_RE_screen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), convertButton.getScene().getWidth(), convertButton.getScene().getHeight());
+        fxmlLoader = new FXMLLoader(App.class.getResource(
+                "convert_re_screen.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(),
+                                convertButton.getScene().getWidth(),
+                                convertButton.getScene().getHeight());
         Stage stage = (Stage) convertButton.getScene().getWindow();
         stage.setScene(scene);
-        ConvertREScreenController convertREScreenController = fxmlLoader.getController();
+
+        // Get the controller for the new view and pass it the parse tree.
+        ConvertREScreenController convertREScreenController =
+                fxmlLoader.getController();
         convertREScreenController.setParseTree(parseTree);
     }
 

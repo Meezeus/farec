@@ -1,6 +1,6 @@
 package dudzinski.kacper.farec.controllers;
 
-import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonBuilder;
+import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalFiniteAutomatonBuilder;
 import dudzinski.kacper.farec.regex.ParseTree;
 import dudzinski.kacper.farec.regex.ParseTreeNode;
 import dudzinski.kacper.farec.regex.Parser;
@@ -12,34 +12,43 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
- * This is the controller for the screen used to convert regular expressions into finite automata.
+ * This is the controller for the view used to convert regular expressions into
+ * finite automata. The view is split into two sections: an area for displaying
+ * finite automata on the left, and an area for displaying the parse tree on the
+ * right.
  */
 public class ConvertREScreenController implements Initializable {
 
     public HBox centralContainer;
+
     public VBox leftVBox;
     public ScrollPane finiteAutomataContainer;
     public Label explanationLabel;
+
     public VBox rightVBox;
     public ScrollPane parseTreeContainer;
     public Label regularExpressionLabel;
+
     public Label infoLabel;
     public Button prevButton;
     public Button nextButton;
 
-    private int currentPreorderIndex;   // The index of the current preorder element.
-    private int maxPreorderIndex;   // The max value of the current preorder index.
-    private ArrayList<ParseTreeNode> parseTreeNodesPreorder;    // The parse tree nodes, in preorder.
-    private ArrayList<RegularExpression> regularExpressionsPreorder;  // The regular expression components, in preorder.
+    private int currentPreorderIndex;
+    private int maxPreorderIndex;
+    private ArrayList<ParseTreeNode> parseTreeNodesPreorder;
+    private ArrayList<RegularExpression> regularExpressionsPreorder;
+    private final Color HIGHLIGHT_COLOR = Color.RED;
 
     /**
-     * This method is called at the start of the scene, and makes both VBoxes grow by equal amounts.
+     * Makes the finite automaton area and the parse tree area grow by equal
+     * amounts.
      */
     public void initialize(URL location, ResourceBundle resources) {
         HBox.setHgrow(leftVBox, Priority.ALWAYS);
@@ -47,49 +56,77 @@ public class ConvertREScreenController implements Initializable {
     }
 
     /**
-     * This method is used to pass the parse tree to this controller. It sets all the data for the controller, sets the
-     * scene elements and starts off the conversion process.
+     * Starts off the process of converting the regular expression shown in the
+     * parse tree into a finite automaton. Displays the parse tree and
+     * highlights the first parse tree node in the preorder traversal. Displays
+     * the finite automaton for the first regular expression in the preorder
+     * traversal. Sets all the labels in the view. Disables the prev button (and
+     * possibly the next button).
      *
-     * @param parseTree The parse tree created in the previous scene.
+     * @param parseTree the parse tree of the regular expression being
+     *                  converted
      */
     public void setParseTree(ParseTree parseTree) {
-        // Set the data.
-        RegularExpression regularExpression = parseTree.getRegularExpression();
-        parseTreeNodesPreorder = ParseTree.preorderTraversal(parseTree.getRoot());
-        regularExpressionsPreorder = RegularExpression.preorderTraversal(regularExpression);
+        // Get the preorder list of parse tree nodes and the preorder list of
+        // regular expressions, and set the indices accordingly.
+        parseTreeNodesPreorder = parseTree.preorderTraversal();
+        regularExpressionsPreorder = parseTree.getRegularExpression()
+                                              .preorderTraversal();
         currentPreorderIndex = 0;
         maxPreorderIndex = parseTreeNodesPreorder.size() - 1;
 
-        // Set the scene elements.
-        parseTreeContainer.setContent(parseTree);
-        regularExpressionLabel.setText("Regular Expression: " + Parser.simplifyRegexString(regularExpression.toString()));
+        // Display the parse tree and update the regular expression label.
+        parseTreeContainer.setContent(parseTree.getContainer());
+        regularExpressionLabel.setText(
+                "Regular Expression: "
+                        + Parser.simplifyRegexString(
+                        parseTree.getRegularExpression().toString()));
+
+        // Disable the prev button (and possibly the next button).
         prevButton.setDisable(true);
         if (currentPreorderIndex == maxPreorderIndex) {
             nextButton.setDisable(true);
         }
 
         // Highlight the first node in the preorder traversal of the parse tree.
-        ParseTreeNode currentParseTreeNode = parseTreeNodesPreorder.get(currentPreorderIndex);
-        currentParseTreeNode.setCircleStrokeColour("red");
+        ParseTreeNode currentParseTreeNode =
+                parseTreeNodesPreorder.get(currentPreorderIndex);
+        currentParseTreeNode.setStroke(HIGHLIGHT_COLOR);
 
-        // Set the info label with the first regular expression in the preorder traversal.
-        RegularExpression currentRegularExpression = regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText("Showing the finite automaton for " + Parser.simplifyRegexString(currentRegularExpression.toString()) + ".");
+        // Set the info label with the first regular expression in the preorder
+        // traversal.
+        RegularExpression currentRegularExpression =
+                regularExpressionsPreorder.get(currentPreorderIndex);
+        infoLabel.setText(
+                "Showing the finite automaton for "
+                        + Parser.simplifyRegexString(
+                        currentRegularExpression.toString())
+                        + ".");
 
         // Set the explanation label.
-        explanationLabel.setText(FiniteAutomatonBuilder.getExplanationText(currentRegularExpression));
+        explanationLabel.setText(
+                GraphicalFiniteAutomatonBuilder
+                        .getExplanationText(currentRegularExpression));
 
         // Display the first finite automaton.
-        finiteAutomataContainer.setContent(FiniteAutomatonBuilder.buildFiniteAutomaton(currentRegularExpression).getFiniteAutomatonPane());
+        finiteAutomataContainer.setContent(
+                GraphicalFiniteAutomatonBuilder
+                        .buildFiniteAutomaton(currentRegularExpression)
+                        .getContainer());
     }
 
     /**
-     * This method is called when the Next button is pressed. It moves onto the next step of the conversion process.
+     * Moves to the next step of the conversion process. Removes the
+     * highlighting from the current node and highlights the next node, updating
+     * the prev and next buttons accordingly. Updates all the labels in the view
+     * and displays the next finite automaton. This method is called when the
+     * next button is pressed.
      */
     public void next() {
-        // Remove highlighting from current node.
-        ParseTreeNode currentParseTreeNode = parseTreeNodesPreorder.get(currentPreorderIndex);
-        currentParseTreeNode.setCircleStrokeColour("black");
+        // Remove the highlighting from current node.
+        ParseTreeNode currentParseTreeNode =
+                parseTreeNodesPreorder.get(currentPreorderIndex);
+        currentParseTreeNode.setStroke(ParseTree.NODE_STROKE_COLOR);
 
         // Increase the index and enable/disable the buttons accordingly.
         currentPreorderIndex += 1;
@@ -101,27 +138,43 @@ public class ConvertREScreenController implements Initializable {
         }
 
         // Highlight the next node.
-        ParseTreeNode nextParseTreeNode = parseTreeNodesPreorder.get(currentPreorderIndex);
-        nextParseTreeNode.setCircleStrokeColour("red");
+        ParseTreeNode nextParseTreeNode =
+                parseTreeNodesPreorder.get(currentPreorderIndex);
+        nextParseTreeNode.setStroke(HIGHLIGHT_COLOR);
 
         // Update the info label.
-        RegularExpression nextRegularExpression = regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText("Showing the finite automaton for " + Parser.simplifyRegexString(nextRegularExpression.toString()) + ".");
+        RegularExpression nextRegularExpression =
+                regularExpressionsPreorder.get(currentPreorderIndex);
+        infoLabel.setText(
+                "Showing the finite automaton for "
+                        + Parser.simplifyRegexString(
+                        nextRegularExpression.toString())
+                        + ".");
 
         // Update the explanation label.
-        explanationLabel.setText(FiniteAutomatonBuilder.getExplanationText(nextRegularExpression));
+        explanationLabel.setText(
+                GraphicalFiniteAutomatonBuilder
+                        .getExplanationText(nextRegularExpression));
 
         // Display the next finite automaton.
-        finiteAutomataContainer.setContent(FiniteAutomatonBuilder.buildFiniteAutomaton(nextRegularExpression).getFiniteAutomatonPane());
+        finiteAutomataContainer.setContent(
+                GraphicalFiniteAutomatonBuilder
+                        .buildFiniteAutomaton(nextRegularExpression)
+                        .getContainer());
     }
 
     /**
-     * This method is called when the Previous button is pressed. It moves back to the previous step of the conversion process.
+     * Moves to the previous step of the conversion process. Removes the
+     * highlighting from the current node and highlights the previous node,
+     * updating the prev and next buttons accordingly. Updates all the labels in
+     * the view and displays the previous finite automaton. This method is
+     * called when the prev button is pressed.
      */
     public void prev() {
         // Remove highlighting from current node.
-        ParseTreeNode currentParseTreeNode = parseTreeNodesPreorder.get(currentPreorderIndex);
-        currentParseTreeNode.setCircleStrokeColour("black");
+        ParseTreeNode currentParseTreeNode =
+                parseTreeNodesPreorder.get(currentPreorderIndex);
+        currentParseTreeNode.setStroke(ParseTree.NODE_STROKE_COLOR);
 
         // Decrease the index and enable/disable the buttons accordingly.
         currentPreorderIndex -= 1;
@@ -133,18 +186,29 @@ public class ConvertREScreenController implements Initializable {
         }
 
         // Highlight the previous node.
-        ParseTreeNode previousParseTreeNode = parseTreeNodesPreorder.get(currentPreorderIndex);
-        previousParseTreeNode.setCircleStrokeColour("red");
+        ParseTreeNode previousParseTreeNode =
+                parseTreeNodesPreorder.get(currentPreorderIndex);
+        previousParseTreeNode.setStroke(HIGHLIGHT_COLOR);
 
         // Update the info label.
-        RegularExpression previousRegularExpression = regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText("Showing the finite automaton for " + Parser.simplifyRegexString(previousRegularExpression.toString()) + ".");
+        RegularExpression previousRegularExpression =
+                regularExpressionsPreorder.get(currentPreorderIndex);
+        infoLabel.setText(
+                "Showing the finite automaton for "
+                        + Parser.simplifyRegexString(
+                        previousRegularExpression.toString())
+                        + ".");
 
         // Update the explanation label.
-        explanationLabel.setText(FiniteAutomatonBuilder.getExplanationText(previousRegularExpression));
+        explanationLabel.setText(
+                GraphicalFiniteAutomatonBuilder
+                        .getExplanationText(previousRegularExpression));
 
         // Display the previous finite automaton.
-        finiteAutomataContainer.setContent(FiniteAutomatonBuilder.buildFiniteAutomaton(previousRegularExpression).getFiniteAutomatonPane());
+        finiteAutomataContainer.setContent(
+                GraphicalFiniteAutomatonBuilder
+                        .buildFiniteAutomaton(previousRegularExpression)
+                        .getContainer());
     }
 
 }
