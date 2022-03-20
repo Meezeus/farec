@@ -292,10 +292,11 @@ public class ParseTree {
     }
 
     /**
-     * Returns a preorder traversal of tree rooted at the rootNode
+     * Returns the preorder traversal of the parse tree rooted at the given
+     * parse tree node.
      *
-     * @param rootNode the root node of the tree
-     * @return the preorder traversal of the nodes in the tree
+     * @param rootNode the root parse tree node of the parse tree
+     * @return the preorder traversal of the nodes in the parse tree
      */
     private ArrayList<ParseTreeNode> preorderTraversal(ParseTreeNode rootNode) {
         // Create the list.
