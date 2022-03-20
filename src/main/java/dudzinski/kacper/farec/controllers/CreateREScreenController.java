@@ -84,7 +84,8 @@ public class CreateREScreenController implements Initializable {
                                                  .trim();
         try {
             // Parse the regex string.
-            RegularExpression regularExpression = Parser.parse(regexString);
+            RegularExpression regularExpression =
+                    Parser.parseRegexString(regexString);
 
             // Updated the info label and build and display the parse tree.
             infoLabel.setText("Regular expression is valid!");

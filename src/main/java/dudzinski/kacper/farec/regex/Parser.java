@@ -182,7 +182,7 @@ public class Parser {
      *                                  expression
      * @see #findRootIndex(String)
      */
-    public static RegularExpression parse(String regexString)
+    public static RegularExpression parseRegexString(String regexString)
             throws IllegalArgumentException {
         // Check that regex string is valid.
         Pair<Boolean, String> isValid = isValid(regexString);
@@ -217,7 +217,7 @@ public class Parser {
                     "The expression \"" + regexString + "\" contains an" +
                             " empty left operand!");
         }
-        RegularExpression leftOperand = parse(leftSubstring);
+        RegularExpression leftOperand = parseRegexString(leftSubstring);
 
         // Get the operator
         RegexOperator operator = RegexOperatorChars.getOperatorFromChar(
@@ -235,7 +235,7 @@ public class Parser {
                                 " empty right operand!");
             }
             else {
-                rightOperand = parse(regexString.substring(rootIndex + 1));
+                rightOperand = parseRegexString(regexString.substring(rootIndex + 1));
             }
         }
         // If the regex operator is STAR, there shouldn't be a right operand
@@ -269,7 +269,7 @@ public class Parser {
         // Get the regular expression represented by the regex string as a
         // string.
         String originalRegularExpressionAsString =
-                parse(regexString).toString();
+                parseRegexString(regexString).toString();
 
         int offset = 0;
         // Iterate through the regex string to find brackets to remove.
@@ -325,7 +325,7 @@ public class Parser {
                 // Get the regular expression represented by the new regex
                 // string as a string.
                 String newRegularExpressionAsString =
-                        parse(newRegexString).toString();
+                        parseRegexString(newRegexString).toString();
 
                 // If the regular expression has not changed, set the regex
                 // string to the new regex string.
