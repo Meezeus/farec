@@ -30,8 +30,6 @@ public class CreateREScreenController implements Initializable {
     public TextField regexStringTextField;
     public ScrollPane parseTreeContainer;
     public Label infoLabel;
-    public Button helpButton;
-    public Button parseButton;
     public Button convertButton;
 
     private ParseTree parseTree;
