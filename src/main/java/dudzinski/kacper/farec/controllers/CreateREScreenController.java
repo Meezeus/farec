@@ -49,7 +49,7 @@ public class CreateREScreenController implements Initializable {
 
     /**
      * Opens a small window with help information. The window will block events
-     * to other application window. This method is called when the help button
+     * to other application windows. This method is called when the help button
      * is pressed.
      *
      * @throws IOException if the view fxml file cannot be found
