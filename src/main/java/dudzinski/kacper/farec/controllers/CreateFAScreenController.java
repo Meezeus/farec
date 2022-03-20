@@ -564,7 +564,7 @@ public class CreateFAScreenController implements Initializable {
         window.setTitle("Help: Finite Automata");
         fxmlLoader = new FXMLLoader(App.class.getResource(
                 "fa_help_window.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 400, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 400, 200);
         window.setScene(scene);
         window.showAndWait();
     }

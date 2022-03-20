@@ -18,7 +18,7 @@
                 <Button fx:id="stateButton" focusTraversable="false" mnemonicParsing="false" onAction="#workModeButtonPressed" prefWidth="50.0" text="State" />
                 <Button fx:id="edgeButton" focusTraversable="false" mnemonicParsing="false" onAction="#workModeButtonPressed" prefWidth="50.0" text="Edge" />
                 <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Create a finite automaton to get started!" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#openHelpWindow" text="Help" />
+            <Button focusTraversable="false" mnemonicParsing="false" onAction="#openHelpWindow" text="Help" />
                 <Button disable="true" focusTraversable="false" mnemonicParsing="false" prefWidth="60.0" text="Convert" />
             </children>
             <padding>
