@@ -56,8 +56,8 @@ public class CreateREScreenController implements Initializable {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Help: Regular Expressions");
-        fxmlLoader = new FXMLLoader(App.class.getResource
-                                                     ("re_help_window.fxml"));
+        fxmlLoader = new FXMLLoader(App.class.getResource(
+                "re_help_window.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 400, 400);
         window.setScene(scene);
         window.showAndWait();
