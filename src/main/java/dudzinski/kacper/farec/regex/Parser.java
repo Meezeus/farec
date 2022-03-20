@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public class Parser {
 
-    private static final String alphanumericPattern = "^[a-zA-Z0-9]*$";
+    public static final String alphanumericPattern = "^[a-zA-Z0-9]*$";
     private static final String validRegexPattern = "^[a-zA-Z0-9()" +
             RegexOperatorChars.getStarOperatorChar() +
             RegexOperatorChars.getConcatenationOperatorChar() +
