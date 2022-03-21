@@ -249,6 +249,16 @@ public class SmartFiniteAutomaton {
     }
 
     /**
+     * Returns the initial state of this finite automaton. May be null if the
+     * automaton is still under construction.
+     *
+     * @return the initial state of this finite automaton
+     */
+    public SmartState getInitialState() {
+        return initialState;
+    }
+
+    /**
      * Sets the state as the final state of this finite automaton. The state is
      * updated to look like a final state. The previous final state is updated
      * to look like a normal state. A state cannot be both initial and final, so
@@ -274,6 +284,16 @@ public class SmartFiniteAutomaton {
         // Set the state as the final state.
         finalState = state;
         state.setAsFinal(true);
+    }
+
+    /**
+     * Returns the final state of this finite automaton. May be null if the
+     * automaton is still under construction.
+     *
+     * @return the final state of this finite automaton
+     */
+    public SmartState getFinalState() {
+        return finalState;
     }
 
     /**
