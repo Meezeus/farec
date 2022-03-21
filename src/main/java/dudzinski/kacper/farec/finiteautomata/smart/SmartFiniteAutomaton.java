@@ -437,4 +437,46 @@ public class SmartFiniteAutomaton {
         }
     }
 
+    /**
+     * Checks whether this finite automaton is a valid finite automaton. A valid
+     * finite automaton must have an initial state and a final state. Every
+     * state in the finite automaton must be reachable from the initial state.
+     *
+     * @return true if this finite automaton is valid, false otherwise
+     */
+    public boolean isValid() {
+        // If there is no initial state or no final state, the finite automaton
+        // is not valid.
+        if ((initialState == null) || (finalState == null)) {
+            return false;
+        }
+
+        // Get a list of all states reachable from the initial state by doing
+        // breadth-first search.
+        ArrayList<SmartState> openList = new ArrayList<>();
+        openList.add(initialState);
+        ArrayList<SmartState> closedList = new ArrayList<>();
+        while (!openList.isEmpty()) {
+            SmartState currentState = openList.remove(0);
+            closedList.add(currentState);
+            for (SmartEdge outgoingEdge : currentState.getOutgoingEdges()) {
+                SmartState child = outgoingEdge.getEndState();
+                if (!openList.contains(child) && !closedList.contains(child)) {
+                    openList.add(child);
+                }
+            }
+        }
+
+        // If there is a state that cannot be reached from the initial state,
+        // the finite automaton is not valid.
+        for (SmartState state : states) {
+            if (!closedList.contains(state)) {
+                return false;
+            }
+        }
+
+        // Otherwise, the finite automaton is valid.
+        return true;
+    }
+
 }
