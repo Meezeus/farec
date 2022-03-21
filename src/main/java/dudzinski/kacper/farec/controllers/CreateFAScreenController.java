@@ -403,6 +403,9 @@ public class CreateFAScreenController implements Initializable {
 
         // Clicking on the state
         container.setOnMousePressed(event -> {
+            // hides the context menu.
+            stateContextMenu.hide();
+
             // in MOVE mode will select it and set the offset.
             if ((workMode == WorkMode.MOVE)
                     && (event.getButton().equals(MouseButton.PRIMARY))) {
@@ -472,7 +475,6 @@ public class CreateFAScreenController implements Initializable {
                                     SmartFiniteAutomatonBuilder.EPSILON,
                                     edgeStartState);
                 }
-                setEdgeMouseControl(edge);
                 finiteAutomaton.addEdge(edge, true);
                 event.consume();
             }
@@ -546,7 +548,6 @@ public class CreateFAScreenController implements Initializable {
                 SmartState state = SmartFiniteAutomatonBuilder.createState("");
                 state.getContainer().setTranslateX(event.getX());
                 state.getContainer().setTranslateY(event.getY());
-                setStateMouseControl(state);
                 finiteAutomaton.addState(state);
             }
         });
