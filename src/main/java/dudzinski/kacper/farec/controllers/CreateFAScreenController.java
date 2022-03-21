@@ -24,25 +24,26 @@ import java.net.URL;
 import java.util.*;
 
 /**
- * This enum represents the available work modes. The work mode changes how the
- * user can interact with the finite automaton. There are three work modes:<br>
- * <ul>
- *     <li>MOVE:  allows the user to move existing states</li>
- *     <li>STATE: allows the user to create new states</li>
- *     <li>EDGE:  allows the user to create new edges</li>
- * </ul>>
- */
-enum WorkMode {
-    MOVE, STATE, EDGE
-}
-
-/**
  * This is the controller for the view used to create finite automata. This view
  * is displayed when the user wants to create a finite automaton, so that it can
  * be converted into a regular expression. It allows the user to build a finite
  * automaton by creating states and adding edges between them.
  */
 public class CreateFAScreenController implements Initializable {
+
+    /**
+     * This enum represents the available work modes. The work mode changes how
+     * the user can interact with the finite automaton. There are three work
+     * modes:<br>
+     * <ul>
+     *     <li>MOVE:  allows the user to move existing states</li>
+     *     <li>STATE: allows the user to create new states</li>
+     *     <li>EDGE:  allows the user to create new edges</li>
+     * </ul>>
+     */
+    enum WorkMode {
+        MOVE, STATE, EDGE
+    }
 
     private FXMLLoader fxmlLoader;
     public ScrollPane scrollPane;
