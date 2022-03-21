@@ -155,7 +155,8 @@ public class CreateFAScreenController implements Initializable {
 
     /**
      * Sets the current work mode to the given work mode. Highlights the work
-     * mode button and unselects the currently selected component.
+     * mode button and unselects the currently selected component. Hides any
+     * active context menus.
      *
      * @param newWorkMode the new work mode
      */
@@ -178,6 +179,11 @@ public class CreateFAScreenController implements Initializable {
                                                  BorderStrokeStyle.SOLID,
                                                  new CornerRadii(3),
                                                  BorderStroke.DEFAULT_WIDTHS)));
+
+        // Hide context menus.
+        stateContextMenu.hide();
+        edgeContextMenu.hide();
+        loopContextMenu.hide();
     }
 
     /**
