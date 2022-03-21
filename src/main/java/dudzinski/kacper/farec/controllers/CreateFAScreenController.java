@@ -2,6 +2,7 @@ package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.App;
 import dudzinski.kacper.farec.finiteautomata.smart.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -9,28 +10,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * This enum represents the available work modes. The work mode changes how the
@@ -58,6 +49,9 @@ public class CreateFAScreenController implements Initializable {
     public Button moveButton;
     public Button stateButton;
     public Button edgeButton;
+    public Label infoLabel;
+    public String infoLabelText;
+    public Button convertButton;
 
     private WorkMode workMode = WorkMode.MOVE;
     private Map<Button, WorkMode> buttonToWorkMode;
@@ -74,13 +68,16 @@ public class CreateFAScreenController implements Initializable {
             new SmartFiniteAutomaton(this);
 
     /**
-     * Sets the key-press behaviour of the scene. Sets the on-click behaviour of
-     * the finite automaton container. Sets the finite automaton container as
-     * the contents of the scroll pane. Creates the bidirectional mappings
-     * between work modes and buttons.
+     * Sets the info label. Sets the key-press behaviour of the scene. Sets the
+     * finite automaton container as the contents of the scroll pane. Creates
+     * the bidirectional mappings between work modes and buttons.
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Set the info label.
+        infoLabelText = "Create a finite automaton to get started!";
+        infoLabel.setText(infoLabelText);
+
         // Set the key-press behaviour for the scene.
         scrollPane.sceneProperty()
                   .addListener((observableScene, oldScene, newScene) -> {
@@ -88,10 +85,6 @@ public class CreateFAScreenController implements Initializable {
                           newScene.setOnKeyPressed(this::keyPressed);
                       }
                   });
-
-        // Set the on-click behaviour for the finite automaton container.
-        finiteAutomaton.getContainer()
-                       .setOnMousePressed(this::mouseClicked);
 
         // Set the finite automaton container as the content of the scroll pane.
         scrollPane.setContent(finiteAutomaton.getContainer());
@@ -115,11 +108,15 @@ public class CreateFAScreenController implements Initializable {
      * Unselects the currently selected component and removes its highlighting.
      */
     private void unselectCurrentlySelected() {
-        if (currentlySelected != null) {
+        if (currentlySelected instanceof SmartState) {
             currentlySelected.setStroke(
                     SmartFiniteAutomatonBuilder.NODE_STROKE_COLOR);
-            currentlySelected = null;
         }
+        else if (currentlySelected instanceof SmartEdge) {
+            currentlySelected.setStroke(
+                    SmartFiniteAutomatonBuilder.EDGE_STROKE_COLOR);
+        }
+        currentlySelected = null;
     }
 
     /**
@@ -213,28 +210,6 @@ public class CreateFAScreenController implements Initializable {
         }
         else if (keyEvent.getCode() == KeyCode.DIGIT3) {
             setWorkMode(WorkMode.EDGE);
-        }
-    }
-
-    /**
-     * Defines the behaviour when then there is a mouse click on the finite
-     * automaton container.
-     *
-     * @param mouseEvent the mouse click
-     */
-    public void mouseClicked(MouseEvent mouseEvent) {
-        // Unselect the currently selected component.
-        unselectCurrentlySelected();
-
-        // In STATE mode, clicking with the mouse's primary button will create a
-        // new state.
-        if ((workMode == WorkMode.STATE)
-                && (mouseEvent.getButton().equals(MouseButton.PRIMARY))) {
-            SmartState state = SmartFiniteAutomatonBuilder.createState("");
-            state.getContainer().setTranslateX(mouseEvent.getX());
-            state.getContainer().setTranslateY(mouseEvent.getY());
-            setStateMouseControl(state);
-            finiteAutomaton.addState(state);
         }
     }
 
@@ -552,6 +527,32 @@ public class CreateFAScreenController implements Initializable {
     }
 
     /**
+     * Defines the behaviour for interacting with the finite automaton container
+     * using a mouse.
+     */
+    public void setFAContainerMouseControl(
+            SmartFiniteAutomaton finiteAutomaton) {
+        // Get the finite automaton container.
+        Pane container = finiteAutomaton.getContainer();
+
+        // Clicking on the container
+        container.setOnMousePressed(event -> {
+            // will unselect the currently selected component.
+            unselectCurrentlySelected();
+
+            // in STATE mode will create a new state.
+            if ((workMode == WorkMode.STATE)
+                    && (event.getButton().equals(MouseButton.PRIMARY))) {
+                SmartState state = SmartFiniteAutomatonBuilder.createState("");
+                state.getContainer().setTranslateX(event.getX());
+                state.getContainer().setTranslateY(event.getY());
+                setStateMouseControl(state);
+                finiteAutomaton.addState(state);
+            }
+        });
+    }
+
+    /**
      * Opens a small window with help information. The window will block events
      * to other application windows. This method is called when the help button
      * is pressed.
@@ -567,6 +568,48 @@ public class CreateFAScreenController implements Initializable {
         Scene scene = new Scene(fxmlLoader.load(), 400, 200);
         window.setScene(scene);
         window.showAndWait();
+    }
+
+    /**
+     * Checks if the finite automaton is ready for conversion. If the finite
+     * automaton is ready, changes the view to the screen for converting a
+     * finite automaton into a regular expression and passes the finite
+     * automaton to the controller of the new view. If the finite automaton is
+     * not ready, displays an error message in the info label for a short time.
+     * This method is called when the convert button is pressed.
+     *
+     * @throws IOException if the view fxml file cannot be found
+     */
+    public void convert() throws IOException {
+        // If the finite automaton is valid, change views and pass the finite
+        // automaton to the new controller.
+        if (finiteAutomaton.isValid()) {
+            fxmlLoader = new FXMLLoader(App.class.getResource(
+                    "convert_fa_screen.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(),
+                                    convertButton.getScene().getWidth(),
+                                    convertButton.getScene().getHeight());
+            Stage stage = (Stage) convertButton.getScene().getWindow();
+            stage.setScene(scene);
+
+            // Get the controller for the new view and pass it the finite
+            // automaton.
+            ConvertFAScreenController convertFAScreenController =
+                    fxmlLoader.getController();
+            convertFAScreenController.setFiniteAutomaton(finiteAutomaton);
+        }
+        // If the finite automaton is not valid, show an error message in the
+        // info label for a short time.
+        else {
+            infoLabel.setText("The finite automaton is not valid!");
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> infoLabel.setText(infoLabelText));
+                }
+            }, 5000);
+        }
     }
 
 }
