@@ -1,5 +1,6 @@
 package dudzinski.kacper.farec.finiteautomata.smart;
 
+import dudzinski.kacper.farec.controllers.ConvertFAScreenController;
 import dudzinski.kacper.farec.controllers.CreateFAScreenController;
 import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalFiniteAutomaton;
 import javafx.scene.layout.Pane;
@@ -26,8 +27,10 @@ import java.util.Iterator;
  */
 public class SmartFiniteAutomaton {
 
-    private final CreateFAScreenController controller;
+    private final CreateFAScreenController createFAController;
+    private ConvertFAScreenController convertFAController;
     private boolean underConstruction = true;
+
     private final Pane container = new Pane();
     private final ArrayList<SmartState> states = new ArrayList<>();
     private final ArrayList<SmartEdge> edges = new ArrayList<>();
@@ -35,15 +38,17 @@ public class SmartFiniteAutomaton {
     private SmartState finalState;
 
     /**
-     * Creates a new finite automaton and sets the controller. The controller is
-     * during construction of this finite automaton, to define how the user can
-     * interact with the components.
+     * Creates a new finite automaton and sets the construction controller. The
+     * controller is used during construction of this finite automaton, to
+     * define how the user can interact with the components. Also sets the
+     * finite automaton container user interaction behaviour.
      *
-     * @param controller the controller for finite automaton construction
-     *                   window
+     * @param createFAController the controller for finite automaton
+     *                           construction window
      */
-    public SmartFiniteAutomaton(CreateFAScreenController controller) {
-        this.controller = controller;
+    public SmartFiniteAutomaton(CreateFAScreenController createFAController) {
+        this.createFAController = createFAController;
+        createFAController.setFAContainerMouseControl(this);
     }
 
     /**
@@ -78,18 +83,25 @@ public class SmartFiniteAutomaton {
     /**
      * Adds the given state to this finite automaton. The state is added to the
      * list of states and its container is added to the container of this finite
-     * automaton. If this finite automaton is still under construction, the
-     * controller is used to define the mouse control behaviour for the state.
-     * The minimum size of the finite automaton container is also updated.
+     * automaton. The user interaction behaviour for the state is set. The
+     * minimum size of the finite automaton container is also updated.
      *
      * @param state the state to add to this finite automaton
      */
     public void addState(SmartState state) {
+        // Add the state.
         states.add(state);
         container.getChildren().add(state.getContainer());
+
+        // Set the user interaction behaviour.
         if (underConstruction) {
-            controller.setStateMouseControl(state);
+            createFAController.setStateMouseControl(state);
         }
+        else {
+            convertFAController.setStateMouseControl(state);
+        }
+
+        // Update the minimum size of the finite automaton container.
         updateContainerSize();
     }
 
@@ -139,9 +151,8 @@ public class SmartFiniteAutomaton {
      * automaton. If there is already an edge that has the same start state and
      * end state, it is replaced by the new edge. The list of outgoing edges of
      * the start state and the list of incoming edges of the end state is
-     * updated to reflect the addition of the edge. If this finite automaton is
-     * still under construction, the controller is used to define the mouse
-     * control behaviour for the edge. If adding this edge results in symmetric
+     * updated to reflect the addition of the edge. The user interaction
+     * behaviour for the edge is set. If adding this edge results in symmetric
      * edges between two states (edges in both directions), the two symmetric
      * edges are replaced with curved edges.
      *
@@ -169,8 +180,13 @@ public class SmartFiniteAutomaton {
         // Add the edge.
         edges.add(edge);
         container.getChildren().add(0, edge.getContainer());
+
+        // Set the user interaction behaviour.
         if (underConstruction) {
-            controller.setEdgeMouseControl(edge);
+            createFAController.setEdgeMouseControl(edge);
+        }
+        else {
+            convertFAController.setEdgeMouseControl(edge);
         }
 
         // Check for symmetric edges.
@@ -477,6 +493,26 @@ public class SmartFiniteAutomaton {
 
         // Otherwise, the finite automaton is valid.
         return true;
+    }
+
+    /**
+     * Finalises the construction of this finite automaton by changing its user
+     * interaction behaviour to that of the controller for the window used to
+     * convert finite automata into regular expressions.
+     *
+     * @param convertFAController the controller for the window used to convert
+     *                            finite automata into regular expressions
+     */
+    public void finalise(ConvertFAScreenController convertFAController) {
+        underConstruction = false;
+        this.convertFAController = convertFAController;
+        convertFAController.setFAContainerMouseControl(this);
+        for (SmartState state : states) {
+            convertFAController.setStateMouseControl(state);
+        }
+        for (SmartEdge edge : edges) {
+            convertFAController.setEdgeMouseControl(edge);
+        }
     }
 
 }
