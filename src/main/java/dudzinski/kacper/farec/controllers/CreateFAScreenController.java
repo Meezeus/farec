@@ -589,6 +589,9 @@ public class CreateFAScreenController implements Initializable {
      * @throws IOException if the view fxml file cannot be found
      */
     public void convert() throws IOException {
+        // Unselect the currently selected component.
+        unselectCurrentlySelected();
+
         // If the finite automaton is valid, change views and pass the finite
         // automaton to the new controller.
         if (finiteAutomaton.isValid()) {
