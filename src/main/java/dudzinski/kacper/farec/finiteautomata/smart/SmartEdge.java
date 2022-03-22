@@ -79,6 +79,15 @@ public class SmartEdge extends SmartComponent {
     }
 
     /**
+     * Returns the stroke colour of this edge.
+     *
+     * @return the stroke colour
+     */
+    public Paint getStroke() {
+        return edgeShape.getStroke();
+    }
+
+    /**
      * Sets the text of this edge's label.
      *
      * @param labelText the new text of the label

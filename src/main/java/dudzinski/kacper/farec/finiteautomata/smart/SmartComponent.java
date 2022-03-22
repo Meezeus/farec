@@ -28,6 +28,13 @@ public abstract class SmartComponent {
     public abstract void setStroke(Paint paint);
 
     /**
+     * Returns the stroke colour of this smart component.
+     *
+     * @return the stroke colour
+     */
+    public abstract Paint getStroke();
+
+    /**
      * Sets the text of this smart component's label.
      *
      * @param labelText the new text of the label

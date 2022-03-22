@@ -66,6 +66,15 @@ public class SmartState extends SmartComponent {
     }
 
     /**
+     * Returns the stroke colour of this state.
+     *
+     * @return the stroke colour
+     */
+    public Paint getStroke() {
+        return circle.getStroke();
+    }
+
+    /**
      * Sets the text of this state's label.
      *
      * @param labelText the new text of the label
