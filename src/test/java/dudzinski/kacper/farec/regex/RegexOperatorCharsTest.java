@@ -1,7 +1,5 @@
 package dudzinski.kacper.farec.regex;
 
-import dudzinski.kacper.farec.regex.RegexOperator;
-import dudzinski.kacper.farec.regex.RegexOperatorChars;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -104,7 +102,7 @@ public class RegexOperatorCharsTest {
     @Nested
     @DisplayName("Getting the char from an operator returns the corresponding" +
             " char when the operator is")
-    class getCharFromOperatorTest {
+    class GetCharFromOperatorTest {
         @Test
         @DisplayName("STAR")
         void test1() {
@@ -139,10 +137,10 @@ public class RegexOperatorCharsTest {
      */
     @Nested
     @DisplayName("Getting an operator from a char")
-    class getOperatorFromCharTest {
+    class GetOperatorFromCharTest {
         @Nested
         @DisplayName("returns the correct operator when the char is")
-        class getOperatorFromCharPositiveTest {
+        class GetOperatorFromCharPositiveTest {
             @Test
             @DisplayName("*")
             void test1() {
@@ -176,7 +174,7 @@ public class RegexOperatorCharsTest {
 
         @Nested
         @DisplayName("throws an error when the char is")
-        class getOperatorFromCharNegativeTest {
+        class GetOperatorFromCharNegativeTest {
             @Test
             @DisplayName("not linked to any operator")
             void test1() {
