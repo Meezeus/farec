@@ -1,6 +1,5 @@
-package dudzinski.kacper.farec;
+package dudzinski.kacper.farec.regex;
 
-import dudzinski.kacper.farec.regex.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
