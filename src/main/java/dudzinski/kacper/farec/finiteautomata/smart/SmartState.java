@@ -75,6 +75,16 @@ public class SmartState extends SmartComponent {
     }
 
     /**
+     * Sets the fill colour of this state. The fill colour is applied to the
+     * state circle.
+     *
+     * @param paint the new fill colour
+     */
+    public void setFill(Paint paint) {
+        circle.setFill(paint);
+    }
+
+    /**
      * Returns whether this state is marked as an initial state.
      *
      * @return true if this state is marked as an initial state, false otherwise
