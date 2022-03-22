@@ -363,6 +363,7 @@ public class SmartFiniteAutomaton {
                             edge1.getLabelText(),
                             edge1.getStartState(),
                             edge1.getEndState());
+            curvedEdge1.setStroke(edge1.getStroke());
             addEdge(curvedEdge1, false);
 
             // Remove the existing edge.
@@ -374,6 +375,7 @@ public class SmartFiniteAutomaton {
                             edge2.getLabelText(),
                             edge2.getStartState(),
                             edge2.getEndState());
+            curvedEdge2.setStroke(edge2.getStroke());
             addEdge(curvedEdge2, false);
         }
     }
@@ -414,6 +416,7 @@ public class SmartFiniteAutomaton {
                         curvedEdge1.getLabelText(),
                         curvedEdge1.getStartState(),
                         curvedEdge1.getEndState());
+                edge1.setStroke(curvedEdge1.getStroke());
                 addEdge(edge1, false);
             }
 
@@ -427,6 +430,7 @@ public class SmartFiniteAutomaton {
                         curvedEdge2.getLabelText(),
                         curvedEdge2.getStartState(),
                         curvedEdge2.getEndState());
+                edge2.setStroke(curvedEdge2.getStroke());
                 addEdge(edge2, false);
             }
         }
