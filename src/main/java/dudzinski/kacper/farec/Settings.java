@@ -6,6 +6,6 @@ package dudzinski.kacper.farec;
 public abstract class Settings {
 
     public static final String EMPTY_STRING = "\u03B5";
-    public static final String EMPTY_SET = "{}";
+    public static final String EMPTY_SET = "\u00F8";
 
 }
