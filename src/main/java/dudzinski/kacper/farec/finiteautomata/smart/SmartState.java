@@ -51,6 +51,7 @@ public class SmartState extends SmartComponent {
      *
      * @return the container of this state
      */
+    @Override
     public Group getContainer() {
         return container;
     }
@@ -61,6 +62,7 @@ public class SmartState extends SmartComponent {
      *
      * @param paint the new stroke colour
      */
+    @Override
     public void setStroke(Paint paint) {
         circle.setStroke(paint);
     }
@@ -70,6 +72,7 @@ public class SmartState extends SmartComponent {
      *
      * @return the stroke colour
      */
+    @Override
     public Paint getStroke() {
         return circle.getStroke();
     }
@@ -79,6 +82,7 @@ public class SmartState extends SmartComponent {
      *
      * @param labelText the new text of the label
      */
+    @Override
     public void setLabelText(String labelText) {
         label.setText(labelText);
     }

@@ -63,6 +63,7 @@ public class SmartEdge extends SmartComponent {
      *
      * @return the container of this edge
      */
+    @Override
     public Group getContainer() {
         return container;
     }
@@ -73,6 +74,7 @@ public class SmartEdge extends SmartComponent {
      *
      * @param paint the new stroke colour
      */
+    @Override
     public void setStroke(Paint paint) {
         edgeShape.setStroke(paint);
         arrowhead.setStroke(paint);
@@ -83,6 +85,7 @@ public class SmartEdge extends SmartComponent {
      *
      * @return the stroke colour
      */
+    @Override
     public Paint getStroke() {
         return edgeShape.getStroke();
     }
@@ -92,6 +95,7 @@ public class SmartEdge extends SmartComponent {
      *
      * @param labelText the new text of the label
      */
+    @Override
     public void setLabelText(String labelText) {
         label.setText(labelText);
     }

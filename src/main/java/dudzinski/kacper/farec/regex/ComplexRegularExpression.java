@@ -39,6 +39,42 @@ public class ComplexRegularExpression extends RegularExpression {
     }
 
     /**
+     * Returns the string representation of this regular expression. The string
+     * representation of a complex regular expression is the left operand in
+     * brackets, followed by the operator symbol, followed by the right operand
+     * in brackets. If the right operand is null, it is not included.
+     *
+     * @return the string representation of this regular expression
+     */
+    @Override
+    public String toString() {
+        String regexString = "(" + leftOperand + ")"
+                + RegularExpressionSettings.getCharFromOperator(operator);
+        if (rightOperand != null) {
+            regexString += "(" + rightOperand + ")";
+        }
+        return regexString;
+    }
+
+    /**
+     * Returns the depth of this regular expression. The depth of a complex
+     * regular expression is the max of the depth of it's two operands plus 1.
+     *
+     * @return the depth of this regular expression
+     */
+    @Override
+    public int getDepth() {
+        if (operator == RegexOperator.STAR) {
+            return leftOperand.getDepth() + 1;
+        }
+        else {
+            return Math.max(
+                    leftOperand.getDepth(),
+                    rightOperand.getDepth()) + 1;
+        }
+    }
+
+    /**
      * Returns the left operand of this regular expression.
      *
      * @return the left operand of this regular expression
@@ -65,38 +101,4 @@ public class ComplexRegularExpression extends RegularExpression {
         return rightOperand;
     }
 
-    /**
-     * Returns the depth of this regular expression. The depth of a complex
-     * regular expression is the max of the depth of it's two operands plus 1.
-     *
-     * @return the depth of this regular expression
-     */
-    public int getDepth() {
-        if (operator == RegexOperator.STAR) {
-            return leftOperand.getDepth() + 1;
-        }
-        else {
-            return Math.max(
-                    leftOperand.getDepth(),
-                    rightOperand.getDepth()) + 1;
-        }
-    }
-
-    /**
-     * Returns the string representation of this regular expression. The string
-     * representation of a complex regular expression is the left operand in
-     * brackets, followed by the operator symbol, followed by the right operand
-     * in brackets. If the right operand is null, it is not included.
-     *
-     * @return the string representation of this regular expression
-     */
-    @Override
-    public String toString() {
-        String regexString = "(" + leftOperand + ")"
-                + RegularExpressionSettings.getCharFromOperator(operator);
-        if (rightOperand != null) {
-            regexString += "(" + rightOperand + ")";
-        }
-        return regexString;
-    }
 }

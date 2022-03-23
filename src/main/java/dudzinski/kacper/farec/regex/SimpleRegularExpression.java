@@ -21,24 +21,6 @@ public class SimpleRegularExpression extends RegularExpression {
     }
 
     /**
-     * Returns the symbol of this regular expression.
-     *
-     * @return the symbol of this regular expression
-     */
-    public char getSymbol() {
-        return symbol;
-    }
-
-    /**
-     * Returns the depth of this regular expression (0).
-     *
-     * @return the depth of this regular expression
-     */
-    public int getDepth() {
-        return 0;
-    }
-
-    /**
      * Returns the string representation of this regular expression. The string
      * representation of a simple regular expression is simply the symbol.
      *
@@ -47,6 +29,25 @@ public class SimpleRegularExpression extends RegularExpression {
     @Override
     public String toString() {
         return String.valueOf(symbol);
+    }
+
+    /**
+     * Returns the depth of this regular expression (0).
+     *
+     * @return the depth of this regular expression
+     */
+    @Override
+    public int getDepth() {
+        return 0;
+    }
+
+    /**
+     * Returns the symbol of this regular expression.
+     *
+     * @return the symbol of this regular expression
+     */
+    public char getSymbol() {
+        return symbol;
     }
 
 }
