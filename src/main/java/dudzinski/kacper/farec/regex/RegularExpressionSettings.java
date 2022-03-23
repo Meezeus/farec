@@ -47,6 +47,8 @@ public abstract class RegularExpressionSettings extends Settings {
     public static String getValidRegexStringPattern() {
         return "^[" +
                 validRegexOperands +
+                EMPTY_STRING +
+                EMPTY_SET +
                 starOperatorChar +
                 concatenationOperatorChar +
                 unionOperatorChar +
@@ -73,8 +75,8 @@ public abstract class RegularExpressionSettings extends Settings {
     public static String getValidRegexOperandPattern() {
         return "^[" +
                 validRegexOperands +
-                Settings.EMPTY_STRING +
-                Settings.EMPTY_SET +
+                EMPTY_STRING +
+                EMPTY_SET +
                 "]*$";
     }
 
