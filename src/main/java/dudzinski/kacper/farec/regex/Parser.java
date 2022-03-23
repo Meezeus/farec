@@ -13,29 +13,22 @@ import java.util.Objects;
  */
 public class Parser {
 
-    public static final String alphanumericPattern = "^[a-zA-Z0-9]*$";
-    private static final String validRegexPattern = "^[a-zA-Z0-9()" +
-            RegexOperatorChars.getStarOperatorChar() +
-            RegexOperatorChars.getConcatenationOperatorChar() +
-            RegexOperatorChars.getUnionOperatorChar() +
-            "]*$";
-
     /**
      * Tests if a string is a valid regex string. A valid regex string contains
-     * only alphanumeric characters, brackets and regex operators. The number
-     * and placement of brackets must be valid. This method DOES NOT test if
-     * this string represents a valid regular expression.
+     * only regex operands, brackets and regex operators. The number and
+     * placement of brackets must be valid. This method DOES NOT test if this
+     * string represents a valid regular expression.
      *
      * @param regexString the regex string to test for validity
      * @return a pair (K, V) where K is a boolean representing whether the regex
      * string is valid, and V is an error message in the case that it is not
      */
     public static Pair<Boolean, String> isValid(String regexString) {
-        // Check that string contains only alphanumeric characters and
-        // regex operators.
-        if (!regexString.matches(validRegexPattern)) {
+        // Check that string contains only regex operands and regex operators.
+        if (!regexString.matches(
+                RegularExpressionSettings.getValidRegexStringPattern())) {
             return new Pair<>(false, "Regular expressions can only contain" +
-                    " alphanumeric characters and operators!");
+                    " regex operands and regex operators!");
         }
 
         // Check that the number and placement of brackets is valid.
@@ -135,19 +128,19 @@ public class Parser {
             }
             else if ((depth == 0)
                     && (unionIndex == -1)
-                    && (currentChar == RegexOperatorChars
+                    && (currentChar == RegularExpressionSettings
                     .getUnionOperatorChar())) {
                 unionIndex = index;
             }
             else if ((depth == 0)
                     && (concatenationIndex == -1)
-                    && (currentChar == RegexOperatorChars
+                    && (currentChar == RegularExpressionSettings
                     .getConcatenationOperatorChar())) {
                 concatenationIndex = index;
             }
             else if ((depth == 0)
                     && (starIndex == -1)
-                    && (currentChar == RegexOperatorChars
+                    && (currentChar == RegularExpressionSettings
                     .getStarOperatorChar())) {
                 starIndex = index;
             }
@@ -161,13 +154,14 @@ public class Parser {
         else if (concatenationIndex != -1) {
             return concatenationIndex;
         }
-        else if (starIndex != -1) {
-            return starIndex;
-        }
-        // If no regex operators were found at the root, return -1.
-        else {
-            return -1;
-        }
+        else //noinspection RedundantIfStatement
+            if (starIndex != -1) {
+                return starIndex;
+            }
+            // If no regex operators were found at the root, return -1.
+            else {
+                return -1;
+            }
     }
 
     /**
@@ -195,10 +189,12 @@ public class Parser {
             regexString = removeOuterBrackets(regexString);
         }
 
-        // If the regex string is a single alphanumeric character, it represents
-        // a simple regular expression.
+        // If the regex string is a single regex operand character,
+        // it represents a simple regular expression.
         if ((regexString.length() == 1)
-                && (regexString.matches(alphanumericPattern))) {
+                && (regexString.matches(
+                RegularExpressionSettings.getValidRegexOperandPattern()
+        ))) {
             return new SimpleRegularExpression(regexString.charAt(0));
         }
 
@@ -220,7 +216,7 @@ public class Parser {
         RegularExpression leftOperand = parseRegexString(leftSubstring);
 
         // Get the operator
-        RegexOperator operator = RegexOperatorChars.getOperatorFromChar(
+        RegexOperator operator = RegularExpressionSettings.getOperatorFromChar(
                 regexString.charAt(rootIndex));
 
         // Parse the right operand substring, if it exists.

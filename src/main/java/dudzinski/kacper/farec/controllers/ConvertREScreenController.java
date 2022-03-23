@@ -1,10 +1,7 @@
 package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalFiniteAutomatonBuilder;
-import dudzinski.kacper.farec.regex.ParseTree;
-import dudzinski.kacper.farec.regex.ParseTreeNode;
-import dudzinski.kacper.farec.regex.Parser;
-import dudzinski.kacper.farec.regex.RegularExpression;
+import dudzinski.kacper.farec.regex.*;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,17 +9,20 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
 
 /**
  * This is the controller for the view used to convert regular expressions into
  * finite automata. The view is split into two sections: an area for displaying
  * finite automata on the left, and an area for displaying the parse tree on the
  * right.
+ *
+ * @see RegularExpressionSettings
  */
 public class ConvertREScreenController implements Initializable {
 
@@ -44,7 +44,6 @@ public class ConvertREScreenController implements Initializable {
     private int maxPreorderIndex;
     private ArrayList<ParseTreeNode> parseTreeNodesPreorder;
     private ArrayList<RegularExpression> regularExpressionsPreorder;
-    private final Color HIGHLIGHT_COLOR = Color.RED;
 
     /**
      * Makes the finite automaton area and the parse tree area grow by equal
@@ -91,7 +90,7 @@ public class ConvertREScreenController implements Initializable {
         // Highlight the first node in the preorder traversal of the parse tree.
         ParseTreeNode currentParseTreeNode =
                 parseTreeNodesPreorder.get(currentPreorderIndex);
-        currentParseTreeNode.setStroke(HIGHLIGHT_COLOR);
+        currentParseTreeNode.setStroke(NODE_STROKE_HIGHLIGHT_COLOR);
 
         // Set the info label with the first regular expression in the preorder
         // traversal.
@@ -126,7 +125,7 @@ public class ConvertREScreenController implements Initializable {
         // Remove the highlighting from current node.
         ParseTreeNode currentParseTreeNode =
                 parseTreeNodesPreorder.get(currentPreorderIndex);
-        currentParseTreeNode.setStroke(ParseTree.NODE_STROKE_COLOR);
+        currentParseTreeNode.setStroke(NODE_STROKE_COLOR);
 
         // Increase the index and enable/disable the buttons accordingly.
         currentPreorderIndex += 1;
@@ -140,7 +139,7 @@ public class ConvertREScreenController implements Initializable {
         // Highlight the next node.
         ParseTreeNode nextParseTreeNode =
                 parseTreeNodesPreorder.get(currentPreorderIndex);
-        nextParseTreeNode.setStroke(HIGHLIGHT_COLOR);
+        nextParseTreeNode.setStroke(NODE_STROKE_HIGHLIGHT_COLOR);
 
         // Update the info label.
         RegularExpression nextRegularExpression =
@@ -174,7 +173,7 @@ public class ConvertREScreenController implements Initializable {
         // Remove highlighting from current node.
         ParseTreeNode currentParseTreeNode =
                 parseTreeNodesPreorder.get(currentPreorderIndex);
-        currentParseTreeNode.setStroke(ParseTree.NODE_STROKE_COLOR);
+        currentParseTreeNode.setStroke(NODE_STROKE_COLOR);
 
         // Decrease the index and enable/disable the buttons accordingly.
         currentPreorderIndex -= 1;
@@ -188,7 +187,7 @@ public class ConvertREScreenController implements Initializable {
         // Highlight the previous node.
         ParseTreeNode previousParseTreeNode =
                 parseTreeNodesPreorder.get(currentPreorderIndex);
-        previousParseTreeNode.setStroke(HIGHLIGHT_COLOR);
+        previousParseTreeNode.setStroke(NODE_STROKE_HIGHLIGHT_COLOR);
 
         // Update the info label.
         RegularExpression previousRegularExpression =

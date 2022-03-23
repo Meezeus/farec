@@ -5,8 +5,8 @@ import java.util.ArrayList;
 /**
  * This abstract class represents a regular expression (regex). A regular
  * expression is a pattern consisting of regex operators applied to operands.
- * Operators are special symbols while operands are other regular expressions or
- * alphanumeric characters.
+ * Operators are special symbols while operands symbols from the alphabet as
+ * well as the empty string symbol and the empty set symbol.
  *
  * @see SimpleRegularExpression
  * @see ComplexRegularExpression

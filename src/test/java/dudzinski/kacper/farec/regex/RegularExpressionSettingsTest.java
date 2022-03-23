@@ -5,9 +5,9 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Test class for the {@link RegexOperatorChars} class and its methods.
+ * Test class for the {@link RegularExpressionSettings} class and its methods.
  */
-public class RegexOperatorCharsTest {
+public class RegularExpressionSettingsTest {
 
     /**
      * Make sure the operators are set to their default symbols before each
@@ -15,13 +15,16 @@ public class RegexOperatorCharsTest {
      */
     @BeforeEach
     void resetOperatorCharsBefore() {
-        RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '*');
-        RegexOperatorChars.setOperatorChar(RegexOperator.UNION, '+');
-        RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '|');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.STAR, '*');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.UNION, '+');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.CONCATENATION, '|');
     }
 
     /**
-     * Test class for the {@link RegexOperatorChars#setOperatorChar(RegexOperator,
+     * Test class for the {@link RegularExpressionSettings#setOperatorChar(RegexOperator,
      * char)} method.
      */
     @Nested
@@ -34,7 +37,7 @@ public class RegexOperatorCharsTest {
             @DisplayName("STAR as ^")
             void test1() {
                 boolean result =
-                        RegexOperatorChars.setOperatorChar(
+                        RegularExpressionSettings.setOperatorChar(
                                 RegexOperator.STAR, '^');
                 assertTrue(result);
             }
@@ -43,7 +46,7 @@ public class RegexOperatorCharsTest {
             @DisplayName("CONCATENATION as ,")
             void test2() {
                 boolean result =
-                        RegexOperatorChars.setOperatorChar(
+                        RegularExpressionSettings.setOperatorChar(
                                 RegexOperator.CONCATENATION, ',');
                 assertTrue(result);
             }
@@ -52,7 +55,7 @@ public class RegexOperatorCharsTest {
             @DisplayName("UNION as ?")
             void test3() {
                 boolean result =
-                        RegexOperatorChars.setOperatorChar(
+                        RegularExpressionSettings.setOperatorChar(
                                 RegexOperator.UNION, '?');
                 assertTrue(result);
             }
@@ -65,7 +68,7 @@ public class RegexOperatorCharsTest {
             @DisplayName("CONCATENATION as /")
             void test1() {
                 boolean result =
-                        RegexOperatorChars.setOperatorChar(
+                        RegularExpressionSettings.setOperatorChar(
                                 RegexOperator.CONCATENATION, '/');
                 assertFalse(result);
             }
@@ -73,10 +76,10 @@ public class RegexOperatorCharsTest {
             @Test
             @DisplayName("CONCATENATION as ! when ! is already linked to STAR")
             void test2() {
-                RegexOperatorChars.setOperatorChar(
+                RegularExpressionSettings.setOperatorChar(
                         RegexOperator.STAR, '!');
                 boolean result =
-                        RegexOperatorChars.setOperatorChar(
+                        RegularExpressionSettings.setOperatorChar(
                                 RegexOperator.CONCATENATION, '!');
                 assertFalse(result);
             }
@@ -85,10 +88,10 @@ public class RegexOperatorCharsTest {
             @DisplayName("CONCATENATION as ! when ! is already linked to" +
                     " CONCATENATION")
             void test3() {
-                RegexOperatorChars.setOperatorChar(
+                RegularExpressionSettings.setOperatorChar(
                         RegexOperator.CONCATENATION, '!');
                 boolean result =
-                        RegexOperatorChars.setOperatorChar(
+                        RegularExpressionSettings.setOperatorChar(
                                 RegexOperator.CONCATENATION, '!');
                 assertFalse(result);
             }
@@ -96,7 +99,7 @@ public class RegexOperatorCharsTest {
     }
 
     /**
-     * Test class for the {@link RegexOperatorChars#getCharFromOperator(RegexOperator)}
+     * Test class for the {@link RegularExpressionSettings#getCharFromOperator(RegexOperator)}
      * method.
      */
     @Nested
@@ -108,7 +111,7 @@ public class RegexOperatorCharsTest {
         void test1() {
             RegexOperator regexOperator = RegexOperator.STAR;
             char regexOperatorChar =
-                    RegexOperatorChars.getCharFromOperator(regexOperator);
+                    RegularExpressionSettings.getCharFromOperator(regexOperator);
             assertEquals('*', regexOperatorChar);
         }
 
@@ -117,7 +120,7 @@ public class RegexOperatorCharsTest {
         void test2() {
             RegexOperator regexOperator = RegexOperator.CONCATENATION;
             char regexOperatorChar =
-                    RegexOperatorChars.getCharFromOperator(regexOperator);
+                    RegularExpressionSettings.getCharFromOperator(regexOperator);
             assertEquals('|', regexOperatorChar);
         }
 
@@ -126,13 +129,13 @@ public class RegexOperatorCharsTest {
         void test3() {
             RegexOperator regexOperator = RegexOperator.UNION;
             char regexOperatorChar =
-                    RegexOperatorChars.getCharFromOperator(regexOperator);
+                    RegularExpressionSettings.getCharFromOperator(regexOperator);
             assertEquals('+', regexOperatorChar);
         }
     }
 
     /**
-     * Test class for the {@link RegexOperatorChars#getOperatorFromChar(char)}
+     * Test class for the {@link RegularExpressionSettings#getOperatorFromChar(char)}
      * method.
      */
     @Nested
@@ -146,7 +149,7 @@ public class RegexOperatorCharsTest {
             void test1() {
                 char regexOperatorChar = '*';
                 RegexOperator regexOperator =
-                        RegexOperatorChars.getOperatorFromChar(
+                        RegularExpressionSettings.getOperatorFromChar(
                                 regexOperatorChar);
                 assertEquals(RegexOperator.STAR, regexOperator);
             }
@@ -156,7 +159,7 @@ public class RegexOperatorCharsTest {
             void test2() {
                 char regexOperatorChar = '|';
                 RegexOperator regexOperator =
-                        RegexOperatorChars.getOperatorFromChar(
+                        RegularExpressionSettings.getOperatorFromChar(
                                 regexOperatorChar);
                 assertEquals(RegexOperator.CONCATENATION, regexOperator);
             }
@@ -166,7 +169,7 @@ public class RegexOperatorCharsTest {
             void test3() {
                 char regexOperatorChar = '+';
                 RegexOperator regexOperator =
-                        RegexOperatorChars.getOperatorFromChar(
+                        RegularExpressionSettings.getOperatorFromChar(
                                 regexOperatorChar);
                 assertEquals(RegexOperator.UNION, regexOperator);
             }
@@ -175,13 +178,15 @@ public class RegexOperatorCharsTest {
         @Nested
         @DisplayName("throws an error when the char is")
         class GetOperatorFromCharNegativeTest {
+            @SuppressWarnings("ResultOfMethodCallIgnored")
             @Test
             @DisplayName("not linked to any operator")
             void test1() {
                 char regexOperatorChar = ',';
                 assertThrows(IllegalArgumentException.class,
-                             () -> RegexOperatorChars.getOperatorFromChar(
-                                     regexOperatorChar));
+                             () -> RegularExpressionSettings
+                                     .getOperatorFromChar(
+                                             regexOperatorChar));
             }
         }
     }
@@ -192,9 +197,12 @@ public class RegexOperatorCharsTest {
      */
     @AfterEach
     void resetOperatorCharsAfter() {
-        RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '*');
-        RegexOperatorChars.setOperatorChar(RegexOperator.UNION, '+');
-        RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '|');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.STAR, '*');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.UNION, '+');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.CONCATENATION, '|');
     }
 
 }

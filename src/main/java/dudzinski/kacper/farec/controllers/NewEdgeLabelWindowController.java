@@ -1,7 +1,6 @@
 package dudzinski.kacper.farec.controllers;
 
-import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonBuilder;
-import dudzinski.kacper.farec.regex.Parser;
+import dudzinski.kacper.farec.regex.RegularExpressionSettings;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -10,15 +9,17 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static dudzinski.kacper.farec.Settings.EMPTY_STRING;
+
 /**
  * This is the controller for the new edge label window. The new edge label
  * window is displayed when the user wants to rename an edge. It contains a text
  * field where the user can enter the new text for the edge label and a submit
- * button. There is also an epsilon button for selecting the epsilon character
- * as the new edge text.
+ * button. There is also an empty string button for selecting the empty string
+ * character as the new edge text.
  * <p>
  * There are restrictions on what the label on an edge may be. An edge label
- * must be a single alphanumeric character or the epsilon character.
+ * must be a valid regex operand.
  */
 public class NewEdgeLabelWindowController implements Initializable {
 
@@ -41,9 +42,11 @@ public class NewEdgeLabelWindowController implements Initializable {
                      // Check if the text is valid and enable/disable the submit
                      // button accordingly.
                      String text = textField.getText();
-                     if (text.length() == 1
+                     //noinspection RedundantIfStatement
+                     if ((text.length() == 1)
                              && text.matches(
-                             Parser.alphanumericPattern)) {
+                             RegularExpressionSettings
+                                     .getValidRegexOperandPattern())) {
                          submitButton.setDisable(false);
                      }
                      else {
@@ -53,17 +56,17 @@ public class NewEdgeLabelWindowController implements Initializable {
     }
 
     /**
-     * Sets the users choice of text as the epsilon character, and then calls
-     * {@link #submit()}.
+     * Sets the users choice of text as the empty string character, and then
+     * calls {@link #submit()}.
      */
-    public void epsilon() {
-        textField.setText(FiniteAutomatonBuilder.EPSILON);
+    public void emptyString() {
+        textField.setText(EMPTY_STRING);
         submit();
     }
 
     /**
      * Saves the users choice of text and closes the window. This method is
-     * called when the epsilon or submit button is pressed.
+     * called when the empty string or submit button is pressed.
      */
     public void submit() {
         newEdgeLabelText = textField.getText();

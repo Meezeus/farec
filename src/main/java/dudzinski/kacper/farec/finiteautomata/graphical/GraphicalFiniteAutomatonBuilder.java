@@ -1,6 +1,6 @@
 package dudzinski.kacper.farec.finiteautomata.graphical;
 
-import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonBuilder;
+import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings;
 import dudzinski.kacper.farec.finiteautomata.smart.SmartFiniteAutomatonBuilder;
 import dudzinski.kacper.farec.regex.*;
 import javafx.scene.Group;
@@ -16,16 +16,16 @@ import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
 
+import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
+
 /**
  * This class contains methods for building and manipulating graphical finite
  * automata and their components.
  *
- * @see FiniteAutomatonBuilder
+ * @see FiniteAutomatonSettings
  * @see SmartFiniteAutomatonBuilder
  */
-public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
-
-    public static final double NODE_SEPARATION = 60;
+public class GraphicalFiniteAutomatonBuilder {
 
     /**
      * Builds a finite automaton for the given regular expression.
@@ -123,13 +123,15 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         GraphicalState initialState = createState();
         StackPane initialStateContainer = initialState.getContainer();
         initialStateContainer.setTranslateX(
-                -(NODE_RADIUS + NODE_STROKE_RADIUS + (0.5 * NODE_SEPARATION)));
+                -(STATE_RADIUS + STATE_STROKE_RADIUS
+                        + (0.5 * STATE_SEPARATION)));
 
         // Create the final state and move it into position.
         GraphicalState finalState = createState();
         StackPane finalStateContainer = finalState.getContainer();
         finalStateContainer.setTranslateX(
-                NODE_RADIUS + NODE_STROKE_RADIUS + (0.5 * NODE_SEPARATION));
+                STATE_RADIUS + STATE_STROKE_RADIUS
+                        + (0.5 * STATE_SEPARATION));
 
         // Create the edge.
         double lineWidth = Math.abs(
@@ -141,8 +143,8 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Create the simple finite automaton.
         double minWidth = finalStateContainer.getTranslateX()
                 - initialStateContainer.getTranslateX()
-                + (2 * NODE_STROKE_RADIUS) + (2 * NODE_RADIUS);
-        double minHeight = (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS);
+                + (2 * STATE_STROKE_RADIUS) + (2 * STATE_RADIUS);
+        double minHeight = (2 * STATE_RADIUS) + (2 * STATE_STROKE_RADIUS);
         return new SimpleGraphicalFiniteAutomaton(initialState, finalState,
                                                   edge, minWidth, minHeight);
     }
@@ -172,9 +174,9 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
         // Calculate the offset needed to move a state from the position of
         // some other state to its new position, in the positive direction.
-        double newStatePositiveOffset = (2 * NODE_RADIUS)
-                + (2 * NODE_STROKE_RADIUS)
-                + NODE_SEPARATION;
+        double newStatePositiveOffset = (2 * STATE_RADIUS)
+                + (2 * STATE_STROKE_RADIUS)
+                + STATE_SEPARATION;
 
         // Create the new initial state and move it into position.
         GraphicalState newInitialState = createState();
@@ -199,7 +201,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
         // Connect the new initial state to the old initial state.
         GraphicalEdge iToI =
-                createEdge(EPSILON, lineWidth, lineHeight, 0, true);
+                createEdge(EMPTY_STRING, lineWidth, lineHeight, 0, true);
         StackPane iToIContainer = iToI.getContainer();
         iToIContainer.setTranslateX(
                 newInitialStateContainer.getTranslateX() + (0.5 * lineWidth));
@@ -207,7 +209,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
         // Connect the old final state to the new final state.
         GraphicalEdge fToF =
-                createEdge(EPSILON, lineWidth, lineHeight, 0, true);
+                createEdge(EMPTY_STRING, lineWidth, lineHeight, 0, true);
         StackPane fToFContainer = fToF.getContainer();
         fToFContainer.setTranslateX(
                 newFinalStateContainer.getTranslateX() - (0.5 * lineWidth));
@@ -216,7 +218,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Calculate the vertical line height.
         double verticalLineHeight =
                 (0.5 * finiteAutomatonContainer.getMinHeight())
-                        + (2 * NODE_RADIUS);   // Extra node radius for spacing.
+                        + (2 * STATE_RADIUS);  // Extra node radius for spacing.
 
         // Calculate line width and height for the f to i transition.
         lineWidth = Math.abs(oldInitialStateOffset)
@@ -230,7 +232,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         fToIUpContainer.setTranslateY(-(0.5 * lineHeight));
         edges.add(fToIUp);
 
-        GraphicalEdge fToILeft = createEdge(EPSILON, lineWidth, 0, 180, false);
+        GraphicalEdge fToILeft = createEdge(EMPTY_STRING, lineWidth, 0, 180, false);
         StackPane fToILeftContainer = fToILeft.getContainer();
         fToILeftContainer.setTranslateY(-lineHeight);
         edges.add(fToILeft);
@@ -254,7 +256,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         iToFDownContainer.setTranslateY(0.5 * lineHeight);
         edges.add(iToFDown);
 
-        GraphicalEdge iToFRight = createEdge(EPSILON, lineWidth, 0, 0, false);
+        GraphicalEdge iToFRight = createEdge(EMPTY_STRING, lineWidth, 0, 0, false);
         StackPane iToFRightContainer = iToFRight.getContainer();
         iToFRightContainer.setTranslateY(lineHeight);
         edges.add(iToFRight);
@@ -269,7 +271,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Create the new complex finite automaton.
         double minWidth = Math.abs(newFinalStateContainer.getTranslateX())
                 + Math.abs(newInitialStateContainer.getTranslateX())
-                + (2 * NODE_STROKE_RADIUS) + (2 * NODE_RADIUS);
+                + (2 * STATE_STROKE_RADIUS) + (2 * STATE_RADIUS);
         double minHeight = 2 * verticalLineHeight
                 + 50;   // Extra 50 for labels
         return new ComplexGraphicalFiniteAutomaton(newInitialState,
@@ -316,7 +318,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // left finite automaton, and so needs to be moved separately.
         double leftOffset =
                 (-(0.5 * leftFiniteAutomatonContainer.getMinWidth()))
-                        + (NODE_RADIUS + NODE_STROKE_RADIUS);
+                        + (STATE_RADIUS + STATE_STROKE_RADIUS);
         leftFiniteAutomatonContainer.setTranslateX(leftOffset);
         initialStateContainer.setTranslateX(
                 leftFiniteAutomatonContainer.getTranslateX()
@@ -344,7 +346,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // right finite automaton, and so needs to be moved separately.
         double rightOffset =
                 (0.5 * rightFiniteAutomatonContainer.getMinWidth())
-                        - (NODE_RADIUS + NODE_STROKE_RADIUS);
+                        - (STATE_RADIUS + STATE_STROKE_RADIUS);
         rightFiniteAutomatonContainer.setTranslateX(rightOffset);
         finalStateContainer.setTranslateX(
                 rightFiniteAutomatonContainer.getTranslateX()
@@ -369,7 +371,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // Create the new complex finite automaton.
         double minWidth = leftFiniteAutomatonContainer.getMinWidth()
                 + rightFiniteAutomatonContainer.getMinWidth()
-                - ((2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS));
+                - ((2 * STATE_RADIUS) + (2 * STATE_STROKE_RADIUS));
         double minHeight = Math.max(
                 leftFiniteAutomatonContainer.getMinHeight(),
                 rightFiniteAutomatonContainer.getMinHeight());
@@ -403,7 +405,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
                 topFiniteAutomaton.getContainer();
         double topOffset = -(
                 (0.5 * topFiniteAutomatonContainer.getMinHeight())
-                        + NODE_RADIUS + NODE_STROKE_RADIUS);
+                        + STATE_RADIUS + STATE_STROKE_RADIUS);
         topFiniteAutomatonContainer.setTranslateY(topOffset);
 
         // Disable the initial state and final state of the bottom finite
@@ -416,7 +418,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
                 bottomFiniteAutomaton.getContainer();
         double bottomOffset =
                 (0.5 * bottomFiniteAutomatonContainer.getMinHeight())
-                        + NODE_RADIUS + NODE_STROKE_RADIUS;
+                        + STATE_RADIUS + STATE_STROKE_RADIUS;
         bottomFiniteAutomatonContainer.setTranslateY(bottomOffset);
 
         // Find out which automaton is the widest.
@@ -436,9 +438,9 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
         // Calculate the offset needed to move a state from the position of
         // some other state to its new position, in the positive direction.
-        double newStatePositiveOffset = (2 * NODE_RADIUS)
-                + (2 * NODE_STROKE_RADIUS)
-                + NODE_SEPARATION;
+        double newStatePositiveOffset = (2 * STATE_RADIUS)
+                + (2 * STATE_STROKE_RADIUS)
+                + STATE_SEPARATION;
 
         // Create the new initial state and move it into position.
         GraphicalState newInitialState = createState();
@@ -476,7 +478,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
         // Create the edge from the new initial state to the old initial state
         // of the top finite automaton.
-        GraphicalEdge iToI1 = createEdge(EPSILON,
+        GraphicalEdge iToI1 = createEdge(EMPTY_STRING,
                                          lineWidth,
                                          lineHeight,
                                          -angleInDegrees,
@@ -489,7 +491,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
         // Create the edge from the old final state of the top finite automaton
         // to the new final state.
-        GraphicalEdge f1ToF = createEdge(EPSILON,
+        GraphicalEdge f1ToF = createEdge(EMPTY_STRING,
                                          lineWidth,
                                          lineHeight,
                                          angleInDegrees,
@@ -511,13 +513,15 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
                                            .getTranslateX()));
         lineHeight = Math.abs(
                 Math.abs(
-                        newInitialStateContainer.getTranslateY())
-                        - Math.abs(bottomFiniteAutomatonContainer.getTranslateY()));
+                        newInitialStateContainer
+                                .getTranslateY())
+                        - Math.abs(bottomFiniteAutomatonContainer
+                                           .getTranslateY()));
         angleInDegrees = Math.toDegrees(Math.atan(lineHeight / lineWidth));
 
         // Create the edge from the new initial state to the old initial state
         // of the bottom finite automaton.
-        GraphicalEdge iToI2 = createEdge(EPSILON,
+        GraphicalEdge iToI2 = createEdge(EMPTY_STRING,
                                          lineWidth,
                                          lineHeight,
                                          angleInDegrees,
@@ -530,7 +534,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
 
         // Create the edge from the old final state of the bottom finite
         // automaton to the new final state.
-        GraphicalEdge f2ToF = createEdge(EPSILON,
+        GraphicalEdge f2ToF = createEdge(EMPTY_STRING,
                                          lineWidth,
                                          lineHeight,
                                          -angleInDegrees,
@@ -547,9 +551,9 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
                 bottomFiniteAutomatonContainer.getMinHeight());
         double minWidth = (finalStateContainer.getTranslateX()
                 - newInitialStateContainer.getTranslateX())
-                + (2 * NODE_STROKE_RADIUS) + (2 * NODE_RADIUS);
+                + (2 * STATE_STROKE_RADIUS) + (2 * STATE_RADIUS);
         double minHeight = (2 * tallestFiniteAutomatonHeight)
-                + (2 * NODE_RADIUS) + (2 * NODE_STROKE_RADIUS);
+                + (2 * STATE_RADIUS) + (2 * STATE_STROKE_RADIUS);
         return new ComplexGraphicalFiniteAutomaton(newInitialState,
                                                    finalState,
                                                    topFiniteAutomatonContainer,
@@ -566,10 +570,10 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
     public static GraphicalState createState() {
         // Create the circle.
         Circle circle = new Circle();
-        circle.setRadius(NODE_RADIUS);
-        circle.setFill(NODE_FILL_COLOR);
-        circle.setStrokeWidth(2 * NODE_STROKE_RADIUS);
-        circle.setStroke(NODE_STROKE_COLOR);
+        circle.setRadius(STATE_RADIUS);
+        circle.setFill(STATE_FILL_COLOR);
+        circle.setStrokeWidth(2 * STATE_STROKE_RADIUS);
+        circle.setStroke(STATE_STROKE_COLOR);
 
         // Create the state.
         return new GraphicalState(circle);
@@ -592,7 +596,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         Line line = new Line(0, 0, INITIAL_STATE_EDGE_LENGTH, 0);
         line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
         line.setStroke(EDGE_STROKE_COLOR);
-        line.setTranslateX(-(NODE_RADIUS + NODE_STROKE_RADIUS
+        line.setTranslateX(-(STATE_RADIUS + STATE_STROKE_RADIUS
                 + (INITIAL_STATE_EDGE_LENGTH / 2)));
         line.setId("line");
 
@@ -600,7 +604,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
                                         0, -ARROWHEAD_SIZE,
                                         ARROWHEAD_SIZE, 0);
-        arrowhead.setTranslateX(-(NODE_RADIUS + (ARROWHEAD_SIZE / 2)));
+        arrowhead.setTranslateX(-(STATE_RADIUS + (ARROWHEAD_SIZE / 2)));
         arrowhead.setId("arrowhead");
 
         // Add the line and arrowhead to the back of the container.
@@ -659,8 +663,8 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         innerCircle.setRadius(FINAL_STATE_CIRCLE_RADIUS);
         innerCircle.setFill(Color.TRANSPARENT);
         innerCircle.setStrokeType(StrokeType.OUTSIDE);
-        innerCircle.setStrokeWidth(NODE_STROKE_RADIUS);
-        innerCircle.setStroke(NODE_STROKE_COLOR);
+        innerCircle.setStrokeWidth(STATE_STROKE_RADIUS);
+        innerCircle.setStroke(STATE_STROKE_COLOR);
         innerCircle.setId("innerCircle");
 
         // Add the circle to the container.
@@ -715,7 +719,7 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
                                             0, -ARROWHEAD_SIZE,
                                             ARROWHEAD_SIZE, 0);
             arrowhead.setTranslateX(lineLength
-                                            - (ARROWHEAD_SIZE + NODE_RADIUS));
+                                            - (ARROWHEAD_SIZE + STATE_RADIUS));
             edgeGroup.getChildren().add(arrowhead);
         }
 
@@ -770,9 +774,9 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
                         " \"" + rightOperand + "\". A new initial state and" +
                         " a new final state are created. The new initial" +
                         " state is connected to the previous initial states" +
-                        " by epsilon-transitions and the previous final" +
+                        " by empty string transitions and the previous final" +
                         " states are connected to the new final state by" +
-                        " epsilon-transitions.";
+                        " empty string transitions.";
             }
             else if (regexOperator == RegexOperator.CONCATENATION) {
                 String regexString = Parser.simplifyRegexString(
@@ -800,16 +804,17 @@ public class GraphicalFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
                 explanation = "The finite automaton for the regular" +
                         " expression \"" + regexString + "\" is built by" +
                         " expanding the finite automaton of its" +
-                        " subexpression \"" + leftOperand + "\". A new initial" +
-                        " state and a new final state are created. The new" +
-                        " initial state is connected to the previous initial" +
-                        " state by an epsilon-transition and the previous" +
-                        " final state is connected to the new final state by" +
-                        " an epsilon-transition. In addition, the previous" +
-                        " final state is connected to the previous initial" +
-                        " state by an epsilon-transition and the new initial" +
-                        " state is connected to the new final state by an" +
-                        " epsilon-transition.";
+                        " subexpression \"" + leftOperand + "\". A new" +
+                        " initial state and a new final state are created." +
+                        " The new initial state is connected to the previous" +
+                        " initial state by an empty string transition and the" +
+                        " previous final state is connected to the new final" +
+                        " state by an empty string transition. In addition," +
+                        " the previous final state is connected to the" +
+                        " previous initial state by an empty string" +
+                        " transition and the new initial state is connected" +
+                        " to the new final state by an empty string" +
+                        " transition.";
             }
             else {
                 throw new IllegalArgumentException(

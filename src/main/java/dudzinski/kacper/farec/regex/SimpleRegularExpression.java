@@ -2,8 +2,7 @@ package dudzinski.kacper.farec.regex;
 
 /**
  * This class represents a simple regular expression. A simple regular
- * expression is a regular expression consisting of a single symbol
- * (alphanumeric character).
+ * expression is a regular expression consisting of a single regex operand.
  *
  * @see RegularExpression
  * @see ComplexRegularExpression

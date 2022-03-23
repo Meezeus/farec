@@ -1,7 +1,7 @@
 package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.regex.RegexOperator;
-import dudzinski.kacper.farec.regex.RegexOperatorChars;
+import dudzinski.kacper.farec.regex.RegularExpressionSettings;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
@@ -29,7 +29,7 @@ public class REHelpWindowController implements Initializable {
         for (RegexOperator operator : RegexOperator.values()) {
             operatorLabelText.append("  -").append(operator)
                              .append(", using the character '")
-                             .append(RegexOperatorChars
+                             .append(RegularExpressionSettings
                                              .getCharFromOperator(operator))
                              .append("'\n");
         }

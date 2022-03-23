@@ -1,6 +1,7 @@
 package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.App;
+import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings;
 import dudzinski.kacper.farec.finiteautomata.smart.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -23,11 +24,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
+
 /**
  * This is the controller for the view used to create finite automata. This view
  * is displayed when the user wants to create a finite automaton, so that it can
  * be converted into a regular expression. It allows the user to build a finite
  * automaton by creating states and adding edges between them.
+ *
+ * @see FiniteAutomatonSettings
  */
 public class CreateFAScreenController implements Initializable {
 
@@ -110,12 +115,10 @@ public class CreateFAScreenController implements Initializable {
      */
     private void unselectCurrentlySelected() {
         if (currentlySelected instanceof SmartState) {
-            currentlySelected.setStroke(
-                    SmartFiniteAutomatonBuilder.NODE_STROKE_COLOR);
+            currentlySelected.setStroke(STATE_STROKE_COLOR);
         }
         else if (currentlySelected instanceof SmartEdge) {
-            currentlySelected.setStroke(
-                    SmartFiniteAutomatonBuilder.EDGE_STROKE_COLOR);
+            currentlySelected.setStroke(EDGE_STROKE_COLOR);
         }
         currentlySelected = null;
     }
@@ -441,14 +444,12 @@ public class CreateFAScreenController implements Initializable {
                     && (event.getButton().equals(MouseButton.PRIMARY))) {
                 // Don't allow the state to be moved past the left boundary.
                 if (event.getSceneX() + offset.x >
-                        SmartFiniteAutomatonBuilder.NODE_RADIUS
-                                + SmartFiniteAutomatonBuilder.NODE_STROKE_RADIUS) {
+                        STATE_RADIUS + STATE_STROKE_RADIUS) {
                     container.setTranslateX(event.getSceneX() + offset.x);
                 }
                 // Don't allow the state to be moved past the top boundary.
                 if (event.getSceneY() + offset.y >
-                        SmartFiniteAutomatonBuilder.NODE_RADIUS
-                                + SmartFiniteAutomatonBuilder.NODE_STROKE_RADIUS) {
+                        STATE_RADIUS + STATE_STROKE_RADIUS) {
                     container.setTranslateY(event.getSceneY() + offset.y);
                 }
                 // Update the size of the finite automaton container.
@@ -469,18 +470,13 @@ public class CreateFAScreenController implements Initializable {
                 SmartEdge edge;
                 if (edgeStartState != edgeEndState) {
                     edge = SmartFiniteAutomatonBuilder
-                            .createEdge(
-                                    SmartFiniteAutomatonBuilder.EPSILON,
-                                    edgeStartState,
-                                    edgeEndState);
+                            .createEdge(EMPTY_STRING, edgeStartState, edgeEndState);
                 }
                 // If the start state and end state are the same state, create a
                 // loop edge.
                 else {
                     edge = SmartFiniteAutomatonBuilder
-                            .createLoopEdge(
-                                    SmartFiniteAutomatonBuilder.EPSILON,
-                                    edgeStartState);
+                            .createLoopEdge(EMPTY_STRING, edgeStartState);
                 }
                 finiteAutomaton.addEdge(edge, true);
                 event.consume();

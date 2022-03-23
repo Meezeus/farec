@@ -9,6 +9,9 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.STATE_RADIUS;
+import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.STATE_STROKE_RADIUS;
+
 /**
  * This class represents a smart finite automaton. A smart finite automaton is a
  * finite automaton consisting of smart components, which are components that
@@ -459,12 +462,8 @@ public class SmartFiniteAutomaton {
         }
 
         // Calculate the new minimum width and height.
-        double newMinWidth = greatestX
-                + SmartFiniteAutomatonBuilder.NODE_RADIUS
-                + SmartFiniteAutomatonBuilder.NODE_STROKE_RADIUS;
-        double newMinHeight = greatestY
-                + SmartFiniteAutomatonBuilder.NODE_RADIUS
-                + SmartFiniteAutomatonBuilder.NODE_STROKE_RADIUS;
+        double newMinWidth = greatestX + STATE_RADIUS + STATE_STROKE_RADIUS;
+        double newMinHeight = greatestY + STATE_RADIUS + STATE_STROKE_RADIUS;
 
         // If the new minimum width or height has increased, update the
         // container.

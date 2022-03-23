@@ -3,17 +3,19 @@ package dudzinski.kacper.farec.regex;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 import java.util.ArrayList;
+
+import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
 
 /**
  * This class represents a parse tree for a regular expression. A parse tree is
  * an unambiguous representation of a regular expression. This class is
  * responsible for building the parse tree for a given regular expression.
  *
+ * @see RegularExpressionSettings
  * @see ParseTreeNode
  */
 public class ParseTree {
@@ -22,18 +24,6 @@ public class ParseTree {
     private final RegularExpression regularExpression;
     private final ParseTreeNode root;
 
-    private final int NODE_RADIUS = 20;
-    public static final Color NODE_FILL = Color.WHITE;
-    public static final double NODE_STROKE_RADIUS = 1;
-    public static final Color NODE_STROKE_COLOR = Color.BLACK;
-
-    public static final double EDGE_STROKE_RADIUS = 1;
-    public static final Color EDGE_STROKE_COLOR = Color.BLACK;
-
-    // The minimum horizontal separation between two nodes.
-    private final int BASE_X_CHANGE = 50;
-    // The minimum vertical separation between two nodes.
-    private final int BASE_Y_CHANGE = 80;
     // The greatest horizontal separation between two nodes.
     private double greatestX = 0;
     // The greatest vertical separation between two nodes.
@@ -96,7 +86,7 @@ public class ParseTree {
                 ComplexRegularExpression complexRegex) {
             // Create the operator node.
             char operatorChar =
-                    RegexOperatorChars.getCharFromOperator(
+                    RegularExpressionSettings.getCharFromOperator(
                             complexRegex.getOperator());
             StackPane operatorNodePane = createNode(operatorChar);
 
@@ -166,7 +156,7 @@ public class ParseTree {
 
     /**
      * Creates a labelled node. The label on the node is a symbol: either a
-     * regex operator (i.e. a special symbol) or an alphanumeric character.
+     * regex operator or a regex operand.
      *
      * @param symbol the node symbol
      * @return a labelled node
@@ -219,6 +209,7 @@ public class ParseTree {
      * @param parent the parent node
      * @param child  the child node
      */
+    @SuppressWarnings("GrazieInspection")
     private void connectParentToChild(StackPane parent, StackPane child) {
         // Create the line.
         Line line = new Line();

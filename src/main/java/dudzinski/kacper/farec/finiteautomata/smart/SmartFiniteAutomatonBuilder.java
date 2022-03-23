@@ -1,6 +1,6 @@
 package dudzinski.kacper.farec.finiteautomata.smart;
 
-import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonBuilder;
+import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings;
 import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalFiniteAutomatonBuilder;
 import javafx.beans.binding.DoubleBinding;
 import javafx.geometry.Insets;
@@ -14,17 +14,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.TextAlignment;
 
+import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
+
 /**
  * This class contains methods for building and manipulating smart finite
  * automaton components.
  *
- * @see FiniteAutomatonBuilder
+ * @see FiniteAutomatonSettings
  * @see GraphicalFiniteAutomatonBuilder
  */
-public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
-
-    public static final double CONTROL_POINT_OFFSET = 25;
-    public static final Color EDGE_LABEL_COLOR = Color.WHITESMOKE;
+public class SmartFiniteAutomatonBuilder {
 
     /**
      * Creates a state.
@@ -35,10 +34,10 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
     public static SmartState createState(String labelText) {
         // Create the circle.
         Circle circle = new Circle();
-        circle.setRadius(NODE_RADIUS);
-        circle.setFill(NODE_FILL_COLOR);
-        circle.setStrokeWidth(2 * NODE_STROKE_RADIUS);
-        circle.setStroke(NODE_STROKE_COLOR);
+        circle.setRadius(STATE_RADIUS);
+        circle.setFill(STATE_FILL_COLOR);
+        circle.setStrokeWidth(2 * STATE_STROKE_RADIUS);
+        circle.setStroke(STATE_STROKE_COLOR);
 
         // Create the label.
         Label label = new Label(labelText);
@@ -68,15 +67,15 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         Line line = new Line(0, 0, INITIAL_STATE_EDGE_LENGTH, 0);
         line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
         line.setStroke(EDGE_STROKE_COLOR);
-        line.setTranslateX(-(EDGE_STROKE_RADIUS + NODE_RADIUS
-                + NODE_STROKE_RADIUS + INITIAL_STATE_EDGE_LENGTH));
+        line.setTranslateX(-(EDGE_STROKE_RADIUS + STATE_RADIUS
+                + STATE_STROKE_RADIUS + INITIAL_STATE_EDGE_LENGTH));
         line.setId("line");
 
         // Create the arrowhead.
         Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
                                         0, -ARROWHEAD_SIZE,
                                         ARROWHEAD_SIZE, 0);
-        arrowhead.setTranslateX(-(NODE_RADIUS + ARROWHEAD_SIZE));
+        arrowhead.setTranslateX(-(STATE_RADIUS + ARROWHEAD_SIZE));
         arrowhead.setId("arrowhead");
 
         // Add the line and arrowhead to the back of the container.
@@ -119,8 +118,8 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         innerCircle.setRadius(FINAL_STATE_CIRCLE_RADIUS);
         innerCircle.setFill(Color.TRANSPARENT);
         innerCircle.setStrokeType(StrokeType.OUTSIDE);
-        innerCircle.setStrokeWidth(NODE_STROKE_RADIUS);
-        innerCircle.setStroke(NODE_STROKE_COLOR);
+        innerCircle.setStrokeWidth(STATE_STROKE_RADIUS);
+        innerCircle.setStroke(STATE_STROKE_COLOR);
         innerCircle.setId("innerCircle");
 
         // Add the circle to the container.
@@ -186,7 +185,7 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
             protected double computeValue() {
                 double angleInRadians =
                         Math.atan(sToEY.getValue() / sToEX.getValue());
-                double offset = (NODE_RADIUS + NODE_STROKE_RADIUS
+                double offset = (STATE_RADIUS + STATE_STROKE_RADIUS
                         + (0.5 * ARROWHEAD_SIZE))
                         * Math.abs(Math.cos(angleInRadians));
                 if (sToEX.getValue() >= 0) {
@@ -207,7 +206,7 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
             @Override
             protected double computeValue() {
                 double angle = Math.atan(sToEY.getValue() / sToEX.getValue());
-                double offset = (NODE_RADIUS + NODE_STROKE_RADIUS
+                double offset = (STATE_RADIUS + STATE_STROKE_RADIUS
                         + (0.5 * ARROWHEAD_SIZE))
                         * Math.abs(Math.sin(angle));
                 if (sToEY.getValue() >= 0) {
@@ -396,7 +395,7 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
             protected double computeValue() {
                 double angleInRadians =
                         Math.atan(cToEY.getValue() / cToEX.getValue());
-                double offset = (NODE_RADIUS + NODE_STROKE_RADIUS
+                double offset = (STATE_RADIUS + STATE_STROKE_RADIUS
                         + (0.5 * ARROWHEAD_SIZE))
                         * Math.abs(Math.cos(angleInRadians));
                 if (cToEX.getValue() >= 0) {
@@ -418,7 +417,7 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
             protected double computeValue() {
                 double angleInRadians =
                         Math.atan(cToEY.getValue() / cToEX.getValue());
-                double offset = (NODE_RADIUS + NODE_STROKE_RADIUS
+                double offset = (STATE_RADIUS + STATE_STROKE_RADIUS
                         + (0.5 * ARROWHEAD_SIZE))
                         * Math.abs(Math.sin(angleInRadians));
                 if (cToEY.getValue() >= 0) {
@@ -554,23 +553,23 @@ public class SmartFiniteAutomatonBuilder extends FiniteAutomatonBuilder {
         // end of the curve to the right side of the state.
         curve.startXProperty().bind(
                 state.getContainer().translateXProperty()
-                     .subtract(NODE_RADIUS));
+                     .subtract(STATE_RADIUS));
         curve.startYProperty().bind(
                 state.getContainer().translateYProperty());
         curve.endXProperty().bind(
                 state.getContainer().translateXProperty()
-                     .add(NODE_RADIUS));
+                     .add(STATE_RADIUS));
         curve.endYProperty().bind(
                 state.getContainer().translateYProperty());
 
         // Bind the curved line's controlX and controlY properties.
         curve.controlX1Property().bind(
-                curve.startXProperty().subtract(1 * NODE_RADIUS));
+                curve.startXProperty().subtract(1 * STATE_RADIUS));
         curve.controlY1Property().bind(
                 curve.startYProperty()
                      .subtract(2 * SIDE_MULTIPLIER * CONTROL_POINT_OFFSET));
         curve.controlX2Property().bind(
-                curve.endXProperty().add(1 * NODE_RADIUS));
+                curve.endXProperty().add(1 * STATE_RADIUS));
         curve.controlY2Property().bind(
                 curve.endYProperty()
                      .subtract(2 * SIDE_MULTIPLIER * CONTROL_POINT_OFFSET));

@@ -28,13 +28,12 @@ public class FAHelpWindowController implements Initializable {
                  
                 All finite automata must contain an initial state and a final \
                 state.
-                
+                                
                 All states in the finite automaton must be reachable from the \
                 initial state.
-                
+                                
                 The labels on the edges may only be alphanumeric characters, \
-                or the special epsilon character, representing an \
-                epsilon-transition.
+                or the special empty string character.
                 """
         );
     }

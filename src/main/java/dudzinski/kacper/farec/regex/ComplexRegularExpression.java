@@ -93,7 +93,7 @@ public class ComplexRegularExpression extends RegularExpression {
     @Override
     public String toString() {
         String regexString = "(" + leftOperand + ")"
-                + RegexOperatorChars.getCharFromOperator(operator);
+                + RegularExpressionSettings.getCharFromOperator(operator);
         if (rightOperand != null) {
             regexString += "(" + rightOperand + ")";
         }

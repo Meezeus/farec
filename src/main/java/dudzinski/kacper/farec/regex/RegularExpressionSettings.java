@@ -1,18 +1,82 @@
 package dudzinski.kacper.farec.regex;
 
-/**
- * This class contains methods for converting between regex operators and their
- * char representations, as well as changing the char representations.
- *
- * @see RegexOperator
- */
-public class RegexOperatorChars {
+import dudzinski.kacper.farec.Settings;
+import javafx.scene.paint.Color;
 
-    private static final String validOperatorSymbolPattern =
-            "^[!£$%^&*\\-+=:;@~#|<>,.?]$";
+/**
+ * /** This abstract class contains settings related to regular expressions
+ * (including regular expression parse trees).
+ */
+public abstract class RegularExpressionSettings extends Settings {
+
+    // The radius of a regex parse tree node.
+    public static final int NODE_RADIUS = 20;
+    // The color of the fill of a regex parse tree node.
+    public static final Color NODE_FILL = Color.WHITE;
+    // The radius of the stroke of a regex parse tree node.
+    public static final double NODE_STROKE_RADIUS = 1;
+    // The color of the stroke of a regex parse tree node.
+    public static final Color NODE_STROKE_COLOR = Color.BLACK;
+    // The color of the stroke of a regex parse tree node when it is
+    // highlighted.
+    public static final Color NODE_STROKE_HIGHLIGHT_COLOR = Color.RED;
+    // The minimum horizontal separation between two nodes in a regex parse
+    // tree.
+    public static final int BASE_X_CHANGE = 50;
+    // The minimum vertical separation between two nodes in a regex parse tree.
+    public static final int BASE_Y_CHANGE = 80;
+
+    // The radius of the stroke of a regex parse tree edge.
+    public static final double EDGE_STROKE_RADIUS = 1;
+    // The color of the stroke of a regex parse tree edge.
+    public static final Color EDGE_STROKE_COLOR = Color.BLACK;
+
+    private static final String validRegexOperands = "a-zA-Z0-9()";
+    private static final String validRegexOperators = "!£$%^&*-+=:;@~#|<>,.?";
     private static char starOperatorChar = '*';
     private static char concatenationOperatorChar = '|';
     private static char unionOperatorChar = '+';
+
+    /**
+     * Returns a regex string representing valid regex strings. A valid regex
+     * string is made up of valid regex operands and valid regex operators that
+     * are currently in use.
+     *
+     * @return a regex string representing valid regex strings
+     */
+    public static String getValidRegexStringPattern() {
+        return "^[" +
+                validRegexOperands +
+                starOperatorChar +
+                concatenationOperatorChar +
+                unionOperatorChar +
+                "]*$";
+    }
+
+    /**
+     * Returns a regex string matching a single valid regex operator (regardless
+     * of which regex operators are currently in use).
+     *
+     * @return a regex string representing valid regex operators
+     */
+    public static String getValidRegexOperatorPattern() {
+        return "^[" +
+                validRegexOperators +
+                "]$";
+    }
+
+    /**
+     * Returns a regex string representing valid regex operands.
+     *
+     * @return a regex string representing valid regex operands
+     */
+    public static String getValidRegexOperandPattern() {
+        return "^[" +
+                validRegexOperands +
+                Settings.EMPTY_STRING +
+                Settings.EMPTY_SET +
+                "]*$";
+    }
 
     /**
      * Attempts to link the given regex operator to the given char. The char
@@ -26,7 +90,7 @@ public class RegexOperatorChars {
     public static Boolean setOperatorChar(RegexOperator regexOperator,
                                           char operatorChar) {
         // Check the char is a valid symbol.
-        if (!("" + operatorChar).matches(validOperatorSymbolPattern)) {
+        if (!("" + operatorChar).matches(getValidRegexOperatorPattern())) {
             return false;
         }
         // Check the char is not already linked.

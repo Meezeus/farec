@@ -19,9 +19,12 @@ class ParserTest {
      */
     @BeforeEach
     void resetOperatorChars() {
-        RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '*');
-        RegexOperatorChars.setOperatorChar(RegexOperator.UNION, '+');
-        RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '|');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.STAR, '*');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.UNION, '+');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.CONCATENATION, '|');
     }
 
     /**
@@ -75,8 +78,8 @@ class ParserTest {
                 String regexString = "($+&)|!*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
-                assertEquals("Regular expressions can only contain" +
-                                     " alphanumeric characters and operators!",
+                assertEquals("Regular expressions can only contain regex" +
+                                     " operands and regex operators!",
                              isValid.getValue());
             }
 

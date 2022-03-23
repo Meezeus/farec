@@ -9,7 +9,7 @@ package dudzinski.kacper.farec.regex;
  *     <li>UNION(x y):          x xor y</li>
  * </ul>
  *
- * @see RegexOperatorChars
+ * @see RegularExpressionSettings
  * @see RegularExpression
  */
 public enum RegexOperator {

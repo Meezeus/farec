@@ -29,9 +29,12 @@ class ParseTreeTest {
      */
     @BeforeEach
     void resetOperatorChars() {
-        RegexOperatorChars.setOperatorChar(RegexOperator.STAR, '*');
-        RegexOperatorChars.setOperatorChar(RegexOperator.UNION, '+');
-        RegexOperatorChars.setOperatorChar(RegexOperator.CONCATENATION, '|');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.STAR, '*');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.UNION, '+');
+        RegularExpressionSettings
+                .setOperatorChar(RegexOperator.CONCATENATION, '|');
     }
 
     /**
