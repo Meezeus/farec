@@ -83,5 +83,4 @@ public class NewEdgeLabelWindowController implements Initializable {
         return newEdgeLabelText;
     }
 
-
 }

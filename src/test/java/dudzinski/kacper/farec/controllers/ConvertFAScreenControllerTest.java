@@ -363,4 +363,5 @@ class ConvertFAScreenControllerTest {
             assertEquals("ε", simplifiedLabel);
         }
     }
+
 }

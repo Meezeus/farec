@@ -119,53 +119,6 @@ public class ConvertFAScreenController {
     }
 
     /**
-     * Unselects the currently selected component and restores its
-     * highlighting.
-     */
-    private void unselectCurrentlySelected() {
-        if (currentlySelected != null) {
-            currentlySelected.setStroke(currentlySelectedColour);
-        }
-        currentlySelected = null;
-        currentlySelectedColour = null;
-    }
-
-    /**
-     * Selects and highlights the clicked component.
-     *
-     * @param event the clicked object
-     */
-    private void selectComponent(Event event) {
-        // Remove the currently selected component and its highlighting.
-        unselectCurrentlySelected();
-
-        // Find the container of the clicked component.
-        Node target = (Node) event.getTarget();
-        while ((target != null)
-                && (!Objects.equals(target.getId(), "selectable"))) {
-            target = target.getParent();
-        }
-
-        // If a container was found, find what component it belongs to. Select
-        // and highlight that component.
-        if (target instanceof Group container) {
-            // Get the list of components.
-            ArrayList<SmartComponent> components = new ArrayList<>();
-            components.addAll(finiteAutomaton.getStates());
-            components.addAll(finiteAutomaton.getEdges());
-
-            // Find the component with a matching container to the one found.
-            for (SmartComponent component : components) {
-                if (component.getContainer() == container) {
-                    currentlySelected = component;
-                    currentlySelectedColour = component.getStroke();
-                    component.setStroke(USER_HIGHLIGHT_COLOR);
-                }
-            }
-        }
-    }
-
-    /**
      * Defines the behaviour for interacting with a state using a mouse.
      *
      * @param state the state for which to define mouse control behaviour
@@ -219,25 +172,6 @@ public class ConvertFAScreenController {
         // Remove the behaviour.
         container.setOnContextMenuRequested(event -> {
         });
-    }
-
-    /**
-     * Creates the context menu for a loop edge. The context menu for a loop
-     * edge allows the user to flip the edge.
-     *
-     * @return the context menu for the loop edge
-     */
-    private ContextMenu createLoopContextMenu() {
-        ContextMenu loopContextMenu = new ContextMenu();
-
-        MenuItem flip = new MenuItem("Flip");
-        flip.setOnAction(event -> {
-            SmartLoopEdge loop = (SmartLoopEdge) currentlySelected;
-            loop.flip();
-        });
-
-        loopContextMenu.getItems().addAll(flip);
-        return loopContextMenu;
     }
 
     /**
@@ -338,103 +272,6 @@ public class ConvertFAScreenController {
 
         // Update the prev button.
         prevButton.setDisable(commandHistory.isEmpty());
-    }
-
-    /**
-     * Returns the label (in brackets) and edge of the direct path between two
-     * states. The direct path between two states is simply the edge between
-     * them.
-     *
-     * @param startState the start state of the path
-     * @param endState   the end state of the path
-     * @return a pair ((K), V) where K is the label of the direct path between
-     * the two states (or the empty set symbol if no such path exists) and V is
-     * the edge between the two states (or <code>null</code> if no such edge
-     * exists)
-     */
-    private Pair<String, SmartEdgeComponent> getDirectPath(
-            SmartState startState, SmartState endState) {
-        // If there is an edge between the two states, return its label and the
-        // edge itself.
-        for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
-            if ((edge.getStartState() == startState)
-                    && (edge.getEndState() == endState)) {
-                return new Pair<>("(" + edge.getLabelText() + ")", edge);
-            }
-        }
-
-        // Otherwise, return the EMPTY SET symbol and null.
-        return new Pair<>("(" + EMPTY_SET + ")", null);
-    }
-
-    /**
-     * Returns the label and a list of edges of the indirect path from the start
-     * state to the end state, going through the middle state. The label of this
-     * path is the concatenation of the labels of the individual direct paths,
-     * with the star regex operator being applied to the path from the middle
-     * state to the middle state. Thus, the label has the format:<br> (start to
-     * middle) | (middle to middle)* | (middle to end)
-     *
-     * @param startState  the start state of the path
-     * @param middleState the middle state of the path
-     * @param endState    the end state of the path
-     * @return a pair (K, V) where K is the label of the indirect path between
-     * the start state and end state, going through the middle state, and V is a
-     * list of edges on that path
-     */
-    private Pair<String, ArrayList<SmartEdgeComponent>> getIndirectPath(
-            SmartState startState,
-            SmartState middleState,
-            SmartState endState) {
-        // Create the list to store path edges.
-        ArrayList<SmartEdgeComponent> pathEdges = new ArrayList<>();
-
-        // Get the path from the start state to the middle state.
-        Pair<String, SmartEdgeComponent> startToMiddle =
-                getDirectPath(startState, middleState);
-
-        // Get the path label.
-        String startToMiddleLabel = startToMiddle.getKey();
-
-        // If the path edge exists, add it to the path edges.
-        if (startToMiddle.getValue() != null) {
-            pathEdges.add(startToMiddle.getValue());
-        }
-
-        // Get the path from the middle state to the middle state.
-        Pair<String, SmartEdgeComponent> middleToMiddle =
-                getDirectPath(middleState, middleState);
-
-        // Get the path label and add the STAR char.
-        String middleToMiddleLabel = middleToMiddle.getKey()
-                + RegularExpressionSettings.getStarOperatorChar();
-
-        // If the path edge exists, add it to the path edges.
-        if (middleToMiddle.getValue() != null) {
-            pathEdges.add(middleToMiddle.getValue());
-        }
-
-        // Get the path from the middle state to the end state.
-        Pair<String, SmartEdgeComponent> middleToEnd =
-                getDirectPath(middleState, endState);
-
-        // Get the path label.
-        String middleToEndLabel = middleToEnd.getKey();
-
-        // If the path edge exists, add it to the path edges.
-        if (middleToEnd.getValue() != null) {
-            pathEdges.add(middleToEnd.getValue());
-        }
-
-        // Create the path label for the indirect path.
-        String pathLabel = startToMiddleLabel
-                + RegularExpressionSettings.getConcatenationOperatorChar()
-                + middleToMiddleLabel
-                + RegularExpressionSettings.getConcatenationOperatorChar()
-                + middleToEndLabel;
-
-        // Return the path label and the path edges.
-        return new Pair<>(pathLabel, pathEdges);
     }
 
     /**
@@ -613,6 +450,72 @@ public class ConvertFAScreenController {
     }
 
     /**
+     * Creates the context menu for a loop edge. The context menu for a loop
+     * edge allows the user to flip the edge.
+     *
+     * @return the context menu for the loop edge
+     */
+    private ContextMenu createLoopContextMenu() {
+        ContextMenu loopContextMenu = new ContextMenu();
+
+        MenuItem flip = new MenuItem("Flip");
+        flip.setOnAction(event -> {
+            SmartLoopEdge loop = (SmartLoopEdge) currentlySelected;
+            loop.flip();
+        });
+
+        loopContextMenu.getItems().addAll(flip);
+        return loopContextMenu;
+    }
+
+    /**
+     * Unselects the currently selected component and restores its
+     * highlighting.
+     */
+    private void unselectCurrentlySelected() {
+        if (currentlySelected != null) {
+            currentlySelected.setStroke(currentlySelectedColour);
+        }
+        currentlySelected = null;
+        currentlySelectedColour = null;
+    }
+
+    /**
+     * Selects and highlights the clicked component.
+     *
+     * @param event the clicked object
+     */
+    private void selectComponent(Event event) {
+        // Remove the currently selected component and its highlighting.
+        unselectCurrentlySelected();
+
+        // Find the container of the clicked component.
+        Node target = (Node) event.getTarget();
+        while ((target != null)
+                && (!Objects.equals(target.getId(), "selectable"))) {
+            target = target.getParent();
+        }
+
+        // If a container was found, find what component it belongs to. Select
+        // and highlight that component.
+        if (target instanceof Group container) {
+            // Get the list of components.
+            ArrayList<SmartComponent> components = new ArrayList<>();
+            components.addAll(finiteAutomaton.getStates());
+            components.addAll(finiteAutomaton.getEdges());
+
+            // Find the component with a matching container to the one found.
+            for (SmartComponent component : components) {
+                if (component.getContainer() == container) {
+                    currentlySelected = component;
+                    currentlySelectedColour = component.getStroke();
+                    component.setStroke(USER_HIGHLIGHT_COLOR);
+                }
+            }
+        }
+    }
+
+    /**
      * Saves each component in the finite automaton and its corresponding stroke
      * color.
      *
@@ -650,12 +553,109 @@ public class ConvertFAScreenController {
     }
 
     /**
+     * Returns the label (in brackets) and edge of the direct path between two
+     * states. The direct path between two states is simply the edge between
+     * them.
+     *
+     * @param startState the start state of the path
+     * @param endState   the end state of the path
+     * @return a pair ((K), V) where K is the label of the direct path between
+     * the two states (or the empty set symbol if no such path exists) and V is
+     * the edge between the two states (or <code>null</code> if no such edge
+     * exists)
+     */
+    private Pair<String, SmartEdgeComponent> getDirectPath(
+            SmartState startState, SmartState endState) {
+        // If there is an edge between the two states, return its label and the
+        // edge itself.
+        for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
+            if ((edge.getStartState() == startState)
+                    && (edge.getEndState() == endState)) {
+                return new Pair<>("(" + edge.getLabelText() + ")", edge);
+            }
+        }
+
+        // Otherwise, return the EMPTY SET symbol and null.
+        return new Pair<>("(" + EMPTY_SET + ")", null);
+    }
+
+    /**
+     * Returns the label and a list of edges of the indirect path from the start
+     * state to the end state, going through the middle state. The label of this
+     * path is the concatenation of the labels of the individual direct paths,
+     * with the star regex operator being applied to the path from the middle
+     * state to the middle state. Thus, the label has the format:<br> (start to
+     * middle) | (middle to middle)* | (middle to end)
+     *
+     * @param startState  the start state of the path
+     * @param middleState the middle state of the path
+     * @param endState    the end state of the path
+     * @return a pair (K, V) where K is the label of the indirect path between
+     * the start state and end state, going through the middle state, and V is a
+     * list of edges on that path
+     */
+    private Pair<String, ArrayList<SmartEdgeComponent>> getIndirectPath(
+            SmartState startState,
+            SmartState middleState,
+            SmartState endState) {
+        // Create the list to store path edges.
+        ArrayList<SmartEdgeComponent> pathEdges = new ArrayList<>();
+
+        // Get the path from the start state to the middle state.
+        Pair<String, SmartEdgeComponent> startToMiddle =
+                getDirectPath(startState, middleState);
+
+        // Get the path label.
+        String startToMiddleLabel = startToMiddle.getKey();
+
+        // If the path edge exists, add it to the path edges.
+        if (startToMiddle.getValue() != null) {
+            pathEdges.add(startToMiddle.getValue());
+        }
+
+        // Get the path from the middle state to the middle state.
+        Pair<String, SmartEdgeComponent> middleToMiddle =
+                getDirectPath(middleState, middleState);
+
+        // Get the path label and add the STAR char.
+        String middleToMiddleLabel = middleToMiddle.getKey()
+                + RegularExpressionSettings.getStarOperatorChar();
+
+        // If the path edge exists, add it to the path edges.
+        if (middleToMiddle.getValue() != null) {
+            pathEdges.add(middleToMiddle.getValue());
+        }
+
+        // Get the path from the middle state to the end state.
+        Pair<String, SmartEdgeComponent> middleToEnd =
+                getDirectPath(middleState, endState);
+
+        // Get the path label.
+        String middleToEndLabel = middleToEnd.getKey();
+
+        // If the path edge exists, add it to the path edges.
+        if (middleToEnd.getValue() != null) {
+            pathEdges.add(middleToEnd.getValue());
+        }
+
+        // Create the path label for the indirect path.
+        String pathLabel = startToMiddleLabel
+                + RegularExpressionSettings.getConcatenationOperatorChar()
+                + middleToMiddleLabel
+                + RegularExpressionSettings.getConcatenationOperatorChar()
+                + middleToEndLabel;
+
+        // Return the path label and the path edges.
+        return new Pair<>(pathLabel, pathEdges);
+    }
+
+    /**
      * Checks if the selected component is a valid state to remove. Updates the
      * info label accordingly. If a valid state was chosen, the state is
      * highlighted. A list of incoming states and a list of outgoing states is
      * also prepared. The work mode is then switched to UPDATE.
      */
-    public class SelectStateToRemoveCommand extends Command {
+    private class SelectStateToRemoveCommand extends Command {
 
         private final ArrayList<SmartState> savedIncomingStates =
                 new ArrayList<>();
@@ -752,7 +752,7 @@ public class ConvertFAScreenController {
      * sets the updated label on the edge being updated (creating the edge if it
      * did not previously exist).
      */
-    public class UpdateEdgeLabelCommand extends Command {
+    private class UpdateEdgeLabelCommand extends Command {
 
         private ArrayList<Pair<SmartComponent, Paint>> savedHighlighting;
         private String savedLabelText = null;
@@ -905,7 +905,7 @@ public class ConvertFAScreenController {
      * Removes the chosen state from the finite automaton and checks if the
      * conversion is complete.
      */
-    public class RemoveStateCommand extends Command {
+    private class RemoveStateCommand extends Command {
 
         private ArrayList<Pair<SmartComponent, Paint>> savedHighlighting;
         private final ArrayList<SmartEdgeComponent> savedEdges =
