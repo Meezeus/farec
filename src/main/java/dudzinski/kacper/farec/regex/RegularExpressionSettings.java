@@ -9,6 +9,10 @@ import javafx.scene.paint.Color;
  */
 public abstract class RegularExpressionSettings extends Settings {
 
+    //////////////////////
+    // Parse Tree Nodes //
+    //////////////////////
+
     // The radius of a regex parse tree node.
     public static final int NODE_RADIUS = 20;
     // The color of the fill of a regex parse tree node.
@@ -26,10 +30,18 @@ public abstract class RegularExpressionSettings extends Settings {
     // The minimum vertical separation between two nodes in a regex parse tree.
     public static final int BASE_Y_CHANGE = 80;
 
+    //////////////////////
+    // Parse Tree Edges //
+    //////////////////////
+
     // The radius of the stroke of a regex parse tree edge.
     public static final double EDGE_STROKE_RADIUS = 1;
     // The color of the stroke of a regex parse tree edge.
     public static final Color EDGE_STROKE_COLOR = Color.BLACK;
+
+    /////////////////////////
+    // Regular Expressions //
+    /////////////////////////
 
     private static final String validRegexOperands = "a-zA-Z0-9()";
     private static final String validRegexOperators = "!£$%^&*-+=:;@~#|<>,.?";

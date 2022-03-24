@@ -16,7 +16,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -59,19 +58,17 @@ public class CreateFAScreenController implements Initializable {
     public String infoLabelText;
     public Button convertButton;
 
+    private final SmartFiniteAutomaton finiteAutomaton =
+            new SmartFiniteAutomaton(this);
+    private final ContextMenu stateContextMenu = createStateContextMenu();
+    private final ContextMenu edgeContextMenu = createEdgeContextMenu();
+    private final ContextMenu loopContextMenu = createLoopContextMenu();
     private WorkMode workMode = WorkMode.MOVE;
     private Map<Button, WorkMode> buttonToWorkMode;
     private Map<WorkMode, Button> workModeToButton;
     private SmartComponent currentlySelected;
-    private final Color HIGHLIGHT_COLOR = Color.RED;
-    private final ContextMenu stateContextMenu = createStateContextMenu();
-    private final ContextMenu edgeContextMenu = createEdgeContextMenu();
-    private final ContextMenu loopContextMenu = createLoopContextMenu();
     private SmartState edgeStartState;
     private SmartState edgeEndState;
-
-    private final SmartFiniteAutomaton finiteAutomaton =
-            new SmartFiniteAutomaton(this);
 
     /**
      * Sets the info label. Sets the key-press behaviour of the scene. Sets the
@@ -151,7 +148,7 @@ public class CreateFAScreenController implements Initializable {
             for (SmartComponent component : components) {
                 if (component.getContainer() == container) {
                     currentlySelected = component;
-                    component.setStroke(HIGHLIGHT_COLOR);
+                    component.setStroke(USER_HIGHLIGHT_COLOR);
                 }
             }
         }
@@ -179,7 +176,7 @@ public class CreateFAScreenController implements Initializable {
                 .get(newWorkMode)
                 .setBorder(
                         new Border(
-                                new BorderStroke(HIGHLIGHT_COLOR,
+                                new BorderStroke(USER_HIGHLIGHT_COLOR,
                                                  BorderStrokeStyle.SOLID,
                                                  new CornerRadii(3),
                                                  BorderStroke.DEFAULT_WIDTHS)));

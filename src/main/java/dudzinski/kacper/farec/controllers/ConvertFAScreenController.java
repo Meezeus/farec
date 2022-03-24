@@ -11,7 +11,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.util.Pair;
 
@@ -43,10 +42,6 @@ public class ConvertFAScreenController {
         SELECT, UPDATE, REMOVE
     }
 
-    private static final Color USER_HIGHLIGHT_COLOR = Color.RED;
-    private static final Color STATE_TO_REMOVE_FILL_COLOR = Color.DARKRED;
-    private static final Color PATH_HIGHLIGHT_COLOR = Color.BLUE;
-    private static final Color UPDATE_HIGHLIGHT_COLOR = Color.GREEN;
     private static final String SELECT_STRING = "Select a state to remove.";
 
     public ScrollPane scrollPane;

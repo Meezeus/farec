@@ -8,6 +8,10 @@ import javafx.scene.paint.Color;
  */
 public abstract class FiniteAutomatonSettings extends Settings {
 
+    ////////////
+    // States //
+    ////////////
+
     // The radius of a finite automaton state.
     public static final double STATE_RADIUS = 20;
     // The color of the fill of a finite automaton state.
@@ -26,6 +30,10 @@ public abstract class FiniteAutomatonSettings extends Settings {
     // circumference.
     public static final double STATE_SEPARATION = 60;
 
+    ///////////
+    // Edges //
+    ///////////
+
     // The radius of the stroke of a finite automaton edge.
     public static final double EDGE_STROKE_RADIUS = 1;
     // The color of the stroke of a finite automaton edge.
@@ -35,8 +43,29 @@ public abstract class FiniteAutomatonSettings extends Settings {
     // The background color of the label on an edge.
     public static final Color EDGE_LABEL_COLOR = Color.WHITESMOKE;
 
+    //////////////////
+    // Curved Edges //
+    //////////////////
+
     // The distance from the centre of a state to the control point of a curved
     // edge.
     public static final double CONTROL_POINT_OFFSET = 25;
+
+    /////////////////
+    // Controllers //
+    /////////////////
+
+    // The color of the stroke of a finite automaton component when it is
+    // selected by a user.
+    public static final Color USER_HIGHLIGHT_COLOR = Color.RED;
+    // The color of the fill of a finite automaton state when it has been chosen
+    // by the user as the state to remove.
+    public static final Color STATE_TO_REMOVE_FILL_COLOR = Color.DARKRED;
+    // The color of the stroke of a finite automaton component when it is one
+    // of the components on the indirect path between two states.
+    public static final Color PATH_HIGHLIGHT_COLOR = Color.BLUE;
+    // The color of the stroke of a finite automaton edge when its label is
+    // being updated due to a finite automaton state being removed.
+    public static final Color UPDATE_HIGHLIGHT_COLOR = Color.GREEN;
 
 }
