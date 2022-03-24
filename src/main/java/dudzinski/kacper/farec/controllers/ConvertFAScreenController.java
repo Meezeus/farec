@@ -1,5 +1,6 @@
 package dudzinski.kacper.farec.controllers;
 
+import dudzinski.kacper.farec.Command;
 import dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings;
 import dudzinski.kacper.farec.finiteautomata.smart.*;
 import dudzinski.kacper.farec.regex.Parser;
@@ -35,14 +36,15 @@ public class ConvertFAScreenController {
      * <ul>
      *     <li>SELECT:  allows the user to select a state to remove</li>
      *     <li>UPDATE:  allows the user to update edges</li>
+     *     <li>REMOVE:  allows the user to remove the chosen state</li>
      * </ul>>
      */
     enum WorkMode {
-        SELECT, UPDATE
+        SELECT, UPDATE, REMOVE
     }
 
     private static final Color USER_HIGHLIGHT_COLOR = Color.RED;
-    private static final Color STATE_TO_REMOVE_COLOR = Color.DARKRED;
+    private static final Color STATE_TO_REMOVE_FILL_COLOR = Color.DARKRED;
     private static final Color PATH_HIGHLIGHT_COLOR = Color.BLUE;
     private static final Color UPDATE_HIGHLIGHT_COLOR = Color.GREEN;
     private static final String SELECT_STRING = "Select a state to remove.";
@@ -55,14 +57,15 @@ public class ConvertFAScreenController {
     private SmartFiniteAutomaton finiteAutomaton;
     private SmartComponent currentlySelected;
     private Paint currentlySelectedColour;
-    private WorkMode workMode = WorkMode.SELECT;
     private final ContextMenu loopContextMenu = createLoopContextMenu();
+
+    private WorkMode workMode = WorkMode.SELECT;
+    private final ArrayList<Command> commandHistory = new ArrayList<>();
     private SmartState stateToRemove;
     private int incomingIndex = 0;
-    private final ArrayList<SmartState> incomingStates = new ArrayList<>();
+    private ArrayList<SmartState> incomingStates = new ArrayList<>();
     private int outgoingIndex = 0;
-    private final ArrayList<SmartState> outgoingStates = new ArrayList<>();
-    private boolean updateFinished;
+    private ArrayList<SmartState> outgoingStates = new ArrayList<>();
 
     /**
      * Starts off the process of converting the given finite automaton into a
@@ -287,228 +290,168 @@ public class ConvertFAScreenController {
     }
 
     /**
-     * Checks if the selected component is a valid state to remove. Updates the
-     * info label accordingly. If a valid state was chosen, the state is
-     * highlighted. A list of incoming states and a list of outgoing states is
-     * also prepared. The work mode is then switched to UPDATE.
-     */
-    public void selectStateToRemove() {
-        // If no state is selected, update the info label.
-        if ((currentlySelected == null)
-                || !(currentlySelected instanceof SmartState)) {
-            infoLabel.setText(SELECT_STRING);
-        }
-        // If the state selected is the initial state, update the info
-        // label.
-        else if ((currentlySelected == finiteAutomaton.getInitialState())) {
-            infoLabel.setText("You cannot select the initial state!");
-        }
-        // If the state selected is the final state, update the info label.
-        else if (currentlySelected == finiteAutomaton.getFinalState()) {
-            infoLabel.setText("You cannot select the final state!");
-        }
-        // Otherwise, the state selected is a valid state to remove.
-        else {
-            stateToRemove = (SmartState) currentlySelected;
-
-            // Highlight the state to remove.
-            stateToRemove.setFill(STATE_TO_REMOVE_COLOR);
-
-            // Get the states with edges incoming to the state to remove.
-            incomingStates.clear();
-            for (SmartEdgeComponent incomingEdge :
-                    stateToRemove.getIncomingEdges()) {
-                incomingStates.add(incomingEdge.getStartState());
-            }
-            // Don't include the state to remove.
-            incomingStates.remove(stateToRemove);
-
-            // Get the states with edges incoming from the state to remove.
-            outgoingStates.clear();
-            for (SmartEdgeComponent outgoingEdge :
-                    stateToRemove.getOutgoingEdges()) {
-                outgoingStates.add(outgoingEdge.getEndState());
-            }
-            // Don't include the state to remove.
-            outgoingStates.remove(stateToRemove);
-
-            // Update the info label
-            infoLabel.setText("Press next to begin updating the edges.");
-
-            // Change work mode.
-            workMode = WorkMode.UPDATE;
-            updateFinished = false;
-        }
-
-    }
-
-    /**
-     * Updates the label on an edge of the finite automaton as a result of one
-     * of its states being removed. Removes previous highlighting, and then
-     * highlights the states and edges involved in the update. Generates and
-     * sets the updated label on the edge (creating the edge if it did not
-     * previously exist).
-     */
-    public void updateEdgeLabel() {
-        // Remove highlighting.
-        removeAllHighlighting();
-
-        // Get and highlight the current start state.
-        SmartState startState = incomingStates.get(incomingIndex);
-        startState.setStroke(PATH_HIGHLIGHT_COLOR);
-
-        // Get and highlight the current end state.
-        SmartState endState = outgoingStates.get(outgoingIndex);
-        endState.setStroke(PATH_HIGHLIGHT_COLOR);
-
-        // Get the direct path.
-        Pair<String, SmartEdgeComponent> directPath =
-                getDirectPath(startState, endState);
-
-        // Get the indirect path.
-        Pair<String, ArrayList<SmartEdgeComponent>> indirectPath =
-                getIndirectPath(startState, stateToRemove, endState);
-
-        // Highlight the indirect path edges.
-        indirectPath.getValue().forEach(
-                edge -> {
-                    if (edge != null) {
-                        edge.setStroke(PATH_HIGHLIGHT_COLOR);
-                    }
-                });
-
-        // Create the new label.
-        String newLabel = directPath.getKey()
-                + RegularExpressionSettings.getUnionOperatorChar()
-                + indirectPath.getKey();
-
-        // Simplify the label.
-        String simplifiedLabel = simplifyLabel(newLabel);
-
-        // If the edge being updated already exists, update its label and then
-        // highlight the edge.
-        SmartEdgeComponent updatedEdge = directPath.getValue();
-        if (updatedEdge != null) {
-            updatedEdge.setLabelText(simplifiedLabel);
-            updatedEdge.setStroke(UPDATE_HIGHLIGHT_COLOR);
-        }
-        // If the edge does not exist, create it, set its label and then
-        // highlight the edge.
-        else {
-            // If the start state and end state are different states, create
-            // a straight edge.
-            if (startState != endState) {
-                updatedEdge =
-                        SmartFiniteAutomatonBuilder
-                                .createEdge(simplifiedLabel,
-                                            startState,
-                                            endState);
-            }
-            // Otherwise, the start state and end state are the same state.
-            // Create a loop edge.
-            else {
-                updatedEdge =
-                        SmartFiniteAutomatonBuilder
-                                .createLoopEdge(simplifiedLabel,
-                                                startState);
-            }
-
-            // Add the created edge to the finite automaton.
-            finiteAutomaton.addEdge(updatedEdge);
-        }
-
-        // Highlight the updated edge.
-        updatedEdge.setStroke(UPDATE_HIGHLIGHT_COLOR);
-
-        // Update the info label.
-        infoLabel.setText("New label: " + newLabel + " = " + simplifiedLabel);
-
-        // Update the indices.
-        outgoingIndex += 1;
-        if (outgoingIndex == outgoingStates.size()) {
-            outgoingIndex = 0;
-            incomingIndex += 1;
-            if (incomingIndex == incomingStates.size()) {
-                incomingIndex = 0;
-                updateFinished = true;
-            }
-        }
-    }
-
-    /**
      * Moves to the next step of the conversion process. In SELECT mode, the
-     * user picks a state to remove. In UPDATE mode, edge labels are updated,
-     * until all the updates are finished at which point the state is removed.
+     * user picks a state to remove. In UPDATE mode, edge labels are updated. In
+     * REMOVE mode, the chosen state is removed.
      */
     public void next() {
         // In SELECT mode, the user picks a state to remove.
         if (workMode == WorkMode.SELECT) {
-            selectStateToRemove();
-        }
-        // In UPDATE mode, the edge labels are updated, until all the updates
-        // are finished.
-        else if ((workMode == WorkMode.UPDATE) && !updateFinished) {
-            updateEdgeLabel();
-        }
+            SelectStateToRemoveCommand selectStateToRemoveCommand =
+                    new SelectStateToRemoveCommand();
+            selectStateToRemoveCommand.execute();
 
-        // In UPDATE mode, when all the updates are finished, the state is
-        // removed.
-        else //noinspection ConstantConditions
-            if ((workMode == WorkMode.UPDATE) && updateFinished) {
-                // Remove highlighting.
-                removeAllHighlighting();
-
-                // Remove the state.
-                finiteAutomaton.removeState(stateToRemove);
-                stateToRemove = null;
-
-                // If the finite automaton has only two states, the conversion
-                // is complete.
-                if (finiteAutomaton.getStates().size() == 2) {
-                    // Get the regex string.
-                    String regexString =
-                            getDirectPath(finiteAutomaton.getInitialState(),
-                                          finiteAutomaton.getFinalState())
-                                    .getKey();
-
-                    // Update the info label.
-                    infoLabel.setText(
-                            "Finished! The regular expression of the finite" +
-                                    " automaton is: " +
-                                    Parser.removeOuterBrackets(regexString));
-
-                    // Disable the next button.
-                    nextButton.setDisable(true);
-                }
-                // Otherwise, more states can be removed.
-                else {
-                    // Update the info label
-                    infoLabel.setText(SELECT_STRING);
-
-                    // Change work mode.
-                    workMode = WorkMode.SELECT;
-                }
+            // Only add to command history if the state was selected
+            // successfully.
+            if (stateToRemove != null) {
+                commandHistory.add(selectStateToRemoveCommand);
             }
+        }
 
+        // In UPDATE mode, the edge labels are updated.
+        else if (workMode == WorkMode.UPDATE) {
+            UpdateEdgeLabelCommand updateEdgeLabelCommand =
+                    new UpdateEdgeLabelCommand();
+            updateEdgeLabelCommand.execute();
+            commandHistory.add(updateEdgeLabelCommand);
+        }
+
+        // In REMOVE mode, the chosen state is removed.
+        else if (workMode == WorkMode.REMOVE) {
+            RemoveStateCommand removeStateCommand =
+                    new RemoveStateCommand();
+            removeStateCommand.execute();
+            commandHistory.add(removeStateCommand);
+        }
+
+        // Update the prev button.
+        prevButton.setDisable(commandHistory.isEmpty());
     }
 
     /**
      * Moves to the previous step of the conversion process. In SELECT mode, the
-     * user picks a state to remove. In UPDATE mode, edge labels are updated,
-     * until all the updates are finished at which point the state is removed.
+     * user picks a state to remove. In UPDATE mode, edge labels are updated. In
+     * REMOVE mode, the chosen state is removed.
      */
     public void prev() {
+        // If there is a command to undo, undo it.
+        if (!commandHistory.isEmpty()) {
+            Command lastCommand =
+                    commandHistory.remove(commandHistory.size() - 1);
+            lastCommand.undo();
+        }
 
+        // Update the prev button.
+        prevButton.setDisable(commandHistory.isEmpty());
+    }
+
+    /**
+     * Returns the label (in brackets) and edge of the direct path between two
+     * states. The direct path between two states is simply the edge between
+     * them.
+     *
+     * @param startState the start state of the path
+     * @param endState   the end state of the path
+     * @return a pair ((K), V) where K is the label of the direct path between
+     * the two states (or the empty set symbol if no such path exists) and V is
+     * the edge between the two states (or <code>null</code> if no such edge
+     * exists)
+     */
+    private Pair<String, SmartEdgeComponent> getDirectPath(
+            SmartState startState, SmartState endState) {
+        // If there is an edge between the two states, return its label and the
+        // edge itself.
+        for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
+            if ((edge.getStartState() == startState)
+                    && (edge.getEndState() == endState)) {
+                return new Pair<>("(" + edge.getLabelText() + ")", edge);
+            }
+        }
+
+        // Otherwise, return the EMPTY SET symbol and null.
+        return new Pair<>("(" + EMPTY_SET + ")", null);
+    }
+
+    /**
+     * Returns the label and a list of edges of the indirect path from the start
+     * state to the end state, going through the middle state. The label of this
+     * path is the concatenation of the labels of the individual direct paths,
+     * with the star regex operator being applied to the path from the middle
+     * state to the middle state. Thus, the label has the format:<br> (start to
+     * middle) | (middle to middle)* | (middle to end)
+     *
+     * @param startState  the start state of the path
+     * @param middleState the middle state of the path
+     * @param endState    the end state of the path
+     * @return a pair (K, V) where K is the label of the indirect path between
+     * the start state and end state, going through the middle state, and V is a
+     * list of edges on that path
+     */
+    private Pair<String, ArrayList<SmartEdgeComponent>> getIndirectPath(
+            SmartState startState,
+            SmartState middleState,
+            SmartState endState) {
+        // Create the list to store path edges.
+        ArrayList<SmartEdgeComponent> pathEdges = new ArrayList<>();
+
+        // Get the path from the start state to the middle state.
+        Pair<String, SmartEdgeComponent> startToMiddle =
+                getDirectPath(startState, middleState);
+
+        // Get the path label.
+        String startToMiddleLabel = startToMiddle.getKey();
+
+        // If the path edge exists, add it to the path edges.
+        if (startToMiddle.getValue() != null) {
+            pathEdges.add(startToMiddle.getValue());
+        }
+
+        // Get the path from the middle state to the middle state.
+        Pair<String, SmartEdgeComponent> middleToMiddle =
+                getDirectPath(middleState, middleState);
+
+        // Get the path label and add the STAR char.
+        String middleToMiddleLabel = middleToMiddle.getKey()
+                + RegularExpressionSettings.getStarOperatorChar();
+
+        // If the path edge exists, add it to the path edges.
+        if (middleToMiddle.getValue() != null) {
+            pathEdges.add(middleToMiddle.getValue());
+        }
+
+        // Get the path from the middle state to the end state.
+        Pair<String, SmartEdgeComponent> middleToEnd =
+                getDirectPath(middleState, endState);
+
+        // Get the path label.
+        String middleToEndLabel = middleToEnd.getKey();
+
+        // If the path edge exists, add it to the path edges.
+        if (middleToEnd.getValue() != null) {
+            pathEdges.add(middleToEnd.getValue());
+        }
+
+        // Create the path label for the indirect path.
+        String pathLabel = startToMiddleLabel
+                + RegularExpressionSettings.getConcatenationOperatorChar()
+                + middleToMiddleLabel
+                + RegularExpressionSettings.getConcatenationOperatorChar()
+                + middleToEndLabel;
+
+        // Return the path label and the path edges.
+        return new Pair<>(pathLabel, pathEdges);
     }
 
     /**
      * Given a label in the form (A)+(B)|(C)|(D) where A, B, C and D are regular
      * expressions, returns the simplified version of the label. The label is
-     * simplified according to the following rules (R is a regular expression):
+     * simplified according to the following rules (where R is a regular
+     * expression):
      * <ul>
-     *     <li>EMPTY_SET UNION R = R</li>
+     *     <li>EMPTY_SET UNION R = R UNION EMPTY_SET = R</li>
      *     <li>R CONCATENATION EMPTY_STRING = EMPTY_STRING CONCATENATION R = R</li>
      *     <li>If R = EMPTY_SET*, then R = EMPTY_STRING</li>
+     *     <li>R UNION R = R</li>
      * </ul>
      * <p>
      * In addition, unnecessary brackets are removed from the label: see
@@ -675,12 +618,34 @@ public class ConvertFAScreenController {
     }
 
     /**
+     * Saves each component in the finite automaton and its corresponding stroke
+     * color.
+     *
+     * @return a list of pairs (K, V) where K is a finite automaton component
+     * and V is its stroke color.
+     */
+    private ArrayList<Pair<SmartComponent, Paint>> saveHighlighting() {
+        ArrayList<Pair<SmartComponent, Paint>> highlightList =
+                new ArrayList<>();
+
+        for (SmartState state : finiteAutomaton.getStates()) {
+            highlightList.add(new Pair<>(state, state.getStroke()));
+        }
+        for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
+            highlightList.add(new Pair<>(edge, edge.getStroke()));
+        }
+
+        return highlightList;
+    }
+
+    /**
      * Removes the highlighting from all states and edges in the finite
      * automaton and sets the currently selected component to
      * <code>null</code>.
      */
     private void removeAllHighlighting() {
         unselectCurrentlySelected();
+
         for (SmartState state : finiteAutomaton.getStates()) {
             state.setStroke(STATE_STROKE_COLOR);
         }
@@ -690,96 +655,353 @@ public class ConvertFAScreenController {
     }
 
     /**
-     * Returns the label (in brackets) and edge of the direct path between two
-     * states. The direct path between two states is simply the edge between
-     * them.
-     *
-     * @param startState the start state of the path
-     * @param endState   the end state of the path
-     * @return a pair ((K), V) where K is the label of the direct path between
-     * the two states (or the empty set symbol if no such path exists) and V is
-     * the edge between the two states (or <code>null</code> if no such edge
-     * exists)
+     * Checks if the selected component is a valid state to remove. Updates the
+     * info label accordingly. If a valid state was chosen, the state is
+     * highlighted. A list of incoming states and a list of outgoing states is
+     * also prepared. The work mode is then switched to UPDATE.
      */
-    private Pair<String, SmartEdgeComponent> getDirectPath(
-            SmartState startState, SmartState endState) {
-        for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
-            if ((edge.getStartState() == startState)
-                    && (edge.getEndState() == endState)) {
-                return new Pair<>("(" + edge.getLabelText() + ")", edge);
+    public class SelectStateToRemoveCommand extends Command {
+
+        private final ArrayList<SmartState> savedIncomingStates =
+                new ArrayList<>();
+        private final ArrayList<SmartState> savedOutgoingStates =
+                new ArrayList<>();
+
+        /**
+         * Executes the {@link SelectStateToRemoveCommand} command.
+         */
+        @Override
+        public void execute() {
+            // If no state is selected, update the info label.
+            if (!(currentlySelected instanceof SmartState)) {
+                infoLabel.setText(SELECT_STRING);
+            }
+            // If the selected state is the initial state, update the info
+            // label.
+            else if ((currentlySelected == finiteAutomaton.getInitialState())) {
+                infoLabel.setText("You cannot select the initial state!");
+            }
+            // If the selected state is the final state, update the info label.
+            else if (currentlySelected == finiteAutomaton.getFinalState()) {
+                infoLabel.setText("You cannot select the final state!");
+            }
+            // Otherwise, the state selected is a valid state to remove.
+            else {
+                stateToRemove = (SmartState) currentlySelected;
+
+                // Highlight the state to remove.
+                stateToRemove.setFill(STATE_TO_REMOVE_FILL_COLOR);
+
+                // Save current incoming states.
+                savedIncomingStates.addAll(incomingStates);
+
+                // Get the states with edges incoming to the state to remove.
+                incomingStates.clear();
+                for (SmartEdgeComponent incomingEdge :
+                        stateToRemove.getIncomingEdges()) {
+                    incomingStates.add(incomingEdge.getStartState());
+                }
+                // Don't include the state to remove.
+                incomingStates.remove(stateToRemove);
+
+                // Save current outgoing states.
+                savedOutgoingStates.addAll(outgoingStates);
+
+                // Get the states with edges incoming from the state to remove.
+                outgoingStates.clear();
+                for (SmartEdgeComponent outgoingEdge :
+                        stateToRemove.getOutgoingEdges()) {
+                    outgoingStates.add(outgoingEdge.getEndState());
+                }
+                // Don't include the state to remove.
+                outgoingStates.remove(stateToRemove);
+
+                // Update the info label
+                infoLabel.setText("Press next to begin updating the edges.");
+
+                // Change work mode.
+                workMode = WorkMode.UPDATE;
             }
         }
-        return new Pair<>("(" + EMPTY_SET + ")", null);
+
+        /**
+         * Undoes the {@link SelectStateToRemoveCommand} command.
+         */
+        @Override
+        public void undo() {
+            if (stateToRemove != null) {
+                // Restore work mode.
+                workMode = WorkMode.SELECT;
+
+                // Restore ingoing and outgoing states.
+                incomingStates = savedIncomingStates;
+                outgoingStates = savedOutgoingStates;
+
+                // Remove the highlighting from the state to remove.
+                stateToRemove.setFill(STATE_FILL_COLOR);
+
+                // Reset state to remove.
+                stateToRemove = null;
+            }
+
+            // Restore the info label text.
+            infoLabel.setText(SELECT_STRING);
+        }
+
     }
 
     /**
-     * Returns the label and a list of edges of the indirect path from the start
-     * state to the end state, going through the middle state. The label of this
-     * path is the concatenation of the labels of the individual direct paths,
-     * with the star regex operator being applied to the path from the middle
-     * state to the middle state. Thus, the label has the format:<br> (start to
-     * middle) | (middle to middle)* | (middle to end)
-     *
-     * @param startState  the start state of the path
-     * @param middleState the middle state of the path
-     * @param endState    the end state of the path
-     * @return a pair (K, V) where K is the label of the indirect path between
-     * the start state and end state, going through the middle state, and V is a
-     * list of edges on that path
+     * Updates the label on an edge of the finite automaton as a result of one
+     * of its states being removed. Removes the previous highlighting and then
+     * highlights the states and edges involved in the update. Generates and
+     * sets the updated label on the edge being updated (creating the edge if it
+     * did not previously exist).
      */
-    private Pair<String, ArrayList<SmartEdgeComponent>> getIndirectPath(
-            SmartState startState,
-            SmartState middleState,
-            SmartState endState) {
-        // Create the list to store path edges.
-        ArrayList<SmartEdgeComponent> pathEdges = new ArrayList<>();
+    public class UpdateEdgeLabelCommand extends Command {
 
-        // Get the path from the start state to the middle state.
-        Pair<String, SmartEdgeComponent> startToMiddle =
-                getDirectPath(startState, middleState);
+        private ArrayList<Pair<SmartComponent, Paint>> savedHighlighting;
+        private String savedLabelText = null;
+        private SmartEdgeComponent savedUpdatedEdge;
+        private String savedInfoLabelText;
+        private int savedOutgoingIndex;
+        private int savedIncomingIndex;
 
-        // Get the path label.
-        String startToMiddleLabel = startToMiddle.getKey();
+        /**
+         * Executes the {@link UpdateEdgeLabelCommand} command.
+         */
+        @Override
+        public void execute() {
+            // Unselect currently selected.
+            unselectCurrentlySelected();
 
-        // If the path edge exists, add it to the path edges.
-        if (startToMiddle.getValue() != null) {
-            pathEdges.add(startToMiddle.getValue());
+            // Save highlighting.
+            savedHighlighting = saveHighlighting();
+
+            // Remove highlighting.
+            removeAllHighlighting();
+
+            // Get and highlight the current start state.
+            SmartState startState = incomingStates.get(incomingIndex);
+            startState.setStroke(PATH_HIGHLIGHT_COLOR);
+
+            // Get and highlight the current end state.
+            SmartState endState = outgoingStates.get(outgoingIndex);
+            endState.setStroke(PATH_HIGHLIGHT_COLOR);
+
+            // Get the direct path.
+            Pair<String, SmartEdgeComponent> directPath =
+                    getDirectPath(startState, endState);
+
+            // Get the indirect path.
+            Pair<String, ArrayList<SmartEdgeComponent>> indirectPath =
+                    getIndirectPath(startState, stateToRemove, endState);
+
+            // Highlight the indirect path edges.
+            indirectPath.getValue().forEach(
+                    edge -> {
+                        if (edge != null) {
+                            edge.setStroke(PATH_HIGHLIGHT_COLOR);
+                        }
+                    });
+
+            // Create the new label.
+            String newLabel = directPath.getKey()
+                    + RegularExpressionSettings.getUnionOperatorChar()
+                    + indirectPath.getKey();
+
+            // Simplify the label.
+            String simplifiedLabel = simplifyLabel(newLabel);
+
+            // If the edge being updated already exists, update its label.
+            SmartEdgeComponent updatedEdge = directPath.getValue();
+            if (updatedEdge != null) {
+                // Save the label of the edge being updated before it's changed.
+                savedLabelText = updatedEdge.getLabelText();
+                updatedEdge.setLabelText(simplifiedLabel);
+            }
+            // If the edge does not exist, create it and set its label.
+            else {
+                // If the start state and end state are different states, create
+                // a straight edge.
+                if (startState != endState) {
+                    updatedEdge =
+                            SmartFiniteAutomatonBuilder
+                                    .createEdge(simplifiedLabel,
+                                                startState,
+                                                endState);
+                }
+                // Otherwise, the start state and end state are the same state.
+                // Create a loop edge.
+                else {
+                    updatedEdge =
+                            SmartFiniteAutomatonBuilder
+                                    .createLoopEdge(simplifiedLabel,
+                                                    startState);
+                }
+
+                // Add the created edge to the finite automaton.
+                finiteAutomaton.addEdge(updatedEdge);
+            }
+
+            // Save the updated edge.
+            savedUpdatedEdge = updatedEdge;
+
+            // Highlight the updated edge.
+            updatedEdge.setStroke(UPDATE_HIGHLIGHT_COLOR);
+
+            // Save the current info label text.
+            savedInfoLabelText = infoLabel.getText();
+
+            // Update the info label.
+            infoLabel.setText("New label: "
+                                      + newLabel
+                                      + " = "
+                                      + simplifiedLabel);
+
+            // Save the current indices.
+            savedIncomingIndex = incomingIndex;
+            savedOutgoingIndex = outgoingIndex;
+
+            // Update the indices and potentially update the work mode.
+            outgoingIndex += 1;
+            if (outgoingIndex == outgoingStates.size()) {
+                outgoingIndex = 0;
+                incomingIndex += 1;
+                if (incomingIndex == incomingStates.size()) {
+                    incomingIndex = 0;
+                    workMode = WorkMode.REMOVE;
+                }
+            }
         }
 
-        // Get the path from the middle state to the middle state.
-        Pair<String, SmartEdgeComponent> middleToMiddle =
-                getDirectPath(middleState, middleState);
+        /**
+         * Undoes the {@link UpdateEdgeLabelCommand} command.
+         */
+        @Override
+        public void undo() {
+            // Restore work mode
+            workMode = WorkMode.UPDATE;
 
-        // Get the path label and add the star char.
-        String middleToMiddleLabel = middleToMiddle.getKey()
-                + RegularExpressionSettings.getStarOperatorChar();
+            // Restore the indices.
+            incomingIndex = savedIncomingIndex;
+            outgoingIndex = savedOutgoingIndex;
 
-        // If the path edge exists, add it to the path edges.
-        if (middleToMiddle.getValue() != null) {
-            pathEdges.add(middleToMiddle.getValue());
+            // Restore the info label.
+            infoLabel.setText(savedInfoLabelText);
+
+            // If edge didn't exist before, remove it.
+            if (savedLabelText == null) {
+                finiteAutomaton.removeEdge(savedUpdatedEdge);
+            }
+            // Otherwise, restore its label.
+            else {
+                savedUpdatedEdge.setLabelText(savedLabelText);
+            }
+
+            // Restore highlighting.
+            for (Pair<SmartComponent, Paint> pair : savedHighlighting) {
+                pair.getKey().setStroke(pair.getValue());
+            }
         }
 
-        // Get the path from the middle state to the end state.
-        Pair<String, SmartEdgeComponent> middleToEnd =
-                getDirectPath(middleState, endState);
+    }
 
-        // Get the path label.
-        String middleToEndLabel = middleToEnd.getKey();
+    /**
+     * Removes the chosen state from the finite automaton and checks if the
+     * conversion is complete.
+     */
+    public class RemoveStateCommand extends Command {
 
-        // If the path edge exists, add it to the path edges.
-        if (middleToEnd.getValue() != null) {
-            pathEdges.add(middleToEnd.getValue());
+        private ArrayList<Pair<SmartComponent, Paint>> savedHighlighting;
+        private final ArrayList<SmartEdgeComponent> savedEdges =
+                new ArrayList<>();
+        private SmartState savedState;
+        private String savedInfoLabelText;
+
+        /**
+         * Executes the {@link RemoveStateCommand} command.
+         */
+        @Override
+        public void execute() {
+            // Unselect currently selected.
+            unselectCurrentlySelected();
+
+            // Save highlighting.
+            savedHighlighting = saveHighlighting();
+
+            // Remove highlighting.
+            removeAllHighlighting();
+
+            // Save the state.
+            savedState = stateToRemove;
+
+            // Save the edges connected to the state.
+            savedEdges.addAll(stateToRemove.getIncomingEdges());
+            savedEdges.addAll(stateToRemove.getOutgoingEdges());
+
+            // Remove the state.
+            finiteAutomaton.removeState(stateToRemove);
+            stateToRemove = null;
+
+            // Save the info label.
+            savedInfoLabelText = infoLabel.getText();
+
+            // If the finite automaton has only two states, the conversion
+            // is complete.
+            if (finiteAutomaton.getStates().size() == 2) {
+                // Get the regex string.
+                String regexString =
+                        getDirectPath(finiteAutomaton.getInitialState(),
+                                      finiteAutomaton.getFinalState())
+                                .getKey();
+
+                // Update the info label.
+                infoLabel.setText(
+                        "Finished! The regular expression of the finite" +
+                                " automaton is: " +
+                                Parser.removeOuterBrackets(regexString));
+
+                // Disable the next button.
+                nextButton.setDisable(true);
+            }
+            // Otherwise, more states can be removed.
+            else {
+                // Update the info label
+                infoLabel.setText(SELECT_STRING);
+
+                // Change work mode.
+                workMode = WorkMode.SELECT;
+            }
         }
 
-        // Create the path label for the indirect path.
-        String pathLabel = startToMiddleLabel
-                + RegularExpressionSettings.getConcatenationOperatorChar()
-                + middleToMiddleLabel
-                + RegularExpressionSettings.getConcatenationOperatorChar()
-                + middleToEndLabel;
+        /**
+         * Undoes the {@link RemoveStateCommand} command.
+         */
+        @Override
+        public void undo() {
+            // Restore the work mode.
+            workMode = WorkMode.REMOVE;
 
-        // Return the path label and the path edges.
-        return new Pair<>(pathLabel, pathEdges);
+            // Enable the next button.
+            nextButton.setDisable(false);
+
+            // Restore the info label.
+            infoLabel.setText(savedInfoLabelText);
+
+            // Restore the removed state.
+            finiteAutomaton.addState(savedState);
+            stateToRemove = savedState;
+
+            // Restore the edges connected to the state.
+            for (SmartEdgeComponent edge : savedEdges) {
+                finiteAutomaton.addEdge(edge);
+            }
+
+            // Restore highlighting.
+            for (Pair<SmartComponent, Paint> pair : savedHighlighting) {
+                pair.getKey().setStroke(pair.getValue());
+            }
+        }
     }
 
 }
