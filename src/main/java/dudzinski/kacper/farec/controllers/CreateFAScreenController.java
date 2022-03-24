@@ -117,7 +117,7 @@ public class CreateFAScreenController implements Initializable {
         if (currentlySelected instanceof SmartState) {
             currentlySelected.setStroke(STATE_STROKE_COLOR);
         }
-        else if (currentlySelected instanceof SmartEdge) {
+        else if (currentlySelected instanceof SmartEdgeComponent) {
             currentlySelected.setStroke(EDGE_STROKE_COLOR);
         }
         currentlySelected = null;
@@ -347,7 +347,7 @@ public class CreateFAScreenController implements Initializable {
         MenuItem delete = new MenuItem("Delete");
         delete.setOnAction(event -> {
             SmartEdge edge = (SmartEdge) currentlySelected;
-            finiteAutomaton.removeEdge(edge, true);
+            finiteAutomaton.removeEdge(edge);
             currentlySelected = null;
         });
 
@@ -370,7 +370,7 @@ public class CreateFAScreenController implements Initializable {
             try {
                 String newLabel = getNewEdgeLabel();
                 if (newLabel != null) {
-                    SmartEdge edge = (SmartEdge) currentlySelected;
+                    SmartLoopEdge edge = (SmartLoopEdge) currentlySelected;
                     edge.setLabelText(newLabel);
                 }
             }
@@ -387,8 +387,8 @@ public class CreateFAScreenController implements Initializable {
 
         MenuItem delete = new MenuItem("Delete");
         delete.setOnAction(event -> {
-            SmartEdge edge = (SmartEdge) currentlySelected;
-            finiteAutomaton.removeEdge(edge, true);
+            SmartLoopEdge edge = (SmartLoopEdge) currentlySelected;
+            finiteAutomaton.removeEdge(edge);
             currentlySelected = null;
         });
 
@@ -460,25 +460,31 @@ public class CreateFAScreenController implements Initializable {
 
         // Releasing the mouse click
         container.setOnMouseDragReleased(event -> {
-            // in EDGE mode will select it as the end state of the edge and create the edge.
+            // in EDGE mode will select it as the end state of the edge and
+            // create the edge.
             if ((workMode == WorkMode.EDGE)
                     && (event.getButton().equals(MouseButton.PRIMARY))) {
+                // Select the state.
                 selectComponent(event);
                 edgeEndState = (SmartState) currentlySelected;
+
+                SmartEdgeComponent edge;
                 // If the start state and end state are not the same state,
                 // create an edge between them.
-                SmartEdge edge;
                 if (edgeStartState != edgeEndState) {
                     edge = SmartFiniteAutomatonBuilder
-                            .createEdge(EMPTY_STRING, edgeStartState, edgeEndState);
+                            .createEdge(EMPTY_STRING,
+                                        edgeStartState,
+                                        edgeEndState);
                 }
                 // If the start state and end state are the same state, create a
                 // loop edge.
                 else {
                     edge = SmartFiniteAutomatonBuilder
-                            .createLoopEdge(EMPTY_STRING, edgeStartState);
+                            .createLoopEdge(EMPTY_STRING,
+                                            edgeStartState);
                 }
-                finiteAutomaton.addEdge(edge, true);
+                finiteAutomaton.addEdge(edge);
                 event.consume();
             }
         });
@@ -499,7 +505,7 @@ public class CreateFAScreenController implements Initializable {
      *
      * @param edge the edge for which to define mouse control behaviour
      */
-    public void setEdgeMouseControl(SmartEdge edge) {
+    public void setEdgeMouseControl(SmartEdgeComponent edge) {
         // Get the edge container.
         Group container = edge.getContainer();
 

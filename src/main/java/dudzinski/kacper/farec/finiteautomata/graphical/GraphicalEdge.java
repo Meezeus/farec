@@ -1,6 +1,6 @@
 package dudzinski.kacper.farec.finiteautomata.graphical;
 
-import dudzinski.kacper.farec.finiteautomata.smart.SmartEdge;
+import dudzinski.kacper.farec.finiteautomata.smart.SmartEdgeComponent;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -18,7 +18,7 @@ import javafx.scene.layout.StackPane;
  * assembled together (for example in a U shape). In such cases, only the final
  * edge is directed. The other edges are assumed to be part of the final edge.
  *
- * @see SmartEdge
+ * @see SmartEdgeComponent
  */
 public class GraphicalEdge {
 

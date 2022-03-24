@@ -26,8 +26,10 @@ public class SmartState extends SmartComponent {
     private final Group container = new Group();
     private final Circle circle;
     private final Label label;
-    private final ArrayList<SmartEdge> incomingEdges = new ArrayList<>();
-    private final ArrayList<SmartEdge> outgoingEdges = new ArrayList<>();
+    private final ArrayList<SmartEdgeComponent> incomingEdges =
+            new ArrayList<>();
+    private final ArrayList<SmartEdgeComponent> outgoingEdges =
+            new ArrayList<>();
     private boolean isInitial = false;
     private boolean isFinal = false;
 
@@ -164,7 +166,7 @@ public class SmartState extends SmartComponent {
      *
      * @param edge the incoming edge
      */
-    public void addIncomingEdge(SmartEdge edge) {
+    public void addIncomingEdge(SmartEdgeComponent edge) {
         incomingEdges.add(edge);
     }
 
@@ -173,7 +175,7 @@ public class SmartState extends SmartComponent {
      *
      * @param edge the outgoing edge
      */
-    public void addOutgoingEdge(SmartEdge edge) {
+    public void addOutgoingEdge(SmartEdgeComponent edge) {
         outgoingEdges.add(edge);
     }
 
@@ -182,7 +184,7 @@ public class SmartState extends SmartComponent {
      *
      * @param edge the incoming edge
      */
-    public void removeIncomingEdge(SmartEdge edge) {
+    public void removeIncomingEdge(SmartEdgeComponent edge) {
         incomingEdges.remove(edge);
     }
 
@@ -191,7 +193,7 @@ public class SmartState extends SmartComponent {
      *
      * @param edge the outgoing edge
      */
-    public void removeOutgoingEdge(SmartEdge edge) {
+    public void removeOutgoingEdge(SmartEdgeComponent edge) {
         outgoingEdges.remove(edge);
     }
 
@@ -200,7 +202,7 @@ public class SmartState extends SmartComponent {
      *
      * @return the list of incoming edges
      */
-    public ArrayList<SmartEdge> getIncomingEdges() {
+    public ArrayList<SmartEdgeComponent> getIncomingEdges() {
         return incomingEdges;
     }
 
@@ -209,7 +211,7 @@ public class SmartState extends SmartComponent {
      *
      * @return the list of outgoing edges
      */
-    public ArrayList<SmartEdge> getOutgoingEdges() {
+    public ArrayList<SmartEdgeComponent> getOutgoingEdges() {
         return outgoingEdges;
     }
 

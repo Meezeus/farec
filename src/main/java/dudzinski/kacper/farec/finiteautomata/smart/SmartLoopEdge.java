@@ -5,16 +5,19 @@ import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.Polygon;
 
 /**
- * This class represents a smart loop edge in a finite automaton. A smart edge
- * is an edge that manages its own size, position, relationship to other
+ * This class represents a smart loop edge in a finite automaton. A smart loop
+ * edge is an edge that manages its own size, position, relationship to other
  * components etc. This makes it much more dynamic.
  * <p>
  * A loop edge is a directed, labelled curve that connect a state to itself. It
  * represents a transition between the state and itself. The loop for a
  * particular state is unique: there cannot be any other loops for that state.
  * The curve may go above or below the state.
+ *
+ * @see SmartEdgeComponent
+ * @see SmartEdge
  */
-public class SmartLoopEdge extends SmartEdge {
+public class SmartLoopEdge extends SmartEdgeComponent {
 
     private boolean topside = true;
 

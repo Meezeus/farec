@@ -1,9 +1,6 @@
 package dudzinski.kacper.farec.finiteautomata.smart;
 
-import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalEdge;
-import javafx.scene.Group;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
@@ -12,119 +9,77 @@ import javafx.scene.shape.Shape;
  * edge that manages its own size, position, relationship to other components
  * etc. This makes it much more dynamic.
  * <p>
- * An edge is a directed, labelled line between two states. It represents a
- * transitions between the two states. An edge between two states in a
- * particular direction is unique: there cannot be any other edges between those
- * two states in the same direction. The edge is usually a straight line, but
- * may be a curve instead (see below).
- * <p>
- * If there are edges between two states in both directions, these edges are
- * called symmetric edges. To avoid them overlapping each other, the straight
- * lines are replaced by quad curves.
- * <p>
- * The start state and end state of the edge may be the same state. In this
- * case, the edge is called a loop. For a loop, the straight line is replaced by
- * a cubic curve. The cubic curve may go above or below the state.
+ * An edge is a directed, labelled line or curve that connects two different
+ * states. An edge may be straight or curved. If there are edges between two
+ * states in both directions, these edges are called symmetric edges. Symmetric
+ * edges are curves. Otherwise, the edge is a straight line.
  *
- * @see GraphicalEdge
+ * @see SmartEdgeComponent
+ * @see SmartLoopEdge
  */
-public class SmartEdge extends SmartComponent {
+public class SmartEdge extends SmartEdgeComponent {
 
-    protected final Group container = new Group();
-    protected final Shape edgeShape;
-    protected final Polygon arrowhead;
-    protected final Label label;
-    protected final SmartState startState;
-    protected final SmartState endState;
+    private boolean isCurved = false;
 
     /**
-     * Creates an edge between two (not necessarily unique) states.
+     * Creates an edge between two different states.
      *
      * @param edgeShape  the shape of the edge (a line or a curve)
      * @param arrowhead  the arrowhead at the end of the edge
      * @param label      the label on the edge
      * @param startState the start state of the edge
      * @param endState   the end state of the edge
+     * @throws IllegalArgumentException if the two states are the same
      */
     public SmartEdge(Shape edgeShape, Polygon arrowhead, Label label,
-                     SmartState startState, SmartState endState) {
-        this.edgeShape = edgeShape;
-        this.arrowhead = arrowhead;
-        this.label = label;
-        this.startState = startState;
-        this.endState = endState;
-        container.getChildren().addAll(edgeShape, arrowhead, label);
-        container.setId("selectable");
+                     SmartState startState, SmartState endState)
+            throws IllegalArgumentException {
+        super(edgeShape, arrowhead, label, startState, endState);
+
+        if (startState == endState) {
+            throw new IllegalArgumentException(
+                    "The two states cannot be the same!");
+        }
     }
 
     /**
-     * Returns the container of this edge. The container contains the edge
-     * shape, arrowhead and label.
+     * Sets the edge as a curve or a straight line. If <code>setCurve</code> is
+     * true, the edge will be a curve. If <code>setCurve</code> is false, the
+     * edge will be a straight line.
      *
-     * @return the container of this edge
+     * @param setCurve whether to set the edge as a curve (true), or a straight
+     *                 line (false)
      */
-    @Override
-    public Group getContainer() {
-        return container;
-    }
+    public void setCurved(boolean setCurve) {
+        // Check if anything needs to be done.
+        if ((setCurve && !isCurved) || (!setCurve && isCurved)) {
+            isCurved = setCurve;
 
-    /**
-     * Set the stroke colour of this edge. The stroke colour is applied to the
-     * edge shape and the arrowhead.
-     *
-     * @param paint the new stroke colour
-     */
-    @Override
-    public void setStroke(Paint paint) {
-        edgeShape.setStroke(paint);
-        arrowhead.setStroke(paint);
-    }
+            // Create a new edge that has the correct line shape.
+            SmartEdge newEdge;
+            if (setCurve) {
+                newEdge = SmartFiniteAutomatonBuilder.createCurvedEdge(
+                        label.getText(), startState, endState);
+            }
+            else {
+                newEdge = SmartFiniteAutomatonBuilder.createEdge(
+                        label.getText(), startState, endState);
+            }
 
-    /**
-     * Returns the stroke colour of this edge.
-     *
-     * @return the stroke colour
-     */
-    @Override
-    public Paint getStroke() {
-        return edgeShape.getStroke();
-    }
+            // Set the stroke of the new edge to the stroke of this edge.
+            newEdge.setStroke(this.getStroke());
 
-    /**
-     * Sets the text of this edge's label.
-     *
-     * @param labelText the new text of the label
-     */
-    @Override
-    public void setLabelText(String labelText) {
-        label.setText(labelText);
-    }
+            // Steal the components of the new edge.
+            edgeShape = newEdge.edgeShape;
+            arrowhead = newEdge.arrowhead;
+            label = newEdge.label;
 
-    /**
-     * Returns the text of this edge's label.
-     *
-     * @return the text of this edge's label.
-     */
-    public String getLabelText() {
-        return label.getText();
-    }
-
-    /**
-     * Returns the start state of this edge.
-     *
-     * @return the start state of this edge
-     */
-    public SmartState getStartState() {
-        return startState;
-    }
-
-    /**
-     * Returns the end state of this edge.
-     *
-     * @return the end state of this edge
-     */
-    public SmartState getEndState() {
-        return endState;
+            // Clear the container and add the new components.
+            container.getChildren().clear();
+            container.getChildren().addAll(edgeShape,
+                                           arrowhead,
+                                           label);
+        }
     }
 
 }

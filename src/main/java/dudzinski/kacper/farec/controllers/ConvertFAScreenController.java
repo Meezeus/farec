@@ -96,7 +96,7 @@ public class ConvertFAScreenController {
                         .createEdge(EMPTY_STRING,
                                     newInitialState,
                                     oldInitialState);
-        finiteAutomaton.addEdge(iToI, false);
+        finiteAutomaton.addEdge(iToI);
 
         // Add a new final state.
         SmartState newFinalState = SmartFiniteAutomatonBuilder
@@ -114,7 +114,7 @@ public class ConvertFAScreenController {
                         .createEdge(EMPTY_STRING,
                                     oldFinalState,
                                     newFinalState);
-        finiteAutomaton.addEdge(fToF, false);
+        finiteAutomaton.addEdge(fToF);
 
         // Set the info label.
         infoLabel.setText(SELECT_STRING);
@@ -247,7 +247,7 @@ public class ConvertFAScreenController {
      *
      * @param edge the edge for which to define mouse control behaviour
      */
-    public void setEdgeMouseControl(SmartEdge edge) {
+    public void setEdgeMouseControl(SmartEdgeComponent edge) {
         // Get the edge container.
         Group container = edge.getContainer();
 
@@ -316,7 +316,8 @@ public class ConvertFAScreenController {
 
             // Get the states with edges incoming to the state to remove.
             incomingStates.clear();
-            for (SmartEdge incomingEdge : stateToRemove.getIncomingEdges()) {
+            for (SmartEdgeComponent incomingEdge :
+                    stateToRemove.getIncomingEdges()) {
                 incomingStates.add(incomingEdge.getStartState());
             }
             // Don't include the state to remove.
@@ -324,7 +325,8 @@ public class ConvertFAScreenController {
 
             // Get the states with edges incoming from the state to remove.
             outgoingStates.clear();
-            for (SmartEdge outgoingEdge : stateToRemove.getOutgoingEdges()) {
+            for (SmartEdgeComponent outgoingEdge :
+                    stateToRemove.getOutgoingEdges()) {
                 outgoingStates.add(outgoingEdge.getEndState());
             }
             // Don't include the state to remove.
@@ -360,11 +362,11 @@ public class ConvertFAScreenController {
         endState.setStroke(PATH_HIGHLIGHT_COLOR);
 
         // Get the direct path.
-        Pair<String, SmartEdge> directPath =
+        Pair<String, SmartEdgeComponent> directPath =
                 getDirectPath(startState, endState);
 
         // Get the indirect path.
-        Pair<String, ArrayList<SmartEdge>> indirectPath =
+        Pair<String, ArrayList<SmartEdgeComponent>> indirectPath =
                 getIndirectPath(startState, stateToRemove, endState);
 
         // Highlight the indirect path edges.
@@ -385,7 +387,7 @@ public class ConvertFAScreenController {
 
         // If the edge being updated already exists, update its label and then
         // highlight the edge.
-        SmartEdge updatedEdge = directPath.getValue();
+        SmartEdgeComponent updatedEdge = directPath.getValue();
         if (updatedEdge != null) {
             updatedEdge.setLabelText(simplifiedLabel);
             updatedEdge.setStroke(UPDATE_HIGHLIGHT_COLOR);
@@ -410,11 +412,13 @@ public class ConvertFAScreenController {
                                 .createLoopEdge(simplifiedLabel,
                                                 startState);
             }
-            // Must set the stroke before adding the edge to the finite
-            // automaton, as the edge might be replaced by a symmetric edge!
-            updatedEdge.setStroke(UPDATE_HIGHLIGHT_COLOR);
-            finiteAutomaton.addEdge(updatedEdge, true);
+
+            // Add the created edge to the finite automaton.
+            finiteAutomaton.addEdge(updatedEdge);
         }
+
+        // Highlight the updated edge.
+        updatedEdge.setStroke(UPDATE_HIGHLIGHT_COLOR);
 
         // Update the info label.
         infoLabel.setText("New label: " + newLabel + " = " + simplifiedLabel);
@@ -680,7 +684,7 @@ public class ConvertFAScreenController {
         for (SmartState state : finiteAutomaton.getStates()) {
             state.setStroke(STATE_STROKE_COLOR);
         }
-        for (SmartEdge edge : finiteAutomaton.getEdges()) {
+        for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
             edge.setStroke(EDGE_STROKE_COLOR);
         }
     }
@@ -697,9 +701,9 @@ public class ConvertFAScreenController {
      * the edge between the two states (or <code>null</code> if no such edge
      * exists)
      */
-    private Pair<String, SmartEdge> getDirectPath(
+    private Pair<String, SmartEdgeComponent> getDirectPath(
             SmartState startState, SmartState endState) {
-        for (SmartEdge edge : finiteAutomaton.getEdges()) {
+        for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
             if ((edge.getStartState() == startState)
                     && (edge.getEndState() == endState)) {
                 return new Pair<>("(" + edge.getLabelText() + ")", edge);
@@ -723,15 +727,15 @@ public class ConvertFAScreenController {
      * the start state and end state, going through the middle state, and V is a
      * list of edges on that path
      */
-    private Pair<String, ArrayList<SmartEdge>> getIndirectPath(
+    private Pair<String, ArrayList<SmartEdgeComponent>> getIndirectPath(
             SmartState startState,
             SmartState middleState,
             SmartState endState) {
         // Create the list to store path edges.
-        ArrayList<SmartEdge> pathEdges = new ArrayList<>();
+        ArrayList<SmartEdgeComponent> pathEdges = new ArrayList<>();
 
         // Get the path from the start state to the middle state.
-        Pair<String, SmartEdge> startToMiddle =
+        Pair<String, SmartEdgeComponent> startToMiddle =
                 getDirectPath(startState, middleState);
 
         // Get the path label.
@@ -743,7 +747,7 @@ public class ConvertFAScreenController {
         }
 
         // Get the path from the middle state to the middle state.
-        Pair<String, SmartEdge> middleToMiddle =
+        Pair<String, SmartEdgeComponent> middleToMiddle =
                 getDirectPath(middleState, middleState);
 
         // Get the path label and add the star char.
@@ -756,7 +760,7 @@ public class ConvertFAScreenController {
         }
 
         // Get the path from the middle state to the end state.
-        Pair<String, SmartEdge> middleToEnd =
+        Pair<String, SmartEdgeComponent> middleToEnd =
                 getDirectPath(middleState, endState);
 
         // Get the path label.

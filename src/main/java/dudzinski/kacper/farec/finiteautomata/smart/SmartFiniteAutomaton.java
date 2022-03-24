@@ -23,10 +23,11 @@ import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.STAT
  * of states in each direction: multiple transitions between two states in the
  * same direction are not allowed. A state may have a single transition to
  * itself, called a loop, but multiple loops for the same state are not allowed.
- * One of the states is designated as the initial state and a second, different
- * state is designated as the final state.
+ * One of the states of the finite automaton is designated as the initial state
+ * and a second, different state is designated as the final state.
  *
  * @see GraphicalFiniteAutomaton
+ * @see SmartComponent
  */
 public class SmartFiniteAutomaton {
 
@@ -36,7 +37,7 @@ public class SmartFiniteAutomaton {
 
     private final Pane container = new Pane();
     private final ArrayList<SmartState> states = new ArrayList<>();
-    private final ArrayList<SmartEdge> edges = new ArrayList<>();
+    private final ArrayList<SmartEdgeComponent> edges = new ArrayList<>();
     private SmartState initialState;
     private SmartState finalState;
 
@@ -74,12 +75,11 @@ public class SmartFiniteAutomaton {
     }
 
     /**
-     * Returns the list of edges for this finite automaton. The edges represent
-     * transitions between states.
+     * Returns the list of edges for this finite automaton.
      *
      * @return the list of edges for this finite automaton
      */
-    public ArrayList<SmartEdge> getEdges() {
+    public ArrayList<SmartEdgeComponent> getEdges() {
         return edges;
     }
 
@@ -87,7 +87,7 @@ public class SmartFiniteAutomaton {
      * Adds the given state to this finite automaton. The state is added to the
      * list of states and its container is added to the container of this finite
      * automaton. The user interaction behaviour for the state is set. The
-     * minimum size of the finite automaton container is also updated.
+     * minimum size of this finite automaton container is also updated.
      *
      * @param state the state to add to this finite automaton
      */
@@ -128,15 +128,17 @@ public class SmartFiniteAutomaton {
         }
 
         // Remove edges attached to the state.
-        Iterator<SmartEdge> it = edges.iterator();
+        Iterator<SmartEdgeComponent> it = edges.iterator();
         while (it.hasNext()) {
-            SmartEdge edge = it.next();
+            SmartEdgeComponent edge = it.next();
             if (edge.getStartState() == state) {
+                state.removeOutgoingEdge(edge);
                 edge.getEndState().removeIncomingEdge(edge);
                 container.getChildren().remove(edge.getContainer());
                 it.remove();
             }
             else if (edge.getEndState() == state) {
+                state.removeIncomingEdge(edge);
                 edge.getStartState().removeOutgoingEdge(edge);
                 container.getChildren().remove(edge.getContainer());
                 it.remove();
@@ -151,34 +153,37 @@ public class SmartFiniteAutomaton {
     /**
      * Adds the given edge to this finite automaton. The edge is added to the
      * list of edges and its container is added to the container of this finite
-     * automaton. If there is already an edge that has the same start state and
-     * end state, it is replaced by the new edge. The list of outgoing edges of
-     * the start state and the list of incoming edges of the end state is
-     * updated to reflect the addition of the edge. The user interaction
-     * behaviour for the edge is set. If adding this edge results in symmetric
-     * edges between two states (edges in both directions), the two symmetric
-     * edges are replaced with curved edges.
+     * automaton. If there is already an edge that has the same start and end
+     * state, it is replaced by the new edge. The list of outgoing edges of the
+     * start state and the list of incoming edges of the end state is updated to
+     * reflect the addition of the edge. The user interaction behaviour for the
+     * edge is set. The states connected to the edge are checked for symmetric
+     * edges.
      *
      * @param edge the edge to add to this finite automaton
      */
-    public void addEdge(SmartEdge edge, boolean checkSymmetry) {
-        // Check for existing, equivalent edges.
-        SmartEdge oldEdge = null;
-        for (SmartEdge existingEdge : edges) {
-            if ((existingEdge.getStartState() == edge.getStartState())
-                    && (existingEdge.getEndState() == edge.getEndState())) {
+    public void addEdge(SmartEdgeComponent edge) {
+        // Get the start and end states of the edge.
+        SmartState startState = edge.getStartState();
+        SmartState endState = edge.getEndState();
+
+        // Check for an existing, equivalent edge.
+        SmartEdgeComponent oldEdge = null;
+        for (SmartEdgeComponent existingEdge : edges) {
+            if ((existingEdge.getStartState() == startState)
+                    && (existingEdge.getEndState() == endState)) {
                 oldEdge = existingEdge;
             }
         }
 
         // If there is an existing, equivalent edge, remove it.
         if (oldEdge != null) {
-            removeEdge(oldEdge, true);
+            removeEdge(oldEdge);
         }
 
         // Update the states connected to the edge.
-        edge.getStartState().addOutgoingEdge(edge);
-        edge.getEndState().addIncomingEdge(edge);
+        startState.addOutgoingEdge(edge);
+        endState.addIncomingEdge(edge);
 
         // Add the edge.
         edges.add(edge);
@@ -193,9 +198,7 @@ public class SmartFiniteAutomaton {
         }
 
         // Check for symmetric edges.
-        if (checkSymmetry) {
-            addSymmetricEdges(edge);
-        }
+        checkSymmetricEdges(startState, endState);
     }
 
     /**
@@ -203,25 +206,102 @@ public class SmartFiniteAutomaton {
      * from the list of edges and its container is removed from the container of
      * this finite automaton. The list of outgoing edges of the start state and
      * the list of incoming edges of the end state is updated to reflect the
-     * removal of the edge. If the edge to be removed is a symmetric edge (edges
-     * in both directions between two states), the other symmetric edge is
-     * removed and replaced with a straight edge.
+     * removal of the edge. The states connected to the edge are checked for
+     * symmetric edges.
      *
      * @param edge the edge to remove from this finite automaton
      */
-    public void removeEdge(SmartEdge edge, boolean checkSymmetry) {
-        // Check for symmetric edges.
-        if (checkSymmetry) {
-            removeSymmetricEdges(edge);
-        }
+    public void removeEdge(SmartEdgeComponent edge) {
+        // Get the start and end states of the edge.
+        SmartState startState = edge.getStartState();
+        SmartState endState = edge.getEndState();
 
         // Update the states connected to the edge.
-        edge.getStartState().removeOutgoingEdge(edge);
-        edge.getEndState().removeIncomingEdge(edge);
+        startState.removeOutgoingEdge(edge);
+        endState.removeIncomingEdge(edge);
 
         // Remove the edge.
         edges.remove(edge);
         container.getChildren().remove(edge.getContainer());
+
+        // Check for symmetric edges.
+        checkSymmetricEdges(startState, endState);
+    }
+
+    /**
+     * Checks for symmetric edges between two states. Symmetric edges are edges
+     * between two states in both directions. If symmetric edges are found, the
+     * edges are turned into curved edges. If there is only one edge between the
+     * two states, it is turned into a straight edge. If there are no edges
+     * between the two states, nothing happens.
+     *
+     * @param state1 one of the two states
+     * @param state2 one of the two states
+     */
+    private void checkSymmetricEdges(SmartState state1, SmartState state2) {
+        // If the two states are the same, they cannot have symmetric edges.
+        if (state1 == state2) {
+            return;
+        }
+
+        // Get the pair of edges between the two states.
+        Pair<SmartEdge, SmartEdge> edgePair = getPairEdges(state1, state2);
+        SmartEdge edge1 = edgePair.getKey();
+        SmartEdge edge2 = edgePair.getValue();
+
+        // If there are symmetric edges, turn them into curved edges.
+        if ((edge1 != null) && (edge2 != null)) {
+            edge1.setCurved(true);
+            edge2.setCurved(true);
+        }
+        // Otherwise, if there is only one edge, turn it into a straight edge.
+        else if (edge1 != null) {
+            edge1.setCurved(false);
+        }
+        else if (edge2 != null) {
+            edge2.setCurved(false);
+        }
+    }
+
+    /**
+     * Returns a pair of edges between two different states.
+     *
+     * @param state1 one of the two states
+     * @param state2 one of the two states
+     * @return a pair (K, V), where K is an edge from state1 to state2 (or
+     * <code>null</code> if such an edge does not exist) and V is an edge from
+     * state2 to state1 (or <code>null</code> if such an edge does not exist)
+     * @throws IllegalArgumentException if the two states are the same
+     */
+    private Pair<SmartEdge, SmartEdge> getPairEdges(SmartState state1,
+                                                    SmartState state2)
+            throws IllegalArgumentException {
+        // Check that the states are different.
+        if (state1 == state2) {
+            throw new IllegalArgumentException(
+                    "The two states cannot be the same!");
+        }
+
+        // Declare the edges
+        SmartEdge s1ToS2 = null;
+        SmartEdge s2ToS1 = null;
+
+        // Get the edge from state1 to state2 if it exists.
+        for (SmartEdgeComponent edge : state1.getOutgoingEdges()) {
+            if (edge.getEndState() == state2) {
+                s1ToS2 = (SmartEdge) edge;
+            }
+        }
+
+        // Get the edge from state2 to state1 if it exists.
+        for (SmartEdgeComponent edge : state2.getOutgoingEdges()) {
+            if (edge.getEndState() == state1) {
+                s2ToS1 = (SmartEdge) edge;
+            }
+        }
+
+        // Return the edges.
+        return new Pair<>(s1ToS2, s2ToS1);
     }
 
     /**
@@ -300,146 +380,6 @@ public class SmartFiniteAutomaton {
     }
 
     /**
-     * Returns a pair of edges between two states.
-     *
-     * @param state1 one of the two states
-     * @param state2 one of the two states
-     * @return a pair (K, V), where K is an edge from state1 to state2 (or
-     * <code>null</code>) and V is an edge from state2 to state1 (or
-     * <code>null</code>)
-     */
-    private Pair<SmartEdge, SmartEdge> getPairEdges(SmartState state1,
-                                                    SmartState state2) {
-        // Declare the edges
-        SmartEdge s1ToS2 = null;
-        SmartEdge s2ToS1 = null;
-
-        // Get the edge from state1 to state2 if it exists.
-        for (SmartEdge edge : state1.getOutgoingEdges()) {
-            if (edge.getEndState() == state2) {
-                s1ToS2 = edge;
-            }
-        }
-
-        // Get the edge from state2 to state1 if it exists.
-        for (SmartEdge edge : state2.getOutgoingEdges()) {
-            if (edge.getEndState() == state1) {
-                s2ToS1 = edge;
-            }
-        }
-
-        // Return the edges.
-        return new Pair<>(s1ToS2, s2ToS1);
-    }
-
-    /**
-     * Checks for and adds symmetric edges between two states, as a result of an
-     * edge being added between them. Symmetric edges are edges between two
-     * states in both directions. Symmetric edges must be curved so as not to
-     * overlap each other. If adding the edge results in symmetric edges between
-     * the two states, the edges are replaced by equivalent curved edges.
-     *
-     * @param edge the edge being added
-     */
-    private void addSymmetricEdges(SmartEdge edge) {
-        // Get the states connected to the edge.
-        SmartState state1 = edge.getStartState();
-        SmartState state2 = edge.getEndState();
-
-        // If the two states are the same, they cannot have symmetric edges.
-        if (state1 == state2) {
-            return;
-        }
-
-        // Get the pair of edges between the two states.
-        Pair<SmartEdge, SmartEdge> edgePair = getPairEdges(state1, state2);
-
-        // If there are symmetric edges, replace them with equivalent curved
-        // edges.
-        if ((edgePair.getKey() != null) && (edgePair.getValue() != null)) {
-            // Remove the existing edge.
-            SmartEdge edge1 = edgePair.getKey();
-            removeEdge(edge1, false);
-            // Add the new edge.
-            SmartEdge curvedEdge1 =
-                    SmartFiniteAutomatonBuilder.createCurvedEdge(
-                            edge1.getLabelText(),
-                            edge1.getStartState(),
-                            edge1.getEndState());
-            curvedEdge1.setStroke(edge1.getStroke());
-            addEdge(curvedEdge1, false);
-
-            // Remove the existing edge.
-            SmartEdge edge2 = edgePair.getValue();
-            removeEdge(edge2, false);
-            // Add the new edge.
-            SmartEdge curvedEdge2 =
-                    SmartFiniteAutomatonBuilder.createCurvedEdge(
-                            edge2.getLabelText(),
-                            edge2.getStartState(),
-                            edge2.getEndState());
-            curvedEdge2.setStroke(edge2.getStroke());
-            addEdge(curvedEdge2, false);
-        }
-    }
-
-    /**
-     * Checks for and removes symmetric edges between two states, as a result of
-     * the given edge being removed between them. Symmetric edges are edges
-     * between two states in both directions. Symmetric edges must be curved so
-     * as not to overlap each other. If the edge being removed is a symmetric
-     * edge, the other symmetric edge is replaced by an equivalent straight
-     * edge.
-     *
-     * @param edge the edge being removed
-     */
-    private void removeSymmetricEdges(SmartEdge edge) {
-        // Get the states connected to the edge.
-        SmartState state1 = edge.getStartState();
-        SmartState state2 = edge.getEndState();
-
-        // If the two states are the same, they cannot have symmetric edges.
-        if (state1 == state2) {
-            return;
-        }
-
-        // Get the pair of edges between the two states.
-        Pair<SmartEdge, SmartEdge> edgePair = getPairEdges(state1, state2);
-
-        // If there are symmetric edges, replace the one not being removed by
-        // an equivalent straight edge.
-        if ((edgePair.getKey() != null) && (edgePair.getValue() != null)) {
-            // Get one of the edges and check that it's not the edge being
-            // removed.
-            SmartEdge curvedEdge1 = edgePair.getKey();
-            if (curvedEdge1 != edge) {
-                // Replace the edge with an equivalent straight edge.
-                removeEdge(curvedEdge1, false);
-                SmartEdge edge1 = SmartFiniteAutomatonBuilder.createEdge(
-                        curvedEdge1.getLabelText(),
-                        curvedEdge1.getStartState(),
-                        curvedEdge1.getEndState());
-                edge1.setStroke(curvedEdge1.getStroke());
-                addEdge(edge1, false);
-            }
-
-            // Get one of the edges and check that it's not the edge being
-            // removed.
-            SmartEdge curvedEdge2 = edgePair.getValue();
-            if (curvedEdge2 != edge) {
-                // Replace the edge with an equivalent straight edge.
-                removeEdge(curvedEdge2, false);
-                SmartEdge edge2 = SmartFiniteAutomatonBuilder.createEdge(
-                        curvedEdge2.getLabelText(),
-                        curvedEdge2.getStartState(),
-                        curvedEdge2.getEndState());
-                edge2.setStroke(curvedEdge2.getStroke());
-                addEdge(edge2, false);
-            }
-        }
-    }
-
-    /**
      * Updates the minimum size of the container of this finite automaton such
      * that all the components are within the new minimum size. The minimum
      * height can only increase: it will not decrease.
@@ -479,7 +419,7 @@ public class SmartFiniteAutomaton {
     /**
      * Checks whether this finite automaton is a valid finite automaton. A valid
      * finite automaton must have an initial state and a final state. Every
-     * state in the finite automaton must be reachable from the initial state.
+     * state in this finite automaton must be reachable from the initial state.
      *
      * @return true if this finite automaton is valid, false otherwise
      */
@@ -498,7 +438,8 @@ public class SmartFiniteAutomaton {
         while (!openList.isEmpty()) {
             SmartState currentState = openList.remove(0);
             closedList.add(currentState);
-            for (SmartEdge outgoingEdge : currentState.getOutgoingEdges()) {
+            for (SmartEdgeComponent outgoingEdge :
+                    currentState.getOutgoingEdges()) {
                 SmartState child = outgoingEdge.getEndState();
                 if (!openList.contains(child) && !closedList.contains(child)) {
                     openList.add(child);
@@ -533,7 +474,7 @@ public class SmartFiniteAutomaton {
         for (SmartState state : states) {
             convertFAController.setStateMouseControl(state);
         }
-        for (SmartEdge edge : edges) {
+        for (SmartEdgeComponent edge : edges) {
             convertFAController.setEdgeMouseControl(edge);
         }
     }
