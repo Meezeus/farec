@@ -1,12 +1,11 @@
 package dudzinski.kacper.farec.regex;
 
-import javafx.application.Platform;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test class for the {@link ParseTree} class and its methods.
@@ -19,8 +18,7 @@ class ParseTreeTest {
      */
     @BeforeAll
     static void startJavaFX() {
-        Platform.startup(() -> {
-        });
+        StartJavaFX.startJavaFX();
     }
 
     /**
