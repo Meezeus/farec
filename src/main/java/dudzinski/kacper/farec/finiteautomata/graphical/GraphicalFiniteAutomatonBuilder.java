@@ -108,6 +108,272 @@ public class GraphicalFiniteAutomatonBuilder {
     }
 
     /**
+     * Creates a state.
+     *
+     * @return a state
+     */
+    public static GraphicalState createState() {
+        // Create the circle.
+        Circle circle = new Circle();
+        circle.setRadius(STATE_RADIUS);
+        circle.setFill(STATE_FILL_COLOR);
+        circle.setStrokeWidth(2 * STATE_STROKE_RADIUS);
+        circle.setStroke(STATE_STROKE_COLOR);
+
+        // Create the state.
+        return new GraphicalState(circle);
+    }
+
+    /**
+     * Sets the given state as an initial state, by adding the initial state
+     * marking. The marking consists of a short incoming edge that is not
+     * connected to any other state. The state must already belong to a finite
+     * automaton, so that the minimum width of the finite automaton can be
+     * adjusted accordingly.
+     *
+     * @param state the state to set as initial
+     */
+    public static void setAsInitial(GraphicalState state) {
+        // Get the container.
+        StackPane stateContainer = state.getContainer();
+
+        // Create the line.
+        Line line = new Line(0, 0, INITIAL_STATE_EDGE_LENGTH, 0);
+        line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
+        line.setStroke(EDGE_STROKE_COLOR);
+        line.setTranslateX(-(STATE_RADIUS + STATE_STROKE_RADIUS
+                + (INITIAL_STATE_EDGE_LENGTH / 2)));
+        line.setId("line");
+
+        // Create the arrowhead.
+        Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
+                                        0, -ARROWHEAD_SIZE,
+                                        ARROWHEAD_SIZE, 0);
+        arrowhead.setTranslateX(-(STATE_RADIUS + (ARROWHEAD_SIZE / 2)));
+        arrowhead.setId("arrowhead");
+
+        // Add the line and arrowhead to the back of the container.
+        stateContainer.getChildren().add(0, line);
+        stateContainer.getChildren().add(0, arrowhead);
+
+        // Adjust the minimum width of the finite automaton.
+        Pane parentPane = (Pane) stateContainer.getParent();
+        parentPane.setMinWidth(
+                parentPane.getMinWidth() + (2 * (
+                        INITIAL_STATE_EDGE_LENGTH
+                                + EDGE_STROKE_RADIUS)));
+    }
+
+    /**
+     * Sets the given state as a non-initial state, by removing the initial
+     * state marking. The marking consists of a short incoming edge that is not
+     * connected to any other state. The state must already belong to a finite
+     * automaton, so that the minimum width of the finite automaton can be
+     * adjusted accordingly.
+     *
+     * @param state the state to set as non-initial
+     */
+    public static void setAsNonInitial(GraphicalState state) {
+        // Get the container.
+        StackPane container = state.getContainer();
+
+        // Remove the line.
+        Line line = (Line) container.lookup("#line");
+        container.getChildren().remove(line);
+
+        // Remove the arrowhead.
+        Polygon arrowhead = (Polygon) container.lookup("#arrowhead");
+        container.getChildren().remove(arrowhead);
+
+        // Adjust the minimum width of the finite automaton.
+        Pane parentPane = (Pane) container.getParent();
+        parentPane.setMinWidth
+                          (parentPane.getMinWidth() - (2 * (
+                                  INITIAL_STATE_EDGE_LENGTH
+                                          + EDGE_STROKE_RADIUS)));
+    }
+
+    /**
+     * Sets the given state as a final state, by adding the final state marking.
+     * The marking consists of a second, inner circle.
+     *
+     * @param state the state to set as final
+     */
+    public static void setAsFinal(GraphicalState state) {
+        // Get the container.
+        StackPane container = state.getContainer();
+
+        // Create the circle.
+        Circle innerCircle = new Circle();
+        innerCircle.setRadius(FINAL_STATE_CIRCLE_RADIUS);
+        innerCircle.setFill(Color.TRANSPARENT);
+        innerCircle.setStrokeType(StrokeType.OUTSIDE);
+        innerCircle.setStrokeWidth(STATE_STROKE_RADIUS);
+        innerCircle.setStroke(STATE_STROKE_COLOR);
+        innerCircle.setId("innerCircle");
+
+        // Add the circle to the container.
+        container.getChildren().add(innerCircle);
+    }
+
+    /**
+     * Sets the given state as a non-final state, by removing the final state
+     * marking. The marking consists of a second, inner circle.
+     *
+     * @param state the state to set as non-final
+     */
+    public static void setAsNonFinal(GraphicalState state) {
+        // Get the container.
+        StackPane container = state.getContainer();
+
+        // Remove the inner circle
+        Circle innerCircle = (Circle) container.lookup("#innerCircle");
+        container.getChildren().remove(innerCircle);
+    }
+
+    /**
+     * Creates an edge. The edge may be directed or undirected.
+     *
+     * @param labelText  the label on the edge
+     * @param lineWidth  the width of the edge
+     * @param lineHeight the height of the edge
+     * @param angle      the angle to rotate the edge by, in degrees
+     * @param directed   whether to include an arrowhead
+     * @return an edge
+     */
+    public static GraphicalEdge createEdge(String labelText,
+                                           double lineWidth,
+                                           double lineHeight,
+                                           double angle,
+                                           boolean directed) {
+        // Get the length of the line.
+        double lineLength = Math.sqrt(Math.pow(lineWidth, 2)
+                                              + Math.pow(lineHeight, 2));
+
+        // Create the line.
+        Line line = new Line(0, 0, lineLength, 0);
+        line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
+        line.setStroke(EDGE_STROKE_COLOR);
+
+        // Create the group to hold the line (and arrowhead).
+        Group edgeGroup = new Group();
+        edgeGroup.getChildren().add(line);
+        if (directed) {
+            // Create the arrowhead and move it to the end of the line.
+            Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
+                                            0, -ARROWHEAD_SIZE,
+                                            ARROWHEAD_SIZE, 0);
+            arrowhead.setTranslateX(lineLength
+                                            - (ARROWHEAD_SIZE + STATE_RADIUS));
+            edgeGroup.getChildren().add(arrowhead);
+        }
+
+        // Rotate the group, pivoted at its centre.
+        edgeGroup.getTransforms().add(new Rotate(angle, 0.5 * lineLength, 0));
+
+        // Create the label and move it above the edge.
+        Label label = new Label(labelText);
+        label.setTranslateY(-label.getFont().getSize());
+
+        // Create the edge.
+        return new GraphicalEdge(edgeGroup, label);
+    }
+
+    /**
+     * Generates text explaining how the finite automaton for the given regular
+     * expression is constructed from the finite automata of its
+     * subexpressions.
+     *
+     * @param regularExpression the regular expression for which the explanation
+     *                          text is being generated for
+     * @return text explaining how the finite automaton is constructed
+     */
+    public static String getExplanationText(
+            RegularExpression regularExpression) {
+        if (regularExpression instanceof
+                SimpleRegularExpression simpleRegularExpression) {
+            return "The finite automaton for the regular expression" +
+                    " \"" + simpleRegularExpression + "\" is built by" +
+                    " creating an initial state and final state with a" +
+                    " labelled edge between them. The label of the edge is" +
+                    " \"" + simpleRegularExpression.getSymbol() + "\".";
+        }
+        else if (regularExpression instanceof
+                ComplexRegularExpression complexRegularExpression) {
+            String explanation;
+            RegexOperator regexOperator =
+                    complexRegularExpression.getOperator();
+
+            if (regexOperator == RegexOperator.UNION) {
+                String regexString = Parser.simplifyRegexString(
+                        complexRegularExpression.toString());
+                String leftOperand = Parser.simplifyRegexString(
+                        complexRegularExpression.getLeftOperand().toString());
+                String rightOperand = Parser.simplifyRegexString(
+                        complexRegularExpression.getRightOperand().toString());
+
+                explanation = "The finite automaton for the regular" +
+                        " expression \"" + regexString + "\" is built by" +
+                        " combining the finite automata of its two" +
+                        " subexpressions: \"" + leftOperand + "\" and" +
+                        " \"" + rightOperand + "\". A new initial state and" +
+                        " a new final state are created. The new initial" +
+                        " state is connected to the previous initial states" +
+                        " by empty string transitions and the previous final" +
+                        " states are connected to the new final state by" +
+                        " empty string transitions.";
+            }
+            else if (regexOperator == RegexOperator.CONCATENATION) {
+                String regexString = Parser.simplifyRegexString(
+                        complexRegularExpression.toString());
+                String leftOperand = Parser.simplifyRegexString(
+                        complexRegularExpression.getLeftOperand().toString());
+                String rightOperand = Parser.simplifyRegexString(
+                        complexRegularExpression.getRightOperand().toString());
+
+                explanation = "The finite automaton for the regular" +
+                        " expression \"" + regexString + "\" is built by" +
+                        " combining the finite automata of its two" +
+                        " subexpressions: \"" + leftOperand + "\" and" +
+                        " \"" + rightOperand + "\". The final state of the" +
+                        " finite automaton for \"" + leftOperand + "\"" +
+                        " and the initial state of the finite automaton" +
+                        " for \"" + rightOperand + "\" are merged together.";
+            }
+            else if (regexOperator == RegexOperator.STAR) {
+                String regexString = Parser.simplifyRegexString(
+                        complexRegularExpression.toString());
+                String leftOperand = Parser.simplifyRegexString(
+                        complexRegularExpression.getLeftOperand().toString());
+
+                explanation = "The finite automaton for the regular" +
+                        " expression \"" + regexString + "\" is built by" +
+                        " expanding the finite automaton of its" +
+                        " subexpression \"" + leftOperand + "\". A new" +
+                        " initial state and a new final state are created." +
+                        " The new initial state is connected to the previous" +
+                        " initial state by an empty string transition and the" +
+                        " previous final state is connected to the new final" +
+                        " state by an empty string transition. In addition," +
+                        " the previous final state is connected to the" +
+                        " previous initial state by an empty string" +
+                        " transition and the new initial state is connected" +
+                        " to the new final state by an empty string" +
+                        " transition.";
+            }
+            else {
+                throw new IllegalArgumentException(
+                        "Regex operator is not STAR, CONCATENATION or UNION!");
+            }
+            return explanation;
+        }
+        else {
+            throw new IllegalArgumentException(
+                    "Regular expression is neither Simple nor Complex!");
+        }
+    }
+
+    /**
      * Builds a simple finite automaton for the given simple regular
      * expression.
      *
@@ -560,272 +826,6 @@ public class GraphicalFiniteAutomatonBuilder {
                                                    edges,
                                                    bottomFiniteAutomatonContainer,
                                                    minWidth, minHeight);
-    }
-
-    /**
-     * Creates a state.
-     *
-     * @return a state
-     */
-    public static GraphicalState createState() {
-        // Create the circle.
-        Circle circle = new Circle();
-        circle.setRadius(STATE_RADIUS);
-        circle.setFill(STATE_FILL_COLOR);
-        circle.setStrokeWidth(2 * STATE_STROKE_RADIUS);
-        circle.setStroke(STATE_STROKE_COLOR);
-
-        // Create the state.
-        return new GraphicalState(circle);
-    }
-
-    /**
-     * Sets the given state as an initial state, by adding the initial state
-     * marking. The marking consists of a short incoming edge that is not
-     * connected to any other state. The state must already belong to a finite
-     * automaton, so that the minimum width of the finite automaton can be
-     * adjusted accordingly.
-     *
-     * @param state the state to set as initial
-     */
-    public static void setAsInitial(GraphicalState state) {
-        // Get the container.
-        StackPane stateContainer = state.getContainer();
-
-        // Create the line.
-        Line line = new Line(0, 0, INITIAL_STATE_EDGE_LENGTH, 0);
-        line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
-        line.setStroke(EDGE_STROKE_COLOR);
-        line.setTranslateX(-(STATE_RADIUS + STATE_STROKE_RADIUS
-                + (INITIAL_STATE_EDGE_LENGTH / 2)));
-        line.setId("line");
-
-        // Create the arrowhead.
-        Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
-                                        0, -ARROWHEAD_SIZE,
-                                        ARROWHEAD_SIZE, 0);
-        arrowhead.setTranslateX(-(STATE_RADIUS + (ARROWHEAD_SIZE / 2)));
-        arrowhead.setId("arrowhead");
-
-        // Add the line and arrowhead to the back of the container.
-        stateContainer.getChildren().add(0, line);
-        stateContainer.getChildren().add(0, arrowhead);
-
-        // Adjust the minimum width of the finite automaton.
-        Pane parentPane = (Pane) stateContainer.getParent();
-        parentPane.setMinWidth(
-                parentPane.getMinWidth() + (2 * (
-                        INITIAL_STATE_EDGE_LENGTH
-                                + EDGE_STROKE_RADIUS)));
-    }
-
-    /**
-     * Sets the given state as a non-initial state, by removing the initial
-     * state marking. The marking consists of a short incoming edge that is not
-     * connected to any other state. The state must already belong to a finite
-     * automaton, so that the minimum width of the finite automaton can be
-     * adjusted accordingly.
-     *
-     * @param state the state to set as non-initial
-     */
-    public static void setAsNonInitial(GraphicalState state) {
-        // Get the container.
-        StackPane container = state.getContainer();
-
-        // Remove the line.
-        Line line = (Line) container.lookup("#line");
-        container.getChildren().remove(line);
-
-        // Remove the arrowhead.
-        Polygon arrowhead = (Polygon) container.lookup("#arrowhead");
-        container.getChildren().remove(arrowhead);
-
-        // Adjust the minimum width of the finite automaton.
-        Pane parentPane = (Pane) container.getParent();
-        parentPane.setMinWidth
-                          (parentPane.getMinWidth() - (2 * (
-                                  INITIAL_STATE_EDGE_LENGTH
-                                          + EDGE_STROKE_RADIUS)));
-    }
-
-    /**
-     * Sets the given state as a final state, by adding the final state marking.
-     * The marking consists of a second, inner circle.
-     *
-     * @param state the state to set as final
-     */
-    public static void setAsFinal(GraphicalState state) {
-        // Get the container.
-        StackPane container = state.getContainer();
-
-        // Create the circle.
-        Circle innerCircle = new Circle();
-        innerCircle.setRadius(FINAL_STATE_CIRCLE_RADIUS);
-        innerCircle.setFill(Color.TRANSPARENT);
-        innerCircle.setStrokeType(StrokeType.OUTSIDE);
-        innerCircle.setStrokeWidth(STATE_STROKE_RADIUS);
-        innerCircle.setStroke(STATE_STROKE_COLOR);
-        innerCircle.setId("innerCircle");
-
-        // Add the circle to the container.
-        container.getChildren().add(innerCircle);
-    }
-
-    /**
-     * Sets the given state as a non-final state, by removing the final state
-     * marking. The marking consists of a second, inner circle.
-     *
-     * @param state the state to set as non-final
-     */
-    public static void setAsNonFinal(GraphicalState state) {
-        // Get the container.
-        StackPane container = state.getContainer();
-
-        // Remove the inner circle
-        Circle innerCircle = (Circle) container.lookup("#innerCircle");
-        container.getChildren().remove(innerCircle);
-    }
-
-    /**
-     * Creates an edge. The edge may be directed or undirected.
-     *
-     * @param labelText  the label on the edge
-     * @param lineWidth  the width of the edge
-     * @param lineHeight the height of the edge
-     * @param angle      the angle to rotate the edge by, in degrees
-     * @param directed   whether to include an arrowhead
-     * @return an edge
-     */
-    public static GraphicalEdge createEdge(String labelText,
-                                           double lineWidth,
-                                           double lineHeight,
-                                           double angle,
-                                           boolean directed) {
-        // Get the length of the line.
-        double lineLength = Math.sqrt(Math.pow(lineWidth, 2)
-                                              + Math.pow(lineHeight, 2));
-
-        // Create the line.
-        Line line = new Line(0, 0, lineLength, 0);
-        line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
-        line.setStroke(EDGE_STROKE_COLOR);
-
-        // Create the group to hold the line (and arrowhead).
-        Group edgeGroup = new Group();
-        edgeGroup.getChildren().add(line);
-        if (directed) {
-            // Create the arrowhead and move it to the end of the line.
-            Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
-                                            0, -ARROWHEAD_SIZE,
-                                            ARROWHEAD_SIZE, 0);
-            arrowhead.setTranslateX(lineLength
-                                            - (ARROWHEAD_SIZE + STATE_RADIUS));
-            edgeGroup.getChildren().add(arrowhead);
-        }
-
-        // Rotate the group, pivoted at its centre.
-        edgeGroup.getTransforms().add(new Rotate(angle, 0.5 * lineLength, 0));
-
-        // Create the label and move it above the edge.
-        Label label = new Label(labelText);
-        label.setTranslateY(-label.getFont().getSize());
-
-        // Create the edge.
-        return new GraphicalEdge(edgeGroup, label);
-    }
-
-    /**
-     * Generates text explaining how the finite automaton for the given regular
-     * expression is constructed from the finite automata of its
-     * subexpressions.
-     *
-     * @param regularExpression the regular expression for which the explanation
-     *                          text is being generated for
-     * @return text explaining how the finite automaton is constructed
-     */
-    public static String getExplanationText(
-            RegularExpression regularExpression) {
-        if (regularExpression instanceof
-                SimpleRegularExpression simpleRegularExpression) {
-            return "The finite automaton for the regular expression" +
-                    " \"" + simpleRegularExpression + "\" is built by" +
-                    " creating an initial state and final state with a" +
-                    " labelled edge between them. The label of the edge is" +
-                    " \"" + simpleRegularExpression.getSymbol() + "\".";
-        }
-        else if (regularExpression instanceof
-                ComplexRegularExpression complexRegularExpression) {
-            String explanation;
-            RegexOperator regexOperator =
-                    complexRegularExpression.getOperator();
-
-            if (regexOperator == RegexOperator.UNION) {
-                String regexString = Parser.simplifyRegexString(
-                        complexRegularExpression.toString());
-                String leftOperand = Parser.simplifyRegexString(
-                        complexRegularExpression.getLeftOperand().toString());
-                String rightOperand = Parser.simplifyRegexString(
-                        complexRegularExpression.getRightOperand().toString());
-
-                explanation = "The finite automaton for the regular" +
-                        " expression \"" + regexString + "\" is built by" +
-                        " combining the finite automata of its two" +
-                        " subexpressions: \"" + leftOperand + "\" and" +
-                        " \"" + rightOperand + "\". A new initial state and" +
-                        " a new final state are created. The new initial" +
-                        " state is connected to the previous initial states" +
-                        " by empty string transitions and the previous final" +
-                        " states are connected to the new final state by" +
-                        " empty string transitions.";
-            }
-            else if (regexOperator == RegexOperator.CONCATENATION) {
-                String regexString = Parser.simplifyRegexString(
-                        complexRegularExpression.toString());
-                String leftOperand = Parser.simplifyRegexString(
-                        complexRegularExpression.getLeftOperand().toString());
-                String rightOperand = Parser.simplifyRegexString(
-                        complexRegularExpression.getRightOperand().toString());
-
-                explanation = "The finite automaton for the regular" +
-                        " expression \"" + regexString + "\" is built by" +
-                        " combining the finite automata of its two" +
-                        " subexpressions: \"" + leftOperand + "\" and" +
-                        " \"" + rightOperand + "\". The final state of the" +
-                        " finite automaton for \"" + leftOperand + "\"" +
-                        " and the initial state of the finite automaton" +
-                        " for \"" + rightOperand + "\" are merged together.";
-            }
-            else if (regexOperator == RegexOperator.STAR) {
-                String regexString = Parser.simplifyRegexString(
-                        complexRegularExpression.toString());
-                String leftOperand = Parser.simplifyRegexString(
-                        complexRegularExpression.getLeftOperand().toString());
-
-                explanation = "The finite automaton for the regular" +
-                        " expression \"" + regexString + "\" is built by" +
-                        " expanding the finite automaton of its" +
-                        " subexpression \"" + leftOperand + "\". A new" +
-                        " initial state and a new final state are created." +
-                        " The new initial state is connected to the previous" +
-                        " initial state by an empty string transition and the" +
-                        " previous final state is connected to the new final" +
-                        " state by an empty string transition. In addition," +
-                        " the previous final state is connected to the" +
-                        " previous initial state by an empty string" +
-                        " transition and the new initial state is connected" +
-                        " to the new final state by an empty string" +
-                        " transition.";
-            }
-            else {
-                throw new IllegalArgumentException(
-                        "Regex operator is not STAR, CONCATENATION or UNION!");
-            }
-            return explanation;
-        }
-        else {
-            throw new IllegalArgumentException(
-                    "Regular expression is neither Simple nor Complex!");
-        }
     }
 
 }

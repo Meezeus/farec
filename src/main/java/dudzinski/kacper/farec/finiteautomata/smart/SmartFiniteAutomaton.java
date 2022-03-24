@@ -229,82 +229,6 @@ public class SmartFiniteAutomaton {
     }
 
     /**
-     * Checks for symmetric edges between two states. Symmetric edges are edges
-     * between two states in both directions. If symmetric edges are found, the
-     * edges are turned into curved edges. If there is only one edge between the
-     * two states, it is turned into a straight edge. If there are no edges
-     * between the two states, nothing happens.
-     *
-     * @param state1 one of the two states
-     * @param state2 one of the two states
-     */
-    private void checkSymmetricEdges(SmartState state1, SmartState state2) {
-        // If the two states are the same, they cannot have symmetric edges.
-        if (state1 == state2) {
-            return;
-        }
-
-        // Get the pair of edges between the two states.
-        Pair<SmartEdge, SmartEdge> edgePair = getPairEdges(state1, state2);
-        SmartEdge edge1 = edgePair.getKey();
-        SmartEdge edge2 = edgePair.getValue();
-
-        // If there are symmetric edges, turn them into curved edges.
-        if ((edge1 != null) && (edge2 != null)) {
-            edge1.setCurved(true);
-            edge2.setCurved(true);
-        }
-        // Otherwise, if there is only one edge, turn it into a straight edge.
-        else if (edge1 != null) {
-            edge1.setCurved(false);
-        }
-        else if (edge2 != null) {
-            edge2.setCurved(false);
-        }
-    }
-
-    /**
-     * Returns a pair of edges between two different states.
-     *
-     * @param state1 one of the two states
-     * @param state2 one of the two states
-     * @return a pair (K, V), where K is an edge from state1 to state2 (or
-     * <code>null</code> if such an edge does not exist) and V is an edge from
-     * state2 to state1 (or <code>null</code> if such an edge does not exist)
-     * @throws IllegalArgumentException if the two states are the same
-     */
-    private Pair<SmartEdge, SmartEdge> getPairEdges(SmartState state1,
-                                                    SmartState state2)
-            throws IllegalArgumentException {
-        // Check that the states are different.
-        if (state1 == state2) {
-            throw new IllegalArgumentException(
-                    "The two states cannot be the same!");
-        }
-
-        // Declare the edges
-        SmartEdge s1ToS2 = null;
-        SmartEdge s2ToS1 = null;
-
-        // Get the edge from state1 to state2 if it exists.
-        for (SmartEdgeComponent edge : state1.getOutgoingEdges()) {
-            if (edge.getEndState() == state2) {
-                s1ToS2 = (SmartEdge) edge;
-            }
-        }
-
-        // Get the edge from state2 to state1 if it exists.
-        for (SmartEdgeComponent edge : state2.getOutgoingEdges()) {
-            if (edge.getEndState() == state1) {
-                s2ToS1 = (SmartEdge) edge;
-            }
-        }
-
-        // Return the edges.
-        return new Pair<>(s1ToS2, s2ToS1);
-    }
-
-    /**
      * Sets the state as the initial state of this finite automaton. The state
      * is updated to look like an initial state. The previous initial state is
      * updated to look like a normal state. A state cannot be both initial and
@@ -477,6 +401,82 @@ public class SmartFiniteAutomaton {
         for (SmartEdgeComponent edge : edges) {
             convertFAController.setEdgeMouseControl(edge);
         }
+    }
+
+    /**
+     * Checks for symmetric edges between two states. Symmetric edges are edges
+     * between two states in both directions. If symmetric edges are found, the
+     * edges are turned into curved edges. If there is only one edge between the
+     * two states, it is turned into a straight edge. If there are no edges
+     * between the two states, nothing happens.
+     *
+     * @param state1 one of the two states
+     * @param state2 one of the two states
+     */
+    private void checkSymmetricEdges(SmartState state1, SmartState state2) {
+        // If the two states are the same, they cannot have symmetric edges.
+        if (state1 == state2) {
+            return;
+        }
+
+        // Get the pair of edges between the two states.
+        Pair<SmartEdge, SmartEdge> edgePair = getPairEdges(state1, state2);
+        SmartEdge edge1 = edgePair.getKey();
+        SmartEdge edge2 = edgePair.getValue();
+
+        // If there are symmetric edges, turn them into curved edges.
+        if ((edge1 != null) && (edge2 != null)) {
+            edge1.setCurved(true);
+            edge2.setCurved(true);
+        }
+        // Otherwise, if there is only one edge, turn it into a straight edge.
+        else if (edge1 != null) {
+            edge1.setCurved(false);
+        }
+        else if (edge2 != null) {
+            edge2.setCurved(false);
+        }
+    }
+
+    /**
+     * Returns a pair of edges between two different states.
+     *
+     * @param state1 one of the two states
+     * @param state2 one of the two states
+     * @return a pair (K, V), where K is an edge from state1 to state2 (or
+     * <code>null</code> if such an edge does not exist) and V is an edge from
+     * state2 to state1 (or <code>null</code> if such an edge does not exist)
+     * @throws IllegalArgumentException if the two states are the same
+     */
+    private Pair<SmartEdge, SmartEdge> getPairEdges(SmartState state1,
+                                                    SmartState state2)
+            throws IllegalArgumentException {
+        // Check that the states are different.
+        if (state1 == state2) {
+            throw new IllegalArgumentException(
+                    "The two states cannot be the same!");
+        }
+
+        // Declare the edges
+        SmartEdge s1ToS2 = null;
+        SmartEdge s2ToS1 = null;
+
+        // Get the edge from state1 to state2 if it exists.
+        for (SmartEdgeComponent edge : state1.getOutgoingEdges()) {
+            if (edge.getEndState() == state2) {
+                s1ToS2 = (SmartEdge) edge;
+            }
+        }
+
+        // Get the edge from state2 to state1 if it exists.
+        for (SmartEdgeComponent edge : state2.getOutgoingEdges()) {
+            if (edge.getEndState() == state1) {
+                s2ToS1 = (SmartEdge) edge;
+            }
+        }
+
+        // Return the edges.
+        return new Pair<>(s1ToS2, s2ToS1);
     }
 
 }
