@@ -45,7 +45,6 @@ class ConvertFAScreenControllerTest {
             assertEquals("A+B|C*|D", simplifiedLabel);
         }
 
-
         @Test
         @DisplayName("A+ε|C*|D")
         void test2() {
