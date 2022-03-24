@@ -50,6 +50,33 @@ public class ParseTree {
     }
 
     /**
+     * Returns the container of this parse tree.
+     *
+     * @return the container of this parse tree
+     */
+    public StackPane getContainer() {
+        return container;
+    }
+
+    /**
+     * Returns the regular expression of this parse tree.
+     *
+     * @return the regular expression of this parse tree
+     */
+    public RegularExpression getRegularExpression() {
+        return regularExpression;
+    }
+
+    /**
+     * Returns the preorder traversal of the nodes in this parse tree.
+     *
+     * @return the preorder traversal of the nodes in this parse tree
+     */
+    public ArrayList<ParseTreeNode> preorderTraversal() {
+        return preorderTraversal(root);
+    }
+
+    /**
      * Builds a parse tree for the given regular expression.
      *
      * @param regularExpression the regular expression for which to build a
@@ -253,33 +280,6 @@ public class ParseTree {
 
         // Add the edge to the back of the parse tree.
         container.getChildren().add(0, linePane);
-    }
-
-    /**
-     * Returns the container of this parse tree.
-     *
-     * @return the container of this parse tree
-     */
-    public StackPane getContainer() {
-        return container;
-    }
-
-    /**
-     * Returns the regular expression of this parse tree.
-     *
-     * @return the regular expression of this parse tree
-     */
-    public RegularExpression getRegularExpression() {
-        return regularExpression;
-    }
-
-    /**
-     * Returns the preorder traversal of the nodes in this parse tree.
-     *
-     * @return the preorder traversal of the nodes in this parse tree
-     */
-    public ArrayList<ParseTreeNode> preorderTraversal() {
-        return preorderTraversal(root);
     }
 
     /**
