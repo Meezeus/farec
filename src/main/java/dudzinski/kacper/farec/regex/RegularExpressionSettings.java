@@ -44,7 +44,7 @@ public abstract class RegularExpressionSettings extends Settings {
     /////////////////////////
 
     private static final String validRegexOperands = "a-zA-Z0-9";
-    private static final String validRegexOperators = "!£$%^&*-+=:;@~#|<>,.?";
+    private static final String validRegexOperators = "£$%^&*-+=:;@~#|<>";
     private static char starOperatorChar = '*';
     private static char concatenationOperatorChar = '|';
     private static char unionOperatorChar = '+';

@@ -43,20 +43,20 @@ public class RegularExpressionSettingsTest {
             }
 
             @Test
-            @DisplayName("CONCATENATION as ,")
+            @DisplayName("CONCATENATION as ;")
             void test2() {
                 boolean result =
                         RegularExpressionSettings.setOperatorChar(
-                                RegexOperator.CONCATENATION, ',');
+                                RegexOperator.CONCATENATION, ';');
                 assertTrue(result);
             }
 
             @Test
-            @DisplayName("UNION as ?")
+            @DisplayName("UNION as %")
             void test3() {
                 boolean result =
                         RegularExpressionSettings.setOperatorChar(
-                                RegexOperator.UNION, '?');
+                                RegexOperator.UNION, '%');
                 assertTrue(result);
             }
         }
