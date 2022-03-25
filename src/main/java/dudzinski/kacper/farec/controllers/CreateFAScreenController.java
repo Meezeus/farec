@@ -336,7 +336,7 @@ public class CreateFAScreenController implements Initializable {
         // info label for a short time.
         else {
             infoLabel.setText("The finite automaton is not valid!");
-            Timer timer = new Timer();
+            Timer timer = new Timer(true);
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
