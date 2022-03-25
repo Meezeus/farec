@@ -1,6 +1,6 @@
 package dudzinski.kacper.farec.controllers;
 
-import dudzinski.kacper.farec.regex.Parser;
+import dudzinski.kacper.farec.regex.RegularExpressionSettings;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -10,8 +10,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static dudzinski.kacper.farec.Settings.EMPTY_STRING;
-import static dudzinski.kacper.farec.regex.RegularExpressionSettings.getConcatenationOperatorChar;
-import static dudzinski.kacper.farec.regex.RegularExpressionSettings.getStarOperatorChar;
 
 /**
  * This is the controller for the new edge label window. The new edge label
@@ -21,8 +19,8 @@ import static dudzinski.kacper.farec.regex.RegularExpressionSettings.getStarOper
  * symbol to the text field.
  * <p>
  * There are restrictions on what the label on an edge may be. An edge label
- * must be a valid regex operand or a regular expression that only uses the
- * UNION regex operator.
+ * must be a valid regex operand, or a list of valid regex operands separated by
+ * commas.
  */
 public class NewEdgeLabelWindowController implements Initializable {
 
@@ -35,20 +33,26 @@ public class NewEdgeLabelWindowController implements Initializable {
      * what the label on an edge may be.
      */
     public void initialize(URL location, ResourceBundle resources) {
+        // Get the valid operand pattern and remove the start and end anchors.
+        String validOperands =
+                RegularExpressionSettings.getValidRegexOperandPattern();
+        validOperands =
+                validOperands.substring(1, validOperands.length() - 1);
+
+        // Create the valid label pattern.
+        String validLabelPattern = "^"
+                + validOperands
+                + "(,\s?"
+                + validOperands
+                + ")*$";
+
+        // Add a listener to the text field to enable/disable the submit button
+        // depending on if the text conforms to the restrictions on an edge
+        // label.
         textField.textProperty()
                  .addListener((observable, oldValue, newValue) -> {
                      String text = textField.getText();
-                     submitButton.setDisable(true);
-                     if (!text.contains("" + getConcatenationOperatorChar())
-                             && !text.contains("" + getStarOperatorChar())) {
-                         try {
-                             Parser.parseRegexString(text);
-                             // If successfully parsed, enable the button.
-                             submitButton.setDisable(false);
-                         }
-                         catch (IllegalArgumentException ignored) {
-                         }
-                     }
+                     submitButton.setDisable(!text.matches(validLabelPattern));
                  });
     }
 
@@ -62,10 +66,10 @@ public class NewEdgeLabelWindowController implements Initializable {
 
     /**
      * Saves the users choice of text and closes the window. This method is
-     * called when the empty string or submit button is pressed.
+     * called when the submit button is pressed.
      */
     public void submit() {
-        newEdgeLabelText = Parser.simplifyRegexString(textField.getText());
+        newEdgeLabelText = textField.getText();
         Stage stage = (Stage) textField.getScene().getWindow();
         stage.close();
     }

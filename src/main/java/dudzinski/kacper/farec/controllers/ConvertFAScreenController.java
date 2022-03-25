@@ -63,16 +63,19 @@ public class ConvertFAScreenController {
     private ArrayList<SmartState> outgoingStates = new ArrayList<>();
 
     /**
-     * Starts off the process of converting the given finite automaton into a
-     * regular expression.
+     * Finalises the finite automaton and sets it as the content of the scroll
+     * pane. Adds a new initial state and connects it to the previous initial
+     * state. Connects the previous final state to a new final state. For edges
+     * with a list label, removes whitespace and replaces the commas with the
+     * UNION operator. Sets the info label.
      *
      * @param finiteAutomaton the finite automaton to convert into a regular
      *                        expression
      */
     public void setFiniteAutomaton(SmartFiniteAutomaton finiteAutomaton) {
         this.finiteAutomaton = finiteAutomaton;
-        scrollPane.setContent(finiteAutomaton.getContainer());
         finiteAutomaton.finalise(this);
+        scrollPane.setContent(finiteAutomaton.getContainer());
 
         // Get the previous initial and final states.
         SmartState oldInitialState = finiteAutomaton.getInitialState();
@@ -113,6 +116,23 @@ public class ConvertFAScreenController {
                                     oldFinalState,
                                     newFinalState);
         finiteAutomaton.addEdge(fToF);
+
+        // Remove whitespace and replace commas with the UNION operator.
+        for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
+            // Get the label text.
+            String label = edge.getLabelText();
+
+            // Remove whitespace.
+            label = label.replaceAll("\\s+", "").trim();
+
+            // Replace commas with the UNION operator.
+            label = label.replaceAll(",",
+                                     "" + RegularExpressionSettings
+                                             .getUnionOperatorChar());
+
+            // Update the label text.
+            edge.setLabelText(label);
+        }
 
         // Set the info label.
         infoLabel.setText(SELECT_STRING);
