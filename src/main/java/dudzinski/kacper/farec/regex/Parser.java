@@ -189,13 +189,18 @@ public class Parser {
             regexString = removeOuterBrackets(regexString);
         }
 
-        // If the regex string is a single regex operand character,
-        // it represents a simple regular expression.
-        if ((regexString.length() == 1)
-                && (regexString.matches(
-                RegularExpressionSettings.getValidRegexOperandPattern()
-        ))) {
-            return new SimpleRegularExpression(regexString.charAt(0));
+        // If the regex string is a single regex operand character, it
+        // represents a simple regular expression.
+        if (regexString.length() == 1) {
+            // Check if the operand is valid.
+            if (regexString.matches(RegularExpressionSettings
+                                            .getValidRegexOperandPattern())) {
+                return new SimpleRegularExpression(regexString.charAt(0));
+            }
+            else {
+                throw new IllegalArgumentException(
+                        regexString + " is not a valid regex operand!");
+            }
         }
 
         // Find the index of the root operator.
