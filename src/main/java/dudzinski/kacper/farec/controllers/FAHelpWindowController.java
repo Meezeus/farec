@@ -32,8 +32,9 @@ public class FAHelpWindowController implements Initializable {
                 All states in the finite automaton must be reachable from the \
                 initial state.
                                 
-                The labels on the edges may only be alphanumeric characters, \
-                or the special empty string character.
+                The label on an edge may only be an alphanumeric character, \
+                the special empty string character, or a combination of these \
+                using the UNION operator.
                 """
         );
     }

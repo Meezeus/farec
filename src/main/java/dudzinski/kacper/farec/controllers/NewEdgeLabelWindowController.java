@@ -1,6 +1,6 @@
 package dudzinski.kacper.farec.controllers;
 
-import dudzinski.kacper.farec.regex.RegularExpressionSettings;
+import dudzinski.kacper.farec.regex.Parser;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -10,16 +10,19 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import static dudzinski.kacper.farec.Settings.EMPTY_STRING;
+import static dudzinski.kacper.farec.regex.RegularExpressionSettings.getConcatenationOperatorChar;
+import static dudzinski.kacper.farec.regex.RegularExpressionSettings.getStarOperatorChar;
 
 /**
  * This is the controller for the new edge label window. The new edge label
  * window is displayed when the user wants to rename an edge. It contains a text
  * field where the user can enter the new text for the edge label and a submit
- * button. There is also an empty string button for selecting the empty string
- * character as the new edge text.
+ * button. There is also an empty string button for adding the empty string
+ * symbol to the text field.
  * <p>
  * There are restrictions on what the label on an edge may be. An edge label
- * must be a valid regex operand.
+ * must be a valid regex operand or a regular expression that only uses the
+ * UNION regex operator.
  */
 public class NewEdgeLabelWindowController implements Initializable {
 
@@ -34,34 +37,27 @@ public class NewEdgeLabelWindowController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         textField.textProperty()
                  .addListener((observable, oldValue, newValue) -> {
-                     // Don't allow more than one character.
-                     if (newValue.length() > 1) {
-                         textField.setText(oldValue);
-                     }
-
-                     // Check if the text is valid and enable/disable the submit
-                     // button accordingly.
                      String text = textField.getText();
-                     //noinspection RedundantIfStatement
-                     if ((text.length() == 1)
-                             && text.matches(
-                             RegularExpressionSettings
-                                     .getValidRegexOperandPattern())) {
-                         submitButton.setDisable(false);
-                     }
-                     else {
-                         submitButton.setDisable(true);
+                     submitButton.setDisable(true);
+                     if (!text.contains("" + getConcatenationOperatorChar())
+                             && !text.contains("" + getStarOperatorChar())) {
+                         try {
+                             Parser.parseRegexString(text);
+                             // If successfully parsed, enable the button.
+                             submitButton.setDisable(false);
+                         }
+                         catch (IllegalArgumentException ignored) {
+                         }
                      }
                  });
     }
 
     /**
-     * Sets the users choice of text as the empty string character, and then
-     * calls {@link #submit()}.
+     * Adds the empty string character to the text in the text field.
      */
     public void emptyString() {
-        textField.setText(EMPTY_STRING);
-        submit();
+        int pos = textField.getCaretPosition();
+        textField.insertText(pos, EMPTY_STRING);
     }
 
     /**
@@ -69,7 +65,7 @@ public class NewEdgeLabelWindowController implements Initializable {
      * called when the empty string or submit button is pressed.
      */
     public void submit() {
-        newEdgeLabelText = textField.getText();
+        newEdgeLabelText = Parser.simplifyRegexString(textField.getText());
         Stage stage = (Stage) textField.getScene().getWindow();
         stage.close();
     }
