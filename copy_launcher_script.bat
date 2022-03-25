@@ -1,3 +1,3 @@
-robocopy . target\app launcher.vbs
+robocopy . target\FAREC launcher.vbs
 cd target
-zip -gj app.zip app\launcher.vbs
+zip -gj FAREC.zip FAREC\launcher.vbs

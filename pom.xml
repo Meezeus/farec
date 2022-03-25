@@ -61,9 +61,9 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>dudzinski.kacper.farec/dudzinski.kacper.farec.App</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
+                            <launcher>FAREC</launcher>
+                            <jlinkZipName>FAREC</jlinkZipName>
+                            <jlinkImageName>FAREC</jlinkImageName>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
