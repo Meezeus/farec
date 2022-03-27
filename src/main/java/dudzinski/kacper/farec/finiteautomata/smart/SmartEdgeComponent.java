@@ -100,8 +100,9 @@ public abstract class SmartEdgeComponent extends SmartComponent {
     /**
      * Returns the text of this edge's label.
      *
-     * @return the text of this edge's label.
+     * @return the text of this edge's label
      */
+    @Override
     public String getLabelText() {
         return label.getText();
     }

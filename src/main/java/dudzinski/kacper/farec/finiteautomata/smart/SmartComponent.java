@@ -41,4 +41,11 @@ public abstract class SmartComponent {
      */
     public abstract void setLabelText(String labelText);
 
+    /**
+     * Returns the text of this component's label.
+     *
+     * @return the text of this component's label
+     */
+    public abstract String getLabelText();
+
 }

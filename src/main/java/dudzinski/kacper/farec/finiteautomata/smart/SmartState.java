@@ -90,6 +90,16 @@ public class SmartState extends SmartComponent {
     }
 
     /**
+     * Returns the text of this state's label.
+     *
+     * @return the text of this state's label
+     */
+    @Override
+    public String getLabelText() {
+        return label.getText();
+    }
+
+    /**
      * Sets the fill colour of this state. The fill colour is applied to the
      * state circle.
      *
