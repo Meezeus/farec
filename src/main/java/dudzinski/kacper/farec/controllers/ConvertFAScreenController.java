@@ -63,19 +63,44 @@ public class ConvertFAScreenController {
     private ArrayList<SmartState> outgoingStates = new ArrayList<>();
 
     /**
-     * Finalises the finite automaton and sets it as the content of the scroll
-     * pane. Adds a new initial state and connects it to the previous initial
-     * state. Connects the previous final state to a new final state. For edges
-     * with a list label, removes whitespace and replaces the commas with the
-     * UNION operator. Sets the info label.
+     * Finalises the finite automaton and sets its container as the content of
+     * the scroll pane. Renames all unnamed states. Adds a new initial state and
+     * connects it to the previous initial state. Connects the previous final
+     * state to a new final state. For edges with a list label, removes
+     * whitespace and replaces the commas with the UNION operator. Sets the info
+     * label.
      *
      * @param finiteAutomaton the finite automaton to convert into a regular
      *                        expression
      */
     public void setFiniteAutomaton(SmartFiniteAutomaton finiteAutomaton) {
+        // Finalise the finite automaton and set its container as the content of
+        // the scroll pane.
         this.finiteAutomaton = finiteAutomaton;
         finiteAutomaton.finalise(this);
         scrollPane.setContent(finiteAutomaton.getContainer());
+
+        int counter = 1;
+        // Performs BFS
+        ArrayList<SmartState> openList = new ArrayList<>();
+        openList.add(finiteAutomaton.getInitialState());
+        ArrayList<SmartState> closedList = new ArrayList<>();
+        while (!openList.isEmpty()) {
+            SmartState currentState = openList.remove(0);
+            closedList.add(currentState);
+            // If state has no label, give it one and increase the counter.
+            if (currentState.getLabelText().isEmpty()) {
+                currentState.setLabelText("s" + counter);
+                counter++;
+            }
+            for (SmartEdgeComponent outgoingEdge :
+                    currentState.getOutgoingEdges()) {
+                SmartState child = outgoingEdge.getEndState();
+                if (!openList.contains(child) && !closedList.contains(child)) {
+                    openList.add(child);
+                }
+            }
+        }
 
         // Get the previous initial and final states.
         SmartState oldInitialState = finiteAutomaton.getInitialState();
@@ -83,7 +108,7 @@ public class ConvertFAScreenController {
 
         // Add a new initial state.
         SmartState newInitialState = SmartFiniteAutomatonBuilder
-                .createState("");
+                .createState("s0");
         newInitialState.getContainer().setTranslateX(
                 oldInitialState.getContainer().getTranslateX() + 100);
         newInitialState.getContainer().setTranslateY(
@@ -101,7 +126,7 @@ public class ConvertFAScreenController {
 
         // Add a new final state.
         SmartState newFinalState = SmartFiniteAutomatonBuilder
-                .createState("");
+                .createState("s" + counter);
         newFinalState.getContainer().setTranslateX(
                 oldFinalState.getContainer().getTranslateX() + 100);
         newFinalState.getContainer().setTranslateY(
