@@ -110,7 +110,7 @@ public class ConvertFAScreenController {
         SmartState newInitialState = SmartFiniteAutomatonBuilder
                 .createState("s0");
         newInitialState.getContainer().setTranslateX(
-                oldInitialState.getContainer().getTranslateX() + 100);
+                oldInitialState.getContainer().getTranslateX());
         newInitialState.getContainer().setTranslateY(
                 oldInitialState.getContainer().getTranslateY() + 100);
         finiteAutomaton.addState(newInitialState);
@@ -128,7 +128,7 @@ public class ConvertFAScreenController {
         SmartState newFinalState = SmartFiniteAutomatonBuilder
                 .createState("s" + counter);
         newFinalState.getContainer().setTranslateX(
-                oldFinalState.getContainer().getTranslateX() + 100);
+                oldFinalState.getContainer().getTranslateX());
         newFinalState.getContainer().setTranslateY(
                 oldFinalState.getContainer().getTranslateY() + 100);
         finiteAutomaton.addState(newFinalState);
