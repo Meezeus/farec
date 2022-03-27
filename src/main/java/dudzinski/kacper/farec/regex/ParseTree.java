@@ -125,11 +125,6 @@ public class ParseTree {
             container.getChildren().add(operatorNodePane);
             ParseTreeNode operatorNode = new ParseTreeNode(operatorNodePane);
 
-            // Calculate the horizontal and vertical distance between the
-            // operator node and its children.
-            double maxDepth = complexRegex.getDepth();
-            double xChange = Math.pow(2, maxDepth - 1) * BASE_X_CHANGE;
-
             // Move downwards.
             currentY += BASE_Y_CHANGE;
             if (currentY > greatestY) {
@@ -149,6 +144,11 @@ public class ParseTree {
             // children, and we will need to move left/right.
             else if ((complexRegex.getOperator() == RegexOperator.CONCATENATION)
                     || (complexRegex.getOperator() == RegexOperator.UNION)) {
+                // Calculate the horizontal distance between the operator node
+                // and its children.
+                double maxDepth = complexRegex.getDepth();
+                double xChange = Math.pow(2, maxDepth - 1) * BASE_X_CHANGE;
+
                 // Move to the left.
                 currentX -= xChange;
                 if (Math.abs(currentX) > greatestX) {
