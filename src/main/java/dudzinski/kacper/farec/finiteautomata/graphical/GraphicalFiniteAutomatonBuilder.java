@@ -108,23 +108,6 @@ public class GraphicalFiniteAutomatonBuilder {
     }
 
     /**
-     * Creates a state.
-     *
-     * @return a state
-     */
-    public static GraphicalState createState() {
-        // Create the circle.
-        Circle circle = new Circle();
-        circle.setRadius(STATE_RADIUS);
-        circle.setFill(STATE_FILL_COLOR);
-        circle.setStrokeWidth(2 * STATE_STROKE_RADIUS);
-        circle.setStroke(STATE_STROKE_COLOR);
-
-        // Create the state.
-        return new GraphicalState(circle);
-    }
-
-    /**
      * Sets the given state as an initial state, by adding the initial state
      * marking. The marking consists of a short incoming edge that is not
      * connected to any other state. The state must already belong to a finite
@@ -232,54 +215,6 @@ public class GraphicalFiniteAutomatonBuilder {
     }
 
     /**
-     * Creates an edge. The edge may be directed or undirected.
-     *
-     * @param labelText  the label on the edge
-     * @param lineWidth  the width of the edge
-     * @param lineHeight the height of the edge
-     * @param angle      the angle to rotate the edge by, in degrees
-     * @param directed   whether to include an arrowhead
-     * @return an edge
-     */
-    public static GraphicalEdge createEdge(String labelText,
-                                           double lineWidth,
-                                           double lineHeight,
-                                           double angle,
-                                           boolean directed) {
-        // Get the length of the line.
-        double lineLength = Math.sqrt(Math.pow(lineWidth, 2)
-                                              + Math.pow(lineHeight, 2));
-
-        // Create the line.
-        Line line = new Line(0, 0, lineLength, 0);
-        line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
-        line.setStroke(EDGE_STROKE_COLOR);
-
-        // Create the group to hold the line (and arrowhead).
-        Group edgeGroup = new Group();
-        edgeGroup.getChildren().add(line);
-        if (directed) {
-            // Create the arrowhead and move it to the end of the line.
-            Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
-                                            0, -ARROWHEAD_SIZE,
-                                            ARROWHEAD_SIZE, 0);
-            arrowhead.setTranslateX(lineLength
-                                            - (ARROWHEAD_SIZE + STATE_RADIUS));
-            edgeGroup.getChildren().add(arrowhead);
-        }
-
-        // Rotate the group, pivoted at its centre.
-        edgeGroup.getTransforms().add(new Rotate(angle, 0.5 * lineLength, 0));
-
-        // Create the label and move it above the edge.
-        Label label = new Label(labelText);
-        label.setTranslateY(-label.getFont().getSize());
-
-        // Create the edge.
-        return new GraphicalEdge(edgeGroup, label);
-    }
-
-    /**
      * Generates text explaining how the finite automaton for the given regular
      * expression is constructed from the finite automata of its
      * subexpressions.
@@ -371,6 +306,71 @@ public class GraphicalFiniteAutomatonBuilder {
             throw new IllegalArgumentException(
                     "Regular expression is neither Simple nor Complex!");
         }
+    }
+
+    /**
+     * Creates a state.
+     *
+     * @return a state
+     */
+    private static GraphicalState createState() {
+        // Create the circle.
+        Circle circle = new Circle();
+        circle.setRadius(STATE_RADIUS);
+        circle.setFill(STATE_FILL_COLOR);
+        circle.setStrokeWidth(2 * STATE_STROKE_RADIUS);
+        circle.setStroke(STATE_STROKE_COLOR);
+
+        // Create the state.
+        return new GraphicalState(circle);
+    }
+
+    /**
+     * Creates an edge. The edge may be directed or undirected.
+     *
+     * @param labelText  the label on the edge
+     * @param lineWidth  the width of the edge
+     * @param lineHeight the height of the edge
+     * @param angle      the angle to rotate the edge by, in degrees
+     * @param directed   whether to include an arrowhead
+     * @return an edge
+     */
+    private static GraphicalEdge createEdge(String labelText,
+                                            double lineWidth,
+                                            double lineHeight,
+                                            double angle,
+                                            boolean directed) {
+        // Get the length of the line.
+        double lineLength = Math.sqrt(Math.pow(lineWidth, 2)
+                                              + Math.pow(lineHeight, 2));
+
+        // Create the line.
+        Line line = new Line(0, 0, lineLength, 0);
+        line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
+        line.setStroke(EDGE_STROKE_COLOR);
+
+        // Create the group to hold the line (and arrowhead).
+        Group edgeGroup = new Group();
+        edgeGroup.getChildren().add(line);
+        if (directed) {
+            // Create the arrowhead and move it to the end of the line.
+            Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
+                                            0, -ARROWHEAD_SIZE,
+                                            ARROWHEAD_SIZE, 0);
+            arrowhead.setTranslateX(lineLength
+                                            - (ARROWHEAD_SIZE + STATE_RADIUS));
+            edgeGroup.getChildren().add(arrowhead);
+        }
+
+        // Rotate the group, pivoted at its centre.
+        edgeGroup.getTransforms().add(new Rotate(angle, 0.5 * lineLength, 0));
+
+        // Create the label and move it above the edge.
+        Label label = new Label(labelText);
+        label.setTranslateY(-label.getFont().getSize());
+
+        // Create the edge.
+        return new GraphicalEdge(edgeGroup, label);
     }
 
     /**
