@@ -17,7 +17,7 @@ import javafx.scene.shape.Polygon;
  * @see SmartEdgeComponent
  * @see SmartEdge
  */
-public class SmartLoopEdge extends SmartEdgeComponent {
+public final class SmartLoopEdge extends SmartEdgeComponent {
 
     private boolean topside = true;
 

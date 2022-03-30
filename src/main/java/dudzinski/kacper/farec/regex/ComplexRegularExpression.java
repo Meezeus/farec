@@ -8,7 +8,7 @@ package dudzinski.kacper.farec.regex;
  * @see RegularExpression
  * @see ComplexRegularExpression
  */
-public class ComplexRegularExpression extends RegularExpression {
+public final class ComplexRegularExpression extends RegularExpression {
 
     private final RegularExpression leftOperand;
     private final RegexOperator operator;

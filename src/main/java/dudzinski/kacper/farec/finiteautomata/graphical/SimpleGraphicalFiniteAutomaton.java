@@ -8,7 +8,7 @@ package dudzinski.kacper.farec.finiteautomata.graphical;
  * @see GraphicalFiniteAutomaton
  * @see ComplexGraphicalFiniteAutomaton
  */
-public class SimpleGraphicalFiniteAutomaton extends GraphicalFiniteAutomaton {
+public final class SimpleGraphicalFiniteAutomaton extends GraphicalFiniteAutomaton {
 
     /**
      * Creates a simple graphical finite automaton. Enables the marking on the

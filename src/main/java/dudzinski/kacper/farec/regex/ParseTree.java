@@ -18,7 +18,7 @@ import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
  * @see RegularExpressionSettings
  * @see ParseTreeNode
  */
-public class ParseTree {
+public final class ParseTree {
 
     private final StackPane container = new StackPane();
     private final RegularExpression regularExpression;

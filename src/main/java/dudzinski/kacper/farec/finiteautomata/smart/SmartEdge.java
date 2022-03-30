@@ -17,7 +17,7 @@ import javafx.scene.shape.Shape;
  * @see SmartEdgeComponent
  * @see SmartLoopEdge
  */
-public class SmartEdge extends SmartEdgeComponent {
+public final class SmartEdge extends SmartEdgeComponent {
 
     private boolean isCurved = false;
 

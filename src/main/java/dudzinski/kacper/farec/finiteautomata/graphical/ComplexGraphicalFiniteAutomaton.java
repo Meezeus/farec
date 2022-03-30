@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @see GraphicalFiniteAutomaton
  * @see SimpleGraphicalFiniteAutomaton
  */
-public class ComplexGraphicalFiniteAutomaton extends GraphicalFiniteAutomaton {
+public final class ComplexGraphicalFiniteAutomaton extends GraphicalFiniteAutomaton {
 
     /**
      * Create a complex finite automaton.

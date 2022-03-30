@@ -20,7 +20,7 @@ import javafx.scene.layout.StackPane;
  *
  * @see SmartEdgeComponent
  */
-public class GraphicalEdge {
+public final class GraphicalEdge {
 
     private final StackPane container = new StackPane();
 

@@ -17,7 +17,7 @@ import javafx.scene.shape.Circle;
  *
  * @see SmartState
  */
-public class GraphicalState {
+public final class GraphicalState {
 
     private final StackPane container = new StackPane();
     private boolean isInitial = false;

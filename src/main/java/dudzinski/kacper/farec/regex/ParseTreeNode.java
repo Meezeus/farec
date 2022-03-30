@@ -10,7 +10,7 @@ import javafx.scene.shape.Circle;
  * consists of a container that holds the actual node itself as well as
  * references to the node's children.
  */
-public class ParseTreeNode {
+public final class ParseTreeNode {
 
     private final StackPane container;
     private ParseTreeNode leftChild = null;

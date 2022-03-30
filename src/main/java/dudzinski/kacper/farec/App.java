@@ -11,7 +11,7 @@ import java.io.IOException;
  * This is the main class of the application. It sets everything off by
  * displaying the start screen.
  */
-public class App extends Application {
+public final class App extends Application {
 
     /**
      * Launches the app.

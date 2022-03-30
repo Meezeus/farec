@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  * @see GraphicalState
  */
-public class SmartState extends SmartComponent {
+public final class SmartState extends SmartComponent {
 
     private final Group container = new Group();
     private final Circle circle;

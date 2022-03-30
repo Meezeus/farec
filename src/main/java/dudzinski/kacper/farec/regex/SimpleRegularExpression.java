@@ -7,7 +7,7 @@ package dudzinski.kacper.farec.regex;
  * @see RegularExpression
  * @see ComplexRegularExpression
  */
-public class SimpleRegularExpression extends RegularExpression {
+public final class SimpleRegularExpression extends RegularExpression {
 
     private final char symbol;
 

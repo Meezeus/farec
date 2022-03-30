@@ -29,7 +29,7 @@ import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.STAT
  * @see GraphicalFiniteAutomaton
  * @see SmartComponent
  */
-public class SmartFiniteAutomaton {
+public final class SmartFiniteAutomaton {
 
     private final CreateFAScreenController createFAController;
     private ConvertFAScreenController convertFAController;
