@@ -302,7 +302,7 @@ public class SmartFiniteAutomaton {
         finalState = state;
         state.setAsFinal(true);
     }
-    
+
     /**
      * Updates the minimum size of the container of this finite automaton such
      * that all the components are within the new minimum size. The minimum
@@ -420,7 +420,7 @@ public class SmartFiniteAutomaton {
         }
 
         // Get the pair of edges between the two states.
-        Pair<SmartEdge, SmartEdge> edgePair = getPairEdges(state1, state2);
+        Pair<SmartEdge, SmartEdge> edgePair = getEdgePair(state1, state2);
         SmartEdge edge1 = edgePair.getKey();
         SmartEdge edge2 = edgePair.getValue();
 
@@ -448,8 +448,8 @@ public class SmartFiniteAutomaton {
      * state2 to state1 (or <code>null</code> if such an edge does not exist)
      * @throws IllegalArgumentException if the two states are the same
      */
-    private Pair<SmartEdge, SmartEdge> getPairEdges(SmartState state1,
-                                                    SmartState state2)
+    private Pair<SmartEdge, SmartEdge> getEdgePair(SmartState state1,
+                                                   SmartState state2)
             throws IllegalArgumentException {
         // Check that the states are different.
         if (state1 == state2) {
