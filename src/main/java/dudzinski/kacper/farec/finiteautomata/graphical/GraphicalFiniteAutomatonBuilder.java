@@ -25,7 +25,16 @@ import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
  * @see FiniteAutomatonSettings
  * @see SmartFiniteAutomatonBuilder
  */
-public class GraphicalFiniteAutomatonBuilder {
+public final class GraphicalFiniteAutomatonBuilder {
+
+    /**
+     * Objects of this class should never be created.
+     */
+    private GraphicalFiniteAutomatonBuilder() {
+        throw new RuntimeException(
+                "The GraphicalFiniteAutomatonBuilder class should never be" +
+                        " instantiated!");
+    }
 
     /**
      * Builds a finite automaton for the given regular expression.
