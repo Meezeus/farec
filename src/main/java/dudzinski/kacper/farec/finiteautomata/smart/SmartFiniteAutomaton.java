@@ -229,6 +229,16 @@ public class SmartFiniteAutomaton {
     }
 
     /**
+     * Returns the initial state of this finite automaton. May be null if the
+     * automaton is still under construction.
+     *
+     * @return the initial state of this finite automaton
+     */
+    public SmartState getInitialState() {
+        return initialState;
+    }
+
+    /**
      * Sets the state as the initial state of this finite automaton. The state
      * is updated to look like an initial state. The previous initial state is
      * updated to look like a normal state. A state cannot be both initial and
@@ -256,13 +266,13 @@ public class SmartFiniteAutomaton {
     }
 
     /**
-     * Returns the initial state of this finite automaton. May be null if the
+     * Returns the final state of this finite automaton. May be null if the
      * automaton is still under construction.
      *
-     * @return the initial state of this finite automaton
+     * @return the final state of this finite automaton
      */
-    public SmartState getInitialState() {
-        return initialState;
+    public SmartState getFinalState() {
+        return finalState;
     }
 
     /**
@@ -292,17 +302,7 @@ public class SmartFiniteAutomaton {
         finalState = state;
         state.setAsFinal(true);
     }
-
-    /**
-     * Returns the final state of this finite automaton. May be null if the
-     * automaton is still under construction.
-     *
-     * @return the final state of this finite automaton
-     */
-    public SmartState getFinalState() {
-        return finalState;
-    }
-
+    
     /**
      * Updates the minimum size of the container of this finite automaton such
      * that all the components are within the new minimum size. The minimum
