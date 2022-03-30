@@ -33,7 +33,7 @@ import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
  *
  * @see FiniteAutomatonSettings
  */
-public class CreateFAScreenController implements Initializable {
+public final class CreateFAScreenController implements Initializable {
 
     /**
      * This enum represents the available work modes. The work mode changes how

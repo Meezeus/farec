@@ -26,7 +26,7 @@ import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
  *
  * @see FiniteAutomatonSettings
  */
-public class ConvertFAScreenController {
+public final class ConvertFAScreenController {
 
     /**
      * This enum represents the available work modes. The work mode changes how

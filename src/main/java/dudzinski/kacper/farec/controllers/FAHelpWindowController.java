@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
  * automata. It contains information to help the user create valid finite
  * automata.
  */
-public class FAHelpWindowController implements Initializable {
+public final class FAHelpWindowController implements Initializable {
 
     public Label helpLabel;
 

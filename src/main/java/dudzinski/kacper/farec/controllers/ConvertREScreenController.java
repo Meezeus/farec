@@ -24,7 +24,7 @@ import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
  *
  * @see RegularExpressionSettings
  */
-public class ConvertREScreenController implements Initializable {
+public final class ConvertREScreenController implements Initializable {
 
     public HBox centralContainer;
 

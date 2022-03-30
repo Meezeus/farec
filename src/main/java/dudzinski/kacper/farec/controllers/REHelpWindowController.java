@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
  * regular expressions. It contains information to help the user create valid
  * regular expressions.
  */
-public class REHelpWindowController implements Initializable {
+public final class REHelpWindowController implements Initializable {
 
     public Label operatorsLabel;
     public Label helpLabel;

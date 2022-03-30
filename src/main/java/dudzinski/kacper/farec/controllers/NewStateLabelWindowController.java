@@ -9,7 +9,7 @@ import javafx.stage.Stage;
  * field where the user can enter the new text for the state label and a submit
  * button.
  */
-public class NewStateLabelWindowController {
+public final class NewStateLabelWindowController {
 
     public TextField textField;
     private String newStateLabelText = null;

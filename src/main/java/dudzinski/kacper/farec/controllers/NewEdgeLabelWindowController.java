@@ -22,7 +22,7 @@ import static dudzinski.kacper.farec.Settings.EMPTY_STRING;
  * must be a valid regex operand, or a list of valid regex operands separated by
  * commas.
  */
-public class NewEdgeLabelWindowController implements Initializable {
+public final class NewEdgeLabelWindowController implements Initializable {
 
     public TextField textField;
     public Button submitButton;

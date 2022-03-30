@@ -14,7 +14,7 @@ import java.io.IOException;
  * automata and regular expressions, saving and loading finite automata and
  * regular expressions, and opening the settings window.
  */
-public class MenuBarController {
+public final class MenuBarController {
 
     private FXMLLoader fxmlLoader;
     public MenuBar menuBar;

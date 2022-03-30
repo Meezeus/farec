@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
  * changelog as well as buttons to take the user to the screens for creating
  * finite automata and regular expressions.
  */
-public class StartScreenController implements Initializable {
+public final class StartScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
     public Label changelog;

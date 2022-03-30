@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
  * that it can be converted into a finite automaton. It allows the user to enter
  * a regex string to be parsed and displayed as a parse tree.
  */
-public class CreateREScreenController implements Initializable {
+public final class CreateREScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
     public TextField regexStringTextField;
