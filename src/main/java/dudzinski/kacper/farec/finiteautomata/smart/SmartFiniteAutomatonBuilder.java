@@ -23,7 +23,16 @@ import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
  * @see FiniteAutomatonSettings
  * @see GraphicalFiniteAutomatonBuilder
  */
-public class SmartFiniteAutomatonBuilder {
+public final class SmartFiniteAutomatonBuilder {
+
+    /**
+     * Objects of this class should never be created.
+     */
+    private SmartFiniteAutomatonBuilder() {
+        throw new RuntimeException(
+                "The SmartFiniteAutomatonBuilder class should never be" +
+                        " instantiated!");
+    }
 
     /**
      * Creates a state.
