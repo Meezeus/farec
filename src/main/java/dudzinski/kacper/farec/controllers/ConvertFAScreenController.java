@@ -320,10 +320,10 @@ public class ConvertFAScreenController {
     }
 
     /**
-     * Given a label in the form (A)+(B)|(C)|(D) where A, B, C and D are regular
-     * expressions, returns the simplified version of the label. The label is
-     * simplified according to the following rules (where R is a regular
-     * expression):
+     * Given a label in the form (A)+(B)|(C)*|(D) where A, B, C and D are
+     * regular expressions, returns the simplified version of the label. The
+     * label is simplified according to the following rules (where R is a
+     * regular expression):
      * <ul>
      *     <li>EMPTY_SET UNION R = R UNION EMPTY_SET = R</li>
      *     <li>R CONCATENATION EMPTY_STRING = EMPTY_STRING CONCATENATION R = R</li>
@@ -334,7 +334,7 @@ public class ConvertFAScreenController {
      * In addition, unnecessary brackets are removed from the label: see
      * {@link Parser#simplifyRegexString(String)}
      *
-     * @param label a label in the form (A)+(B)|(C)|(D) where A, B, C and D are
+     * @param label a label in the form (A)+(B)|(C)*|(D) where A, B, C and D are
      *              regular expressions
      * @return a simplified version of the label
      */
@@ -396,6 +396,7 @@ public class ConvertFAScreenController {
         // If the second indirect label is an empty set, then replace it with
         // an empty string.
         if (indirectLabel2Bracketless.equals(EMPTY_SET)) {
+            indirectLabel2 = "(" + EMPTY_STRING + ")";
             indirectLabel2Bracketless = EMPTY_STRING;
         }
 
@@ -474,7 +475,7 @@ public class ConvertFAScreenController {
         if (indirectLabel1Bracketless.equals(EMPTY_STRING)
                 && indirectLabel2Bracketless.equals(EMPTY_STRING)
                 && indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-            simplifiedLabelArray[2] = EMPTY_STRING;
+            simplifiedLabelArray[2] = "(" + EMPTY_STRING + ")";
         }
 
         // If the label is in the form A UNION A, replace it with just A.
@@ -662,9 +663,8 @@ public class ConvertFAScreenController {
         Pair<String, SmartEdgeComponent> middleToMiddle =
                 getDirectPath(middleState, middleState);
 
-        // Get the path label and add the STAR char.
-        String middleToMiddleLabel = middleToMiddle.getKey()
-                + RegularExpressionSettings.getStarOperatorChar();
+        // Get the path label.
+        String middleToMiddleLabel = middleToMiddle.getKey();
 
         // If the path edge exists, add it to the path edges.
         if (middleToMiddle.getValue() != null) {
@@ -687,6 +687,7 @@ public class ConvertFAScreenController {
         String pathLabel = startToMiddleLabel
                 + RegularExpressionSettings.getConcatenationOperatorChar()
                 + middleToMiddleLabel
+                + RegularExpressionSettings.getStarOperatorChar()
                 + RegularExpressionSettings.getConcatenationOperatorChar()
                 + middleToEndLabel;
 
