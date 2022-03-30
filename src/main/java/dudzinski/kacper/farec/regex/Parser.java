@@ -11,7 +11,16 @@ import java.util.Objects;
  *
  * @see RegularExpression
  */
-public class Parser {
+public final class Parser {
+
+    /**
+     * This class contains static methods only and so objects of this class
+     * should never be created.
+     */
+    private Parser() {
+        throw new RuntimeException(
+                "The Parser class should never be instantiated!");
+    }
 
     /**
      * Tests if a string is a valid regex string. A valid regex string contains
