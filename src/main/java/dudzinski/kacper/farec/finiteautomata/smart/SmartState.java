@@ -110,24 +110,6 @@ public class SmartState extends SmartComponent {
     }
 
     /**
-     * Returns whether this state is marked as an initial state.
-     *
-     * @return true if this state is marked as an initial state, false otherwise
-     */
-    public boolean isInitial() {
-        return isInitial;
-    }
-
-    /**
-     * Returns whether this state is marked as a final state.
-     *
-     * @return true if this state is marked as a final state, false otherwise
-     */
-    public boolean isFinal() {
-        return isFinal;
-    }
-
-    /**
      * Enables and disables this state as an initial state. If
      * <code>setInitial</code> is set to true, this state will be marked as an
      * initial state (if it is not already). If <code>setInitial</code> is set
@@ -148,6 +130,15 @@ public class SmartState extends SmartComponent {
             isInitial = false;
             SmartFiniteAutomatonBuilder.setAsNonInitial(this);
         }
+    }
+
+    /**
+     * Returns whether this state is marked as an initial state.
+     *
+     * @return true if this state is marked as an initial state, false otherwise
+     */
+    public boolean isInitial() {
+        return isInitial;
     }
 
     /**
@@ -172,21 +163,21 @@ public class SmartState extends SmartComponent {
     }
 
     /**
+     * Returns whether this state is marked as a final state.
+     *
+     * @return true if this state is marked as a final state, false otherwise
+     */
+    public boolean isFinal() {
+        return isFinal;
+    }
+
+    /**
      * Adds the given edge to the list of incoming edges.
      *
      * @param edge the incoming edge
      */
     public void addIncomingEdge(SmartEdgeComponent edge) {
         incomingEdges.add(edge);
-    }
-
-    /**
-     * Adds the given edge to the list of outgoing edges.
-     *
-     * @param edge the outgoing edge
-     */
-    public void addOutgoingEdge(SmartEdgeComponent edge) {
-        outgoingEdges.add(edge);
     }
 
     /**
@@ -199,21 +190,30 @@ public class SmartState extends SmartComponent {
     }
 
     /**
-     * Removes the edge from the list of outgoing edges.
-     *
-     * @param edge the outgoing edge
-     */
-    public void removeOutgoingEdge(SmartEdgeComponent edge) {
-        outgoingEdges.remove(edge);
-    }
-
-    /**
      * Returns the list of all edges incoming to this state.
      *
      * @return the list of incoming edges
      */
     public ArrayList<SmartEdgeComponent> getIncomingEdges() {
         return incomingEdges;
+    }
+
+    /**
+     * Adds the given edge to the list of outgoing edges.
+     *
+     * @param edge the outgoing edge
+     */
+    public void addOutgoingEdge(SmartEdgeComponent edge) {
+        outgoingEdges.add(edge);
+    }
+
+    /**
+     * Removes the edge from the list of outgoing edges.
+     *
+     * @param edge the outgoing edge
+     */
+    public void removeOutgoingEdge(SmartEdgeComponent edge) {
+        outgoingEdges.remove(edge);
     }
 
     /**
