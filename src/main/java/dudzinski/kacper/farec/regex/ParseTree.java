@@ -104,7 +104,7 @@ public class ParseTree {
 
             // Add the leaf node to the parse tree.
             container.getChildren().add(leafNodePane);
-            return new ParseTreeNode(leafNodePane, null, null);
+            return new ParseTreeNode(leafNodePane);
         }
 
         // If the regular expression is complex, it's parse tree will include an

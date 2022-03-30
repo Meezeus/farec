@@ -26,20 +26,6 @@ public class ParseTreeNode {
     }
 
     /**
-     * Creates a parse tree node.
-     *
-     * @param container  the container of the parse tree node
-     * @param leftChild  the left child of the parse tree node
-     * @param rightChild the right child of the parse tree node
-     */
-    public ParseTreeNode(StackPane container, ParseTreeNode leftChild,
-                         ParseTreeNode rightChild) {
-        this.container = container;
-        this.leftChild = leftChild;
-        this.rightChild = rightChild;
-    }
-
-    /**
      * Returns the container of this parse tree node.
      *
      * @return the container of this parse tree node
