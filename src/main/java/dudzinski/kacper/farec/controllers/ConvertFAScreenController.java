@@ -166,6 +166,20 @@ public final class ConvertFAScreenController {
     }
 
     /**
+     * Defines the behaviour for interacting with the finite automaton container
+     * using a mouse.
+     */
+    public void setFAContainerMouseControl(
+            SmartFiniteAutomaton finiteAutomaton) {
+        // Get the finite automaton container.
+        Pane container = finiteAutomaton.getContainer();
+
+        // Clicking on the container will unselect the currently selected
+        // component.
+        container.setOnMousePressed(event -> unselectCurrentlySelected());
+    }
+
+    /**
      * Defines the behaviour for interacting with a state using a mouse.
      *
      * @param state the state for which to define mouse control behaviour
@@ -249,20 +263,6 @@ public final class ConvertFAScreenController {
             }
             event.consume();
         });
-    }
-
-    /**
-     * Defines the behaviour for interacting with the finite automaton container
-     * using a mouse.
-     */
-    public void setFAContainerMouseControl(
-            SmartFiniteAutomaton finiteAutomaton) {
-        // Get the finite automaton container.
-        Pane container = finiteAutomaton.getContainer();
-
-        // Clicking on the container will unselect the currently selected
-        // component.
-        container.setOnMousePressed(event -> unselectCurrentlySelected());
     }
 
     /**
@@ -514,25 +514,6 @@ public final class ConvertFAScreenController {
     }
 
     /**
-     * Creates the context menu for a loop edge. The context menu for a loop
-     * edge allows the user to flip the edge.
-     *
-     * @return the context menu for the loop edge
-     */
-    private ContextMenu createLoopContextMenu() {
-        ContextMenu loopContextMenu = new ContextMenu();
-
-        MenuItem flip = new MenuItem("Flip");
-        flip.setOnAction(event -> {
-            SmartLoopEdge loop = (SmartLoopEdge) currentlySelected;
-            loop.flip();
-        });
-
-        loopContextMenu.getItems().addAll(flip);
-        return loopContextMenu;
-    }
-
-    /**
      * Unselects the currently selected component and restores its
      * highlighting.
      */
@@ -577,6 +558,25 @@ public final class ConvertFAScreenController {
                 }
             }
         }
+    }
+
+    /**
+     * Creates the context menu for a loop edge. The context menu for a loop
+     * edge allows the user to flip the edge.
+     *
+     * @return the context menu for the loop edge
+     */
+    private ContextMenu createLoopContextMenu() {
+        ContextMenu loopContextMenu = new ContextMenu();
+
+        MenuItem flip = new MenuItem("Flip");
+        flip.setOnAction(event -> {
+            SmartLoopEdge loop = (SmartLoopEdge) currentlySelected;
+            loop.flip();
+        });
+
+        loopContextMenu.getItems().addAll(flip);
+        return loopContextMenu;
     }
 
     /**
@@ -822,8 +822,8 @@ public final class ConvertFAScreenController {
         private String savedLabelText = null;
         private SmartEdgeComponent savedUpdatedEdge;
         private String savedInfoLabelText;
-        private int savedOutgoingIndex;
         private int savedIncomingIndex;
+        private int savedOutgoingIndex;
 
         /**
          * Executes the {@link UpdateEdgeLabelCommand} command.
