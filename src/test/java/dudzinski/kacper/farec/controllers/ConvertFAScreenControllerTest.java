@@ -247,7 +247,7 @@ class ConvertFAScreenControllerTest {
         @Test
         @DisplayName("(ε)+(ε)|(ε)*|(ε)")
         void test24() {
-            String testLabel = "(ε)+(ε)|(ø)*|(ε)";
+            String testLabel = "(ε)+(ε)|(ε)*|(ε)";
             String simplifiedLabel =
                     ConvertFAScreenController.simplifyLabel(testLabel);
             assertEquals("ε", simplifiedLabel);
@@ -360,6 +360,51 @@ class ConvertFAScreenControllerTest {
             String simplifiedLabel =
                     ConvertFAScreenController.simplifyLabel(testLabel);
             assertEquals("ε", simplifiedLabel);
+        }
+
+        @Test
+        @DisplayName("(A)+(A)|(ø)*|(ε)")
+        void test37() {
+            String testLabel = "(A)+(A)|(ø)*|(ε)";
+            String simplifiedLabel =
+                    ConvertFAScreenController.simplifyLabel(testLabel);
+            assertEquals("A", simplifiedLabel);
+        }
+
+        @Test
+        @DisplayName("(A)+(ε)|(ø)*|(A)")
+        void test38() {
+            String testLabel = "(A)+(ε)|(ø)*|(A)";
+            String simplifiedLabel =
+                    ConvertFAScreenController.simplifyLabel(testLabel);
+            assertEquals("A", simplifiedLabel);
+        }
+
+        @Test
+        @DisplayName("(A)+(A)|(ε)*|(ε)")
+        void test39() {
+            String testLabel = "(A)+(A)|(ε)*|(ε)";
+            String simplifiedLabel =
+                    ConvertFAScreenController.simplifyLabel(testLabel);
+            assertEquals("A", simplifiedLabel);
+        }
+
+        @Test
+        @DisplayName("(A)+(ε)|(ε)*|(A)")
+        void test40() {
+            String testLabel = "(A)+(ε)|(ε)*|(A)";
+            String simplifiedLabel =
+                    ConvertFAScreenController.simplifyLabel(testLabel);
+            assertEquals("A", simplifiedLabel);
+        }
+
+        @Test
+        @DisplayName("(A*)+(ε)|(A)*|(ε)")
+        void test41() {
+            String testLabel = "(A*)+(ε)|(A)*|(ε)";
+            String simplifiedLabel =
+                    ConvertFAScreenController.simplifyLabel(testLabel);
+            assertEquals("A*", simplifiedLabel);
         }
     }
 

@@ -19,6 +19,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
+import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.EDGE_STROKE_COLOR;
+import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
 
 /**
  * This is the controller for the view used to convert finite automata into
@@ -355,13 +357,11 @@ public final class ConvertFAScreenController {
                 depth--;
             }
             else if ((depth == 0)
-                    && (currentChar ==
-                    RegularExpressionSettings.getUnionOperatorChar())) {
+                    && (currentChar == getUnionOperatorChar())) {
                 unionIndex = index;
             }
             else if ((depth == 0)
-                    && (currentChar ==
-                    RegularExpressionSettings.getConcatenationOperatorChar())) {
+                    && (currentChar == getConcatenationOperatorChar())) {
                 if (concatIndex1 == -1) {
                     concatIndex1 = index;
                 }
@@ -387,6 +387,7 @@ public final class ConvertFAScreenController {
                 Parser.removeOuterBrackets(directLabel);
         String indirectLabel1Bracketless =
                 Parser.removeOuterBrackets(indirectLabel1);
+        // Note: don't include the star operator in the second indirect label.
         String indirectLabel2Bracketless =
                 Parser.removeOuterBrackets(indirectLabel2);
         String indirectLabel3Bracketless =
@@ -441,15 +442,12 @@ public final class ConvertFAScreenController {
         // If the second indirect label is not an empty string, include it.
         if (!indirectLabel2Bracketless.equals(EMPTY_STRING)) {
             // Note: have to add the star operator back.
-            simplifiedLabelArray[4] = indirectLabel2
-                    + RegularExpressionSettings.getStarOperatorChar();
+            simplifiedLabelArray[4] = indirectLabel2 + getStarOperatorChar();
 
             // If the third indirect label is also not an empty string, include
             // the second concatenation symbol.
             if (!indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-                simplifiedLabelArray[5] = "" +
-                        RegularExpressionSettings.
-                                getConcatenationOperatorChar();
+                simplifiedLabelArray[5] = "" + getConcatenationOperatorChar();
             }
             // Otherwise, ignore it.
             else {
@@ -479,11 +477,30 @@ public final class ConvertFAScreenController {
             simplifiedLabelArray[2] = "(" + EMPTY_STRING + ")";
         }
 
-        // If the label is in the form A UNION A, replace it with just A.
-        if ((simplifiedLabelArray[0].equals(simplifiedLabelArray[2]))
-                && (simplifiedLabelArray[3].equals(""))) {
+        // If the label is in the form R UNION R, replace it with just R...
+        // ...if the direct label is equal to the first indirect label.
+        if (directLabelBracketless.equals(indirectLabel1Bracketless)
+                && indirectLabel2Bracketless.equals(EMPTY_STRING)
+                && indirectLabel3Bracketless.equals(EMPTY_STRING)) {
             simplifiedLabelArray[1] = "";
             simplifiedLabelArray[2] = "";
+        }
+        // ...if the direct label is equal to the second indirect label.
+        // This can only happen if the direct label = (R*) and the second
+        // indirect label = (R)*.
+        else if (directLabelBracketless
+                .equals(indirectLabel2Bracketless + getStarOperatorChar())
+                && indirectLabel1Bracketless.equals(EMPTY_STRING)
+                && indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+            simplifiedLabelArray[1] = "";
+            simplifiedLabelArray[4] = "";
+        }
+        // ...if the direct label is equal to the third indirect label:
+        else if (directLabelBracketless.equals(indirectLabel3Bracketless)
+                && indirectLabel1Bracketless.equals(EMPTY_STRING)
+                && indirectLabel2Bracketless.equals(EMPTY_STRING)) {
+            simplifiedLabelArray[1] = "";
+            simplifiedLabelArray[6] = "";
         }
 
         // Build the simplified label.
@@ -492,7 +509,7 @@ public final class ConvertFAScreenController {
                 simplifiedLabelBuilder::append);
 
         // Use the Parser to remove unnecessary brackets and return the
-        // simplified label/
+        // simplified label.
         return Parser.simplifyRegexString(simplifiedLabelBuilder.toString());
     }
 
@@ -686,10 +703,10 @@ public final class ConvertFAScreenController {
 
         // Create the path label for the indirect path.
         String pathLabel = startToMiddleLabel
-                + RegularExpressionSettings.getConcatenationOperatorChar()
+                + getConcatenationOperatorChar()
                 + middleToMiddleLabel
-                + RegularExpressionSettings.getStarOperatorChar()
-                + RegularExpressionSettings.getConcatenationOperatorChar()
+                + getStarOperatorChar()
+                + getConcatenationOperatorChar()
                 + middleToEndLabel;
 
         // Return the path label and the path edges.
@@ -848,7 +865,7 @@ public final class ConvertFAScreenController {
 
             // Create the new label.
             String newLabel = directPath.getKey()
-                    + RegularExpressionSettings.getUnionOperatorChar()
+                    + getUnionOperatorChar()
                     + indirectPath.getKey();
 
             // Simplify the label.
