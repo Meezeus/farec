@@ -44,8 +44,6 @@ public final class ConvertFAScreenController {
         SELECT, UPDATE, REMOVE
     }
 
-    private static final String SELECT_STRING = "Select a state to remove.";
-
     public ScrollPane scrollPane;
     public Label infoLabel;
     public Button prevButton;
@@ -53,7 +51,7 @@ public final class ConvertFAScreenController {
 
     private SmartFiniteAutomaton finiteAutomaton;
     private SmartComponent currentlySelected;
-    private Paint currentlySelectedColour;
+    private Paint currentlySelectedColor;
     private final ContextMenu loopContextMenu = createLoopContextMenu();
 
     private WorkMode workMode = WorkMode.SELECT;
@@ -63,6 +61,8 @@ public final class ConvertFAScreenController {
     private ArrayList<SmartState> incomingStates = new ArrayList<>();
     private int outgoingIndex = 0;
     private ArrayList<SmartState> outgoingStates = new ArrayList<>();
+
+    private static final String SELECT_STRING = "Select a state to remove.";
 
     /**
      * Finalises the finite automaton and sets its container as the content of
@@ -538,10 +538,10 @@ public final class ConvertFAScreenController {
      */
     private void unselectCurrentlySelected() {
         if (currentlySelected != null) {
-            currentlySelected.setStroke(currentlySelectedColour);
+            currentlySelected.setStroke(currentlySelectedColor);
         }
         currentlySelected = null;
-        currentlySelectedColour = null;
+        currentlySelectedColor = null;
     }
 
     /**
@@ -572,7 +572,7 @@ public final class ConvertFAScreenController {
             for (SmartComponent component : components) {
                 if (component.getContainer() == container) {
                     currentlySelected = component;
-                    currentlySelectedColour = component.getStroke();
+                    currentlySelectedColor = component.getStroke();
                     component.setStroke(USER_HIGHLIGHT_COLOR);
                 }
             }
