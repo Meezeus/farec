@@ -338,6 +338,7 @@ public final class ConvertFAScreenController {
      *              regular expressions
      * @return a simplified version of the label
      */
+    @SuppressWarnings("ProtectedMemberInFinalClass")
     protected static String simplifyLabel(String label) {
         int depth = 0;
         int unionIndex = -1;
