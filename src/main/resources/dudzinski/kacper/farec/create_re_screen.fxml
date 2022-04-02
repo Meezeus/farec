@@ -51,7 +51,7 @@
             <Label fx:id="infoLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Create a regular expression to get started!" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
             <Button focusTraversable="false" mnemonicParsing="false" onAction="#openHelpWindow" text="Help" />
             <Button mnemonicParsing="false" onAction="#parseRegexString" prefWidth="60.0" text="Parse" />
-            <Button fx:id="convertButton" disable="true" mnemonicParsing="false" onAction="#openConvertREWindow" prefWidth="60.0" text="Convert" />
+            <Button fx:id="convertButton" disable="true" mnemonicParsing="false" onAction="#openConvertREScreen" prefWidth="60.0" text="Convert" />
          </children>
          <padding>
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

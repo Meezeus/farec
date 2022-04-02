@@ -19,8 +19,8 @@
             <Separator orientation="VERTICAL" prefHeight="200.0" />
             <VBox alignment="CENTER" prefWidth="200.0" spacing="50.0">
                <children>
-                  <Button fx:id="convertFAButton" focusTraversable="false" mnemonicParsing="false" onAction="#openCreateFAWindow" prefHeight="50.0" prefWidth="150.0" text="Convert Finite Automata" textAlignment="CENTER" wrapText="true" />
-                  <Button fx:id="convertREButton" focusTraversable="false" mnemonicParsing="false" onAction="#openCreateREWindow" prefHeight="50.0" prefWidth="150.0" text="Convert Regular Expressions" textAlignment="CENTER" wrapText="true" />
+                  <Button fx:id="convertFAButton" focusTraversable="false" mnemonicParsing="false" onAction="#openCreateFAScreen" prefHeight="50.0" prefWidth="150.0" text="Convert Finite Automata" textAlignment="CENTER" wrapText="true" />
+                  <Button fx:id="convertREButton" focusTraversable="false" mnemonicParsing="false" onAction="#openCreateREScreen" prefHeight="50.0" prefWidth="150.0" text="Convert Regular Expressions" textAlignment="CENTER" wrapText="true" />
                </children>
             </VBox>
          </children>

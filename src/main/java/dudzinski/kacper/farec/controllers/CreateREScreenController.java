@@ -113,7 +113,7 @@ public final class CreateREScreenController implements Initializable {
      *
      * @throws IOException if the view fxml file cannot be found
      */
-    public void openConvertREWindow() throws IOException {
+    public void openConvertREScreen() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource(
                 "convert_re_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),

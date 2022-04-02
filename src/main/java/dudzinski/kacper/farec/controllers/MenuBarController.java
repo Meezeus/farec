@@ -25,7 +25,7 @@ public final class MenuBarController {
      *
      * @throws IOException if the view fxml file cannot be found
      */
-    public void openCreateFAWindow() throws IOException {
+    public void openCreateFAScreen() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource(
                 "create_fa_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),
@@ -42,7 +42,7 @@ public final class MenuBarController {
      *
      * @throws IOException if the view fxml file cannot be found
      */
-    public void openCreateREWindow() throws IOException {
+    public void openCreateREScreen() throws IOException {
         fxmlLoader = new FXMLLoader(App.class.getResource(
                 "create_re_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),
