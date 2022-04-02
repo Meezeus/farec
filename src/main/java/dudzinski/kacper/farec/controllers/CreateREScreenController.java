@@ -28,7 +28,7 @@ public final class CreateREScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
     public TextField regexStringTextField;
-    public ScrollPane parseTreeContainer;
+    public ScrollPane scrollPane;
     public Label infoLabel;
     public Button convertButton;
 
@@ -74,7 +74,7 @@ public final class CreateREScreenController implements Initializable {
     public void parseRegexString() {
         // Remove the current parse tree. By setting it to an empty label, it
         // ensures the scroll bars will disappear.
-        parseTreeContainer.setContent(new Label());
+        scrollPane.setContent(new Label());
 
         // Get the regex string and remove whitespace.
         String regexString = regexStringTextField.getText()
@@ -88,11 +88,11 @@ public final class CreateREScreenController implements Initializable {
             // Updated the info label and build and display the parse tree.
             infoLabel.setText("Regular expression is valid!");
             parseTree = new ParseTree(regularExpression);
-            parseTreeContainer.setContent(parseTree.getContainer());
+            scrollPane.setContent(parseTree.getContainer());
 
             // Reset scroll bar position.
-            parseTreeContainer.setHvalue(0);
-            parseTreeContainer.setVvalue(0);
+            scrollPane.setHvalue(0);
+            scrollPane.setVvalue(0);
 
             // Enable the convert button.
             convertButton.setDisable(false);

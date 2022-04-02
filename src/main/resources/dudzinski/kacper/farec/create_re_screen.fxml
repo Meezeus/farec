@@ -34,7 +34,7 @@
                   <Insets top="20.0" />
                </padding>
             </VBox>
-            <ScrollPane fx:id="parseTreeContainer" fitToHeight="true" fitToWidth="true" focusTraversable="false" pannable="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" focusTraversable="false" pannable="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                <padding>
                   <Insets top="20.0" />
                </padding>
