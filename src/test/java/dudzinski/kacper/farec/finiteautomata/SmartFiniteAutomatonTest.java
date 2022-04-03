@@ -484,7 +484,7 @@ public class SmartFiniteAutomatonTest {
         }
 
         @Nested
-        @DisplayName("false when he finite automaton is not valid because of")
+        @DisplayName("false when the finite automaton is not valid because of")
         public class IsValidNegativeTest {
             @Test
             @DisplayName("a missing initial state")
