@@ -43,8 +43,8 @@ public abstract class RegularExpressionSettings extends Settings {
     // Regular Expressions //
     /////////////////////////
 
-    private static final String validRegexOperands = "a-zA-Z0-9";
-    private static final String validRegexOperators = "£$%^&*-+=:;@~#|<>";
+    private static final String VALID_REGEX_OPERANDS = "a-zA-Z0-9";
+    private static final String VALID_REGEX_OPERATORS = "£$%^&*-+=:;@~#|<>";
     private static char starOperatorChar = '*';
     private static char concatenationOperatorChar = '|';
     private static char unionOperatorChar = '+';
@@ -58,7 +58,7 @@ public abstract class RegularExpressionSettings extends Settings {
      */
     public static String getValidRegexStringPattern() {
         return "^[" +
-                validRegexOperands +
+                VALID_REGEX_OPERANDS +
                 EMPTY_STRING +
                 EMPTY_SET +
                 starOperatorChar +
@@ -75,7 +75,7 @@ public abstract class RegularExpressionSettings extends Settings {
      */
     public static String getValidRegexOperatorPattern() {
         return "^[" +
-                validRegexOperators +
+                VALID_REGEX_OPERATORS +
                 "]$";
     }
 
@@ -86,7 +86,7 @@ public abstract class RegularExpressionSettings extends Settings {
      */
     public static String getValidRegexOperandPattern() {
         return "^[" +
-                validRegexOperands +
+                VALID_REGEX_OPERANDS +
                 EMPTY_STRING +
                 EMPTY_SET +
                 "]$";
