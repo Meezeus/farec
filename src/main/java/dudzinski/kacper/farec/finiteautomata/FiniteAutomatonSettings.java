@@ -47,9 +47,12 @@ public abstract class FiniteAutomatonSettings extends Settings {
     // Curved Edges //
     //////////////////
 
-    // The distance from the centre of a state to the control point of a curved
+    // The distance to move the control point perpendicularly from the centre
+    // of a line between two states for a curved edge.
+    public static final double CURVED_CONTROL_POINT_DISTANCE = 25;
+    // The distance to move the control point from the start or end of a loop
     // edge.
-    public static final double CONTROL_POINT_OFFSET = 25;
+    public static final double LOOP_CONTROL_POINT_DISTANCE = 50;
 
     /////////////////
     // Controllers //

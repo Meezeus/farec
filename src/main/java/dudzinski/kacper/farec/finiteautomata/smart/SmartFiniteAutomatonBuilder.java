@@ -331,7 +331,7 @@ public final class SmartFiniteAutomatonBuilder {
             protected double computeValue() {
                 double angle = Math.atan(sToEY.getValue() / sToEX.getValue());
                 double controlPointOffsetSin =
-                        CONTROL_POINT_OFFSET * Math.abs(Math.sin(angle));
+                        CURVED_CONTROL_POINT_DISTANCE * Math.abs(Math.sin(angle));
                 if ((sToEY.getValue() >= 0) && (sToEX.getValue() >= 0)) {
                     return (sToEX.getValue() / 2) + controlPointOffsetSin;
                 }
@@ -361,7 +361,7 @@ public final class SmartFiniteAutomatonBuilder {
             protected double computeValue() {
                 double angle = Math.atan(sToEY.getValue() / sToEX.getValue());
                 double controlPointOffsetCos =
-                        CONTROL_POINT_OFFSET * Math.abs(Math.cos(angle));
+                        CURVED_CONTROL_POINT_DISTANCE * Math.abs(Math.cos(angle));
                 if ((sToEY.getValue() >= 0) && (sToEX.getValue() >= 0)) {
                     return (sToEY.getValue() / 2) - controlPointOffsetCos;
                 }
@@ -576,12 +576,12 @@ public final class SmartFiniteAutomatonBuilder {
                 curve.startXProperty().subtract(1 * STATE_RADIUS));
         curve.controlY1Property().bind(
                 curve.startYProperty()
-                     .subtract(2 * SIDE_MULTIPLIER * CONTROL_POINT_OFFSET));
+                     .subtract(SIDE_MULTIPLIER * LOOP_CONTROL_POINT_DISTANCE));
         curve.controlX2Property().bind(
                 curve.endXProperty().add(1 * STATE_RADIUS));
         curve.controlY2Property().bind(
                 curve.endYProperty()
-                     .subtract(2 * SIDE_MULTIPLIER * CONTROL_POINT_OFFSET));
+                     .subtract(SIDE_MULTIPLIER * LOOP_CONTROL_POINT_DISTANCE));
 
         // Create the bindings for the translation needed to get from the
         // control point to the end of the curve.
@@ -669,8 +669,8 @@ public final class SmartFiniteAutomatonBuilder {
         label.translateYProperty().bind(
                 state.getContainer().translateYProperty()
                      .subtract(label.heightProperty().divide(2)
-                                    .add(2 * SIDE_MULTIPLIER *
-                                                 CONTROL_POINT_OFFSET)));
+                                    .add(SIDE_MULTIPLIER *
+                                                 LOOP_CONTROL_POINT_DISTANCE)));
     }
 
 }
