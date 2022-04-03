@@ -14,7 +14,7 @@ public abstract class RegularExpressionSettings extends Settings {
     //////////////////////
 
     // The radius of a regex parse tree node.
-    public static final int NODE_RADIUS = 20;
+    public static final double NODE_RADIUS = 20;
     // The color of the fill of a regex parse tree node.
     public static final Color NODE_FILL = Color.WHITE;
     // The radius of the stroke of a regex parse tree node.
@@ -26,9 +26,9 @@ public abstract class RegularExpressionSettings extends Settings {
     public static final Color NODE_STROKE_HIGHLIGHT_COLOR = Color.RED;
     // The minimum horizontal separation between two nodes in a regex parse
     // tree.
-    public static final int MIN_X_CHANGE = 50;
+    public static final double MIN_X_CHANGE = 50;
     // The minimum vertical separation between two nodes in a regex parse tree.
-    public static final int MIN_Y_CHANGE = 80;
+    public static final double MIN_Y_CHANGE = 80;
 
     //////////////////////
     // Parse Tree Edges //
@@ -97,11 +97,11 @@ public abstract class RegularExpressionSettings extends Settings {
      * must be a valid symbol in order for the link to be successful. The char
      * cannot be linked to any other regex operator.
      *
-     * @param regexOperator the regex operator to set the char for
+     * @param operator the regex operator to set the char for
      * @param operatorChar  the char that will represent the regex operator
      * @return true if the char was valid and set successfully, false otherwise
      */
-    public static Boolean setOperatorChar(RegexOperator regexOperator,
+    public static boolean setOperatorChar(RegexOperator operator,
                                           char operatorChar) {
         // Check the char is a valid symbol.
         if (!("" + operatorChar).matches(getValidRegexOperatorPattern())) {
@@ -115,13 +115,13 @@ public abstract class RegularExpressionSettings extends Settings {
         }
 
         // Link the regex operator to the char.
-        if (regexOperator == RegexOperator.STAR) {
+        if (operator == RegexOperator.STAR) {
             starOperatorChar = operatorChar;
         }
-        else if (regexOperator == RegexOperator.CONCATENATION) {
+        else if (operator == RegexOperator.CONCATENATION) {
             concatenationOperatorChar = operatorChar;
         }
-        else if (regexOperator == RegexOperator.UNION) {
+        else if (operator == RegexOperator.UNION) {
             unionOperatorChar = operatorChar;
         }
         return true;
