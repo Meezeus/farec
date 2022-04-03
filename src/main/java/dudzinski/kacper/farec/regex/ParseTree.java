@@ -126,7 +126,7 @@ public final class ParseTree {
             ParseTreeNode operatorNode = new ParseTreeNode(operatorNodePane);
 
             // Move downwards.
-            currentY += BASE_Y_CHANGE;
+            currentY += MIN_Y_CHANGE;
             if (currentY > greatestY) {
                 greatestY = currentY;
             }
@@ -147,7 +147,7 @@ public final class ParseTree {
                 // Calculate the horizontal distance between the operator node
                 // and its children.
                 double maxDepth = complexRegex.getDepth();
-                double xChange = Math.pow(2, maxDepth - 1) * BASE_X_CHANGE;
+                double xChange = Math.pow(2, maxDepth - 1) * MIN_X_CHANGE;
 
                 // Move to the left.
                 currentX -= xChange;

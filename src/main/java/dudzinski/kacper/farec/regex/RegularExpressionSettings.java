@@ -26,9 +26,9 @@ public abstract class RegularExpressionSettings extends Settings {
     public static final Color NODE_STROKE_HIGHLIGHT_COLOR = Color.RED;
     // The minimum horizontal separation between two nodes in a regex parse
     // tree.
-    public static final int BASE_X_CHANGE = 50;
+    public static final int MIN_X_CHANGE = 50;
     // The minimum vertical separation between two nodes in a regex parse tree.
-    public static final int BASE_Y_CHANGE = 80;
+    public static final int MIN_Y_CHANGE = 80;
 
     //////////////////////
     // Parse Tree Edges //
