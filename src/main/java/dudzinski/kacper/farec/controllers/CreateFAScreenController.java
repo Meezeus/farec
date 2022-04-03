@@ -76,7 +76,7 @@ public final class CreateFAScreenController implements Initializable {
      * the bidirectional mappings between work modes and buttons.
      */
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle resources) {
         // Set the info label.
         infoLabelText = "Create a finite automaton to get started!";
         infoLabel.setText(infoLabelText);
