@@ -62,7 +62,7 @@ public final class SmartEdge extends SmartEdgeComponent {
                         label.getText(), startState, endState);
             }
             else {
-                newEdge = SmartFiniteAutomatonBuilder.createEdge(
+                newEdge = SmartFiniteAutomatonBuilder.createStraightEdge(
                         label.getText(), startState, endState);
             }
 

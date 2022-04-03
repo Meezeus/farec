@@ -121,9 +121,9 @@ public final class ConvertFAScreenController {
         // Add a transition from the new initial state to the old initial state.
         SmartEdge iToI =
                 SmartFiniteAutomatonBuilder
-                        .createEdge(EMPTY_STRING,
-                                    newInitialState,
-                                    oldInitialState);
+                        .createStraightEdge(EMPTY_STRING,
+                                            newInitialState,
+                                            oldInitialState);
         finiteAutomaton.addEdge(iToI);
 
         // Add a new final state.
@@ -139,9 +139,9 @@ public final class ConvertFAScreenController {
         // Add a transition from the old final state to the new final state.
         SmartEdge fToF =
                 SmartFiniteAutomatonBuilder
-                        .createEdge(EMPTY_STRING,
-                                    oldFinalState,
-                                    newFinalState);
+                        .createStraightEdge(EMPTY_STRING,
+                                            oldFinalState,
+                                            newFinalState);
         finiteAutomaton.addEdge(fToF);
 
         // Remove whitespace and replace commas with the UNION operator.
@@ -885,9 +885,9 @@ public final class ConvertFAScreenController {
                 if (startState != endState) {
                     updatedEdge =
                             SmartFiniteAutomatonBuilder
-                                    .createEdge(simplifiedLabel,
-                                                startState,
-                                                endState);
+                                    .createStraightEdge(simplifiedLabel,
+                                                        startState,
+                                                        endState);
                 }
                 // Otherwise, the start state and end state are the same state.
                 // Create a loop edge.

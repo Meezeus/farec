@@ -209,9 +209,9 @@ public final class CreateFAScreenController implements Initializable {
                 // create an edge between them.
                 if (edgeStartState != edgeEndState) {
                     edge = SmartFiniteAutomatonBuilder
-                            .createEdge(EMPTY_STRING,
-                                        edgeStartState,
-                                        edgeEndState);
+                            .createStraightEdge(EMPTY_STRING,
+                                                edgeStartState,
+                                                edgeEndState);
                 }
                 // If the start state and end state are the same state, create a
                 // loop edge.

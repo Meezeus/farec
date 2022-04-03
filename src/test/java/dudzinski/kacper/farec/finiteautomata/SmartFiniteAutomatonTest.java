@@ -83,9 +83,9 @@ public class SmartFiniteAutomatonTest {
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createEdge("",
-                                                           state1,
-                                                           state2);
+                    SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                   state1,
+                                                                   state2);
             finiteAutomaton.addEdge(edge);
 
             assertTrue(finiteAutomaton.getEdges().contains(edge));
@@ -104,9 +104,9 @@ public class SmartFiniteAutomatonTest {
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createEdge("",
-                                                           state1,
-                                                           state2);
+                    SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                   state1,
+                                                                   state2);
             finiteAutomaton.addEdge(edge);
 
             assertTrue(finiteAutomaton.getContainer().getChildren()
@@ -125,15 +125,15 @@ public class SmartFiniteAutomatonTest {
             finiteAutomaton.addState(state2);
 
             SmartEdge existingEdge =
-                    SmartFiniteAutomatonBuilder.createEdge("",
-                                                           state1,
-                                                           state2);
+                    SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                   state1,
+                                                                   state2);
             finiteAutomaton.addEdge(existingEdge);
 
             SmartEdge newEdge =
-                    SmartFiniteAutomatonBuilder.createEdge("",
-                                                           state1,
-                                                           state2);
+                    SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                   state1,
+                                                                   state2);
             finiteAutomaton.addEdge(newEdge);
 
             assertTrue(finiteAutomaton.getEdges().contains(newEdge));
@@ -152,9 +152,9 @@ public class SmartFiniteAutomatonTest {
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createEdge("",
-                                                           state1,
-                                                           state2);
+                    SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                   state1,
+                                                                   state2);
             finiteAutomaton.addEdge(edge);
 
             assertTrue(state1.getOutgoingEdges().contains(edge));
@@ -181,9 +181,9 @@ public class SmartFiniteAutomatonTest {
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createEdge("",
-                                                           state1,
-                                                           state2);
+                    SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                   state1,
+                                                                   state2);
             finiteAutomaton.addEdge(edge);
             finiteAutomaton.removeEdge(edge);
 
@@ -203,9 +203,9 @@ public class SmartFiniteAutomatonTest {
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createEdge("",
-                                                           state1,
-                                                           state2);
+                    SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                   state1,
+                                                                   state2);
             finiteAutomaton.addEdge(edge);
             finiteAutomaton.removeEdge(edge);
 
@@ -225,9 +225,9 @@ public class SmartFiniteAutomatonTest {
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createEdge("",
-                                                           state1,
-                                                           state2);
+                    SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                   state1,
+                                                                   state2);
             finiteAutomaton.addEdge(edge);
             finiteAutomaton.removeEdge(edge);
 
@@ -304,9 +304,9 @@ public class SmartFiniteAutomatonTest {
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createEdge("",
-                                                           state1,
-                                                           state2);
+                    SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                   state1,
+                                                                   state2);
             finiteAutomaton.addEdge(edge);
 
             SmartLoopEdge loopEdge =
@@ -474,9 +474,9 @@ public class SmartFiniteAutomatonTest {
                 finiteAutomaton.setFinalState(finalState);
 
                 SmartEdge initialToFinal =
-                        SmartFiniteAutomatonBuilder.createEdge("",
-                                                               initialState,
-                                                               finalState);
+                        SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                       initialState,
+                                                                       finalState);
                 finiteAutomaton.addEdge(initialToFinal);
 
                 assertTrue(finiteAutomaton.isValid());
@@ -507,9 +507,9 @@ public class SmartFiniteAutomatonTest {
                 finiteAutomaton.setFinalState(finalState);
 
                 SmartEdge initialToFinal =
-                        SmartFiniteAutomatonBuilder.createEdge("",
-                                                               initialState,
-                                                               finalState);
+                        SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                       initialState,
+                                                                       finalState);
                 finiteAutomaton.addEdge(initialToFinal);
 
                 assertFalse(finiteAutomaton.isValid());
@@ -535,9 +535,9 @@ public class SmartFiniteAutomatonTest {
                 //finiteAutomaton.setFinalState(finalState);
 
                 SmartEdge initialToFinal =
-                        SmartFiniteAutomatonBuilder.createEdge("",
-                                                               initialState,
-                                                               finalState);
+                        SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                       initialState,
+                                                                       finalState);
                 finiteAutomaton.addEdge(initialToFinal);
 
                 assertFalse(finiteAutomaton.isValid());
@@ -567,9 +567,9 @@ public class SmartFiniteAutomatonTest {
                 finiteAutomaton.addState(unreachableState);
 
                 SmartEdge initialToFinal =
-                        SmartFiniteAutomatonBuilder.createEdge("",
-                                                               initialState,
-                                                               finalState);
+                        SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                       initialState,
+                                                                       finalState);
                 finiteAutomaton.addEdge(initialToFinal);
                 assertFalse(finiteAutomaton.isValid());
             }
@@ -598,15 +598,15 @@ public class SmartFiniteAutomatonTest {
                 finiteAutomaton.addState(unreachableState);
 
                 SmartEdge initialToFinal =
-                        SmartFiniteAutomatonBuilder.createEdge("",
-                                                               initialState,
-                                                               finalState);
+                        SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                       initialState,
+                                                                       finalState);
                 finiteAutomaton.addEdge(initialToFinal);
 
                 SmartEdge unreachableToFinal =
-                        SmartFiniteAutomatonBuilder.createEdge("",
-                                                               unreachableState,
-                                                               finalState);
+                        SmartFiniteAutomatonBuilder.createStraightEdge("",
+                                                                       unreachableState,
+                                                                       finalState);
                 finiteAutomaton.addEdge(unreachableToFinal);
 
                 assertFalse(finiteAutomaton.isValid());

@@ -151,16 +151,16 @@ public final class SmartFiniteAutomatonBuilder {
     }
 
     /**
-     * Creates an edge.
+     * Creates a straight edge.
      *
      * @param labelText  the text for the edge's label
      * @param startState the start state of the edge
      * @param endState   the end state of the edge
-     * @return an edge
+     * @return a straight edge
      */
-    public static SmartEdge createEdge(String labelText,
-                                       SmartState startState,
-                                       SmartState endState) {
+    public static SmartEdge createStraightEdge(String labelText,
+                                               SmartState startState,
+                                               SmartState endState) {
         // Create the line.
         Line line = new Line();
         line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
