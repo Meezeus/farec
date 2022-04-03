@@ -115,54 +115,6 @@ public final class ConvertREScreenController implements Initializable {
     }
 
     /**
-     * Moves to the next step of the conversion process. Removes the
-     * highlighting from the current node and highlights the next node, updating
-     * the prev and next buttons accordingly. Updates all the labels in the view
-     * and displays the next finite automaton. This method is called when the
-     * next button is pressed.
-     */
-    public void next() {
-        // Remove the highlighting from current node.
-        ParseTreeNode currentParseTreeNode =
-                parseTreeNodesPreorder.get(currentPreorderIndex);
-        currentParseTreeNode.setStroke(NODE_STROKE_COLOR);
-
-        // Increase the index and enable/disable the buttons accordingly.
-        currentPreorderIndex += 1;
-        if (currentPreorderIndex > 0) {
-            prevButton.setDisable(false);
-        }
-        if (currentPreorderIndex == maxPreorderIndex) {
-            nextButton.setDisable(true);
-        }
-
-        // Highlight the next node.
-        ParseTreeNode nextParseTreeNode =
-                parseTreeNodesPreorder.get(currentPreorderIndex);
-        nextParseTreeNode.setStroke(NODE_STROKE_HIGHLIGHT_COLOR);
-
-        // Update the info label.
-        RegularExpression nextRegularExpression =
-                regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText(
-                "Showing the finite automaton for "
-                        + Parser.simplifyRegexString(
-                        nextRegularExpression.toString())
-                        + ".");
-
-        // Update the explanation label.
-        explanationLabel.setText(
-                GraphicalFiniteAutomatonBuilder
-                        .getExplanationText(nextRegularExpression));
-
-        // Display the next finite automaton.
-        finiteAutomataContainer.setContent(
-                GraphicalFiniteAutomatonBuilder
-                        .buildFiniteAutomaton(nextRegularExpression)
-                        .getContainer());
-    }
-
-    /**
      * Moves to the previous step of the conversion process. Removes the
      * highlighting from the current node and highlights the previous node,
      * updating the prev and next buttons accordingly. Updates all the labels in
@@ -207,6 +159,54 @@ public final class ConvertREScreenController implements Initializable {
         finiteAutomataContainer.setContent(
                 GraphicalFiniteAutomatonBuilder
                         .buildFiniteAutomaton(previousRegularExpression)
+                        .getContainer());
+    }
+
+    /**
+     * Moves to the next step of the conversion process. Removes the
+     * highlighting from the current node and highlights the next node, updating
+     * the prev and next buttons accordingly. Updates all the labels in the view
+     * and displays the next finite automaton. This method is called when the
+     * next button is pressed.
+     */
+    public void next() {
+        // Remove the highlighting from current node.
+        ParseTreeNode currentParseTreeNode =
+                parseTreeNodesPreorder.get(currentPreorderIndex);
+        currentParseTreeNode.setStroke(NODE_STROKE_COLOR);
+
+        // Increase the index and enable/disable the buttons accordingly.
+        currentPreorderIndex += 1;
+        if (currentPreorderIndex > 0) {
+            prevButton.setDisable(false);
+        }
+        if (currentPreorderIndex == maxPreorderIndex) {
+            nextButton.setDisable(true);
+        }
+
+        // Highlight the next node.
+        ParseTreeNode nextParseTreeNode =
+                parseTreeNodesPreorder.get(currentPreorderIndex);
+        nextParseTreeNode.setStroke(NODE_STROKE_HIGHLIGHT_COLOR);
+
+        // Update the info label.
+        RegularExpression nextRegularExpression =
+                regularExpressionsPreorder.get(currentPreorderIndex);
+        infoLabel.setText(
+                "Showing the finite automaton for "
+                        + Parser.simplifyRegexString(
+                        nextRegularExpression.toString())
+                        + ".");
+
+        // Update the explanation label.
+        explanationLabel.setText(
+                GraphicalFiniteAutomatonBuilder
+                        .getExplanationText(nextRegularExpression));
+
+        // Display the next finite automaton.
+        finiteAutomataContainer.setContent(
+                GraphicalFiniteAutomatonBuilder
+                        .buildFiniteAutomaton(nextRegularExpression)
                         .getContainer());
     }
 
