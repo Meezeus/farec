@@ -789,6 +789,9 @@ public final class ConvertFAScreenController {
         @Override
         public void undo() {
             if (stateToRemove != null) {
+                // Unselect currently selected.
+                unselectCurrentlySelected();
+
                 // Restore work mode.
                 workMode = WorkMode.SELECT;
 
@@ -938,6 +941,9 @@ public final class ConvertFAScreenController {
          */
         @Override
         public void undo() {
+            // Unselect currently selected.
+            unselectCurrentlySelected();
+
             // Restore work mode
             workMode = WorkMode.UPDATE;
 
@@ -1038,6 +1044,9 @@ public final class ConvertFAScreenController {
          */
         @Override
         public void undo() {
+            // Unselect currently selected.
+            unselectCurrentlySelected();
+
             // Restore the work mode.
             workMode = WorkMode.REMOVE;
 
