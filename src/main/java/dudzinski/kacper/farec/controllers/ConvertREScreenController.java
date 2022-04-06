@@ -3,12 +3,11 @@ package dudzinski.kacper.farec.controllers;
 import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalFiniteAutomatonBuilder;
 import dudzinski.kacper.farec.regex.*;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -29,11 +28,12 @@ public final class ConvertREScreenController implements Initializable {
     public HBox centralContainer;
 
     public VBox leftVBox;
-    public ScrollPane finiteAutomataContainer;
+    public ScrollPane finiteAutomatonScrollPane;
+    public StackPane blankPane;
     public Label explanationLabel;
 
     public VBox rightVBox;
-    public ScrollPane parseTreeContainer;
+    public ScrollPane parseTreeScrollPane;
     public Label regularExpressionLabel;
 
     public Label infoLabel;
@@ -47,11 +47,53 @@ public final class ConvertREScreenController implements Initializable {
 
     /**
      * Makes the finite automaton area and the parse tree area grow by equal
-     * amounts.
+     * amounts. Sets the background color of all the components.
      */
     public void initialize(URL location, ResourceBundle resources) {
+        // Make the finite automaton area and the parse tree area grow by equal
+        // amounts.
         HBox.setHgrow(leftVBox, Priority.ALWAYS);
         HBox.setHgrow(rightVBox, Priority.ALWAYS);
+
+        // Set the background color of the parse tree scroll pane.
+        finiteAutomatonScrollPane.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
+
+        // Set the background color of the blank pane.
+        blankPane.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
+
+        // Set the background color of the explanation label.
+        explanationLabel.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
+
+        // Set the background color of the parse tree scroll pane.
+        parseTreeScrollPane.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
+
+        // Set the background color of the regular expression label.
+        regularExpressionLabel.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
     }
 
     /**
@@ -75,7 +117,7 @@ public final class ConvertREScreenController implements Initializable {
         maxPreorderIndex = parseTreeNodesPreorder.size() - 1;
 
         // Display the parse tree and update the regular expression label.
-        parseTreeContainer.setContent(parseTree.getContainer());
+        parseTreeScrollPane.setContent(parseTree.getContainer());
         regularExpressionLabel.setText(
                 "Regular Expression: "
                         + Parser.simplifyRegexString(
@@ -108,7 +150,8 @@ public final class ConvertREScreenController implements Initializable {
                         .getExplanationText(currentRegularExpression));
 
         // Display the first finite automaton.
-        finiteAutomataContainer.setContent(
+        blankPane.getChildren().clear();
+        blankPane.getChildren().add(
                 GraphicalFiniteAutomatonBuilder
                         .buildFiniteAutomaton(currentRegularExpression)
                         .getContainer());
@@ -156,7 +199,8 @@ public final class ConvertREScreenController implements Initializable {
                         .getExplanationText(previousRegularExpression));
 
         // Display the previous finite automaton.
-        finiteAutomataContainer.setContent(
+        blankPane.getChildren().clear();
+        blankPane.getChildren().add(
                 GraphicalFiniteAutomatonBuilder
                         .buildFiniteAutomaton(previousRegularExpression)
                         .getContainer());
@@ -204,7 +248,8 @@ public final class ConvertREScreenController implements Initializable {
                         .getExplanationText(nextRegularExpression));
 
         // Display the next finite automaton.
-        finiteAutomataContainer.setContent(
+        blankPane.getChildren().clear();
+        blankPane.getChildren().add(
                 GraphicalFiniteAutomatonBuilder
                         .buildFiniteAutomaton(nextRegularExpression)
                         .getContainer());

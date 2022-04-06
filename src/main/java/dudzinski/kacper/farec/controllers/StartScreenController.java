@@ -3,9 +3,13 @@ package dudzinski.kacper.farec.controllers;
 import dudzinski.kacper.farec.App;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,15 +28,42 @@ import java.util.ResourceBundle;
 public final class StartScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
-    public Label changelog;
+    public Label welcomeLabel;
+    public ScrollPane scrollPane;
+    public Label changelogLabel;
     public Button convertFAButton;
     public Button convertREButton;
 
     /**
-     * Reads the changelog file and sets the changelog label to the latest
-     * entry.
+     * Sets the welcome label. Reads the changelog file and sets the changelog
+     * label to the latest entry. Sets the background color of the changelog
+     * label and binds its height to the height of the scroll pane. Sets the
+     * background and border color of the scroll pane.
      */
     public void initialize(URL location, ResourceBundle resources) {
+        // Set the welcome label.
+        welcomeLabel.setText(
+                """
+                FAREC (Finite Automata and Regular Expression Converter) is an \
+                educational tool designed to demonstrate the algorithms used \
+                to convert between finite automata and regular expressions.
+                                
+                FAREC allows you to create a finite automaton/regular \
+                expression and then convert it into an equivalent regular \
+                expression/finite automaton. Each step of the conversion \
+                process is shown.
+                                             
+                To convert finite automata into regular expressions, FAREC \
+                uses the State Elimination with GNFAs algorithm. To convert \
+                regular expressions into finite automata, FAREC uses the \
+                McNaughton–Yamada–Thompson algorithm (also known as Thompson's \
+                construction algorithm).
+                                             
+                To begin, press one of the buttons on the right.
+                """
+        );
+
+        // Load the changelog.
         try {
             // Get and read the changelog file.
             URL changelogURL = App.class.getResource("changelog.txt");
@@ -58,7 +89,38 @@ public final class StartScreenController implements Initializable {
                     changelogEntry.append(line).append("\n");
                 }
                 // Set the label.
-                changelog.setText(changelogEntry.toString());
+                changelogLabel.setText(changelogEntry.toString().trim());
+
+                // Set the background color of the label.
+                changelogLabel.setBackground(
+                        new Background(
+                                new BackgroundFill(Color.WHITE,
+                                                   CornerRadii.EMPTY,
+                                                   Insets.EMPTY
+                                )));
+
+                // Bind the height of the label to the height of the scroll
+                // pane. Subtract 5 so the scroll bar is not always visible.
+                changelogLabel.minHeightProperty()
+                              .bind(scrollPane.heightProperty().subtract(5));
+
+                // Set the background color of the scroll pane.
+                scrollPane.setBackground(
+                        new Background(
+                                new BackgroundFill(Color.WHITE,
+                                                   CornerRadii.EMPTY,
+                                                   Insets.EMPTY
+                                )));
+
+                // Set the border color of the scroll pane.
+                scrollPane.setBorder(
+                        new Border(
+                                new BorderStroke(Color.BLACK,
+                                                 BorderStrokeStyle.SOLID,
+                                                 CornerRadii.EMPTY,
+                                                 BorderWidths.DEFAULT
+                                )
+                        ));
             }
         }
         catch (Exception e) {

@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -72,14 +73,23 @@ public final class CreateFAScreenController implements Initializable {
 
     /**
      * Sets the info label. Sets the key-press behaviour of the scene. Sets the
-     * finite automaton container as the contents of the scroll pane. Creates
-     * the bidirectional mappings between work modes and buttons.
+     * background color of the scroll pane. Sets the finite automaton container
+     * as the contents of the scroll pane. Creates the bidirectional mappings
+     * between work modes and buttons.
      */
     @Override
     public void initialize(URL url, ResourceBundle resources) {
         // Set the info label.
         infoLabelText = "Create a finite automaton to get started!";
         infoLabel.setText(infoLabelText);
+
+        // Set the background color of the scroll pane.
+        scrollPane.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
 
         // Set the key-press behaviour for the scene.
         scrollPane.sceneProperty()
@@ -296,7 +306,7 @@ public final class CreateFAScreenController implements Initializable {
         window.setTitle("Help: Finite Automata");
         fxmlLoader = new FXMLLoader(App.class.getResource(
                 "fa_help_window.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 400, 200);
+        Scene scene = new Scene(fxmlLoader.load(), 500, -1);
         window.setScene(scene);
         window.showAndWait();
     }
@@ -464,7 +474,7 @@ public final class CreateFAScreenController implements Initializable {
         window.setTitle("Rename State");
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(
                 "new_state_label_window.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 200, 150);
+        Scene scene = new Scene(fxmlLoader.load());
         window.setScene(scene);
         window.showAndWait();
 
@@ -489,7 +499,7 @@ public final class CreateFAScreenController implements Initializable {
         window.setTitle("Rename Edge");
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(
                 "new_edge_label_window.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 200, 150);
+        Scene scene = new Scene(fxmlLoader.load());
         window.setScene(scene);
         window.showAndWait();
 

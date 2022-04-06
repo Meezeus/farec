@@ -271,7 +271,7 @@ public final class SmartFiniteAutomatonBuilder {
         label.setPadding(new Insets(0, 5, 0, 5));
         label.setBackground(
                 new Background(
-                        new BackgroundFill(EDGE_LABEL_COLOR, CornerRadii.EMPTY,
+                        new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
                                            Insets.EMPTY)));
 
         // Bind the label to the centre of the edge.
@@ -482,7 +482,7 @@ public final class SmartFiniteAutomatonBuilder {
         label.setPadding(new Insets(0, 5, 0, 5));
         label.setBackground(
                 new Background(
-                        new BackgroundFill(EDGE_LABEL_COLOR, CornerRadii.EMPTY,
+                        new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
                                            Insets.EMPTY)));
 
         // Bind the label to the control point.
@@ -526,7 +526,7 @@ public final class SmartFiniteAutomatonBuilder {
         label.setPadding(new Insets(0, 5, 0, 5));
         label.setBackground(
                 new Background(
-                        new BackgroundFill(EDGE_LABEL_COLOR, CornerRadii.EMPTY,
+                        new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
                                            Insets.EMPTY)));
 
         // Set the bindings

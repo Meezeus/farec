@@ -3,14 +3,17 @@ package dudzinski.kacper.farec.finiteautomata.smart;
 import dudzinski.kacper.farec.controllers.ConvertFAScreenController;
 import dudzinski.kacper.farec.controllers.CreateFAScreenController;
 import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalFiniteAutomaton;
+import javafx.geometry.Insets;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.STATE_RADIUS;
-import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.STATE_STROKE_RADIUS;
+import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
 
 /**
  * This class represents a smart finite automaton. A smart finite automaton is a
@@ -44,14 +47,26 @@ public final class SmartFiniteAutomaton {
     /**
      * Creates a new finite automaton and sets the construction controller. The
      * controller is used during construction of this finite automaton, to
-     * define how the user can interact with the components. Also sets the
-     * finite automaton container user interaction behaviour.
+     * define how the user can interact with the components. Sets the background
+     * color of the finite automaton container as well as its user interaction
+     * behaviour.
      *
      * @param createFAController the controller for finite automaton
      *                           construction window
      */
     public SmartFiniteAutomaton(CreateFAScreenController createFAController) {
+        // Set the controller for creating the finite automaton.
         this.createFAController = createFAController;
+
+        // Set the background color of the container.
+        container.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
+
+        // Set the user interaction behaviour for the container.
         createFAController.setFAContainerMouseControl(this);
     }
 

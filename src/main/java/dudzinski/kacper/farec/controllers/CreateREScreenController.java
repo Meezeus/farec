@@ -6,17 +6,24 @@ import dudzinski.kacper.farec.regex.Parser;
 import dudzinski.kacper.farec.regex.RegularExpression;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static dudzinski.kacper.farec.regex.RegularExpressionSettings.CONTAINER_COLOR;
 
 /**
  * This is the controller for the view used for creating regular expressions.
@@ -29,6 +36,7 @@ public final class CreateREScreenController implements Initializable {
     private FXMLLoader fxmlLoader;
     public TextField regexStringTextField;
     public ScrollPane scrollPane;
+    public Pane blankPane;
     public Label infoLabel;
     public Button convertButton;
 
@@ -36,13 +44,32 @@ public final class CreateREScreenController implements Initializable {
 
     /**
      * Adds a listener to the regex string text field so that any changes to it
-     * disable the convert button.
+     * disable the convert button. Sets the background color of the scroll pane
+     * and the blank pane.
      */
     public void initialize(URL location, ResourceBundle resources) {
+        // Add a listener to the regex string text field so that any changes to
+        // it disable the convert button.
         regexStringTextField.textProperty()
                             .addListener(
                                     (observable, oldValue, newValue)
                                             -> convertButton.setDisable(true));
+
+        // Set the background color of the scroll pane.
+        scrollPane.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
+
+        // Set the background color of the blank pane.
+        blankPane.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
     }
 
     /**
@@ -58,7 +85,7 @@ public final class CreateREScreenController implements Initializable {
         window.setTitle("Help: Regular Expressions");
         fxmlLoader = new FXMLLoader(App.class.getResource(
                 "re_help_window.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 400, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 500, -1);
         window.setScene(scene);
         window.showAndWait();
     }
@@ -72,9 +99,8 @@ public final class CreateREScreenController implements Initializable {
      * parse button is pressed.
      */
     public void parseRegexString() {
-        // Remove the current parse tree. By setting it to an empty label, it
-        // ensures the scroll bars will disappear.
-        scrollPane.setContent(new Label());
+        // Remove the current parse tree.
+        scrollPane.setContent(blankPane);
 
         // Get the regex string and remove whitespace.
         String regexString = regexStringTextField.getText()

@@ -8,6 +8,13 @@ import javafx.scene.paint.Color;
  */
 public abstract class FiniteAutomatonSettings extends Settings {
 
+    ///////////////
+    // CONTAINER //
+    ///////////////
+
+    // The color of the finite automaton container.
+    public static final Color CONTAINER_COLOR = Color.WHITE;
+
     ////////////
     // States //
     ////////////
@@ -15,7 +22,7 @@ public abstract class FiniteAutomatonSettings extends Settings {
     // The radius of a finite automaton state.
     public static final double STATE_RADIUS = 20;
     // The color of the fill of a finite automaton state.
-    public static final Color STATE_FILL_COLOR = Color.WHITE;
+    public static final Color STATE_FILL_COLOR = Color.YELLOW;
     // The radius of the stroke of a finite automaton state.
     public static final double STATE_STROKE_RADIUS = 1;
     // The color of the stroke of a finite automaton state.
@@ -40,8 +47,6 @@ public abstract class FiniteAutomatonSettings extends Settings {
     public static final Color EDGE_STROKE_COLOR = Color.BLACK;
     // The size (width and height) of the arrowhead of a finite automaton edge.
     public static final double ARROWHEAD_SIZE = 10;
-    // The background color of the label on an edge.
-    public static final Color EDGE_LABEL_COLOR = Color.WHITESMOKE;
 
     //////////////////
     // Curved Edges //
@@ -63,7 +68,7 @@ public abstract class FiniteAutomatonSettings extends Settings {
     public static final Color USER_HIGHLIGHT_COLOR = Color.RED;
     // The color of the fill of a finite automaton state when it has been chosen
     // by the user as the state to remove.
-    public static final Color STATE_TO_REMOVE_FILL_COLOR = Color.DARKRED;
+    public static final Color STATE_TO_REMOVE_FILL_COLOR = Color.FIREBRICK;
     // The color of the stroke of a finite automaton component when it is one
     // of the components on the indirect path between two states.
     public static final Color PATH_HIGHLIGHT_COLOR = Color.BLUE;

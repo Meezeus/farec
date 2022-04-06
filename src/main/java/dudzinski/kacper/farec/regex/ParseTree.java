@@ -1,7 +1,11 @@
 package dudzinski.kacper.farec.regex;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -20,6 +24,7 @@ import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
  */
 public final class ParseTree {
 
+    private static final double TOP_PADDING = 20;
     private final StackPane container = new StackPane();
     private final RegularExpression regularExpression;
     private final ParseTreeNode root;
@@ -46,7 +51,14 @@ public final class ParseTree {
         // Initialise the container.
         container.setAlignment(Pos.TOP_CENTER);
         container.setMinWidth((2 * greatestX) + (4 * NODE_RADIUS));
-        container.setMinHeight(greatestY + NODE_RADIUS);
+        container.setMinHeight(greatestY + (4 * NODE_RADIUS) + TOP_PADDING);
+        container.setPadding(new Insets(TOP_PADDING, 0, 0, 0));
+        container.setBackground(
+                new Background(
+                        new BackgroundFill(CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
     }
 
     /**

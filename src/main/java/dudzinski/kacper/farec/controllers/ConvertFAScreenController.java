@@ -6,20 +6,26 @@ import dudzinski.kacper.farec.finiteautomata.smart.*;
 import dudzinski.kacper.farec.regex.Parser;
 import dudzinski.kacper.farec.regex.RegularExpressionSettings;
 import javafx.event.Event;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.util.Pair;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
-import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.EDGE_STROKE_COLOR;
 import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
 
 /**
@@ -28,7 +34,7 @@ import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
  *
  * @see FiniteAutomatonSettings
  */
-public final class ConvertFAScreenController {
+public final class ConvertFAScreenController implements Initializable {
 
     /**
      * This enum represents the available work modes. The work mode changes how
@@ -63,6 +69,19 @@ public final class ConvertFAScreenController {
     private ArrayList<SmartState> outgoingStates = new ArrayList<>();
 
     private static final String SELECT_STRING = "Select a state to remove.";
+
+    /**
+     * Sets the background color of the scroll pane.
+     */
+    public void initialize(URL location, ResourceBundle resources) {
+        // Set the background color of the scroll pane.
+        scrollPane.setBackground(
+                new Background(
+                        new BackgroundFill(FiniteAutomatonSettings.CONTAINER_COLOR,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
+    }
 
     /**
      * Finalises the finite automaton and sets its container as the content of
@@ -612,7 +631,7 @@ public final class ConvertFAScreenController {
             state.setStroke(STATE_STROKE_COLOR);
         }
         for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
-            edge.setStroke(EDGE_STROKE_COLOR);
+            edge.setStroke(FiniteAutomatonSettings.EDGE_STROKE_COLOR);
         }
     }
 

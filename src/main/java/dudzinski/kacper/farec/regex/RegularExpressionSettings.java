@@ -9,6 +9,13 @@ import javafx.scene.paint.Color;
  */
 public abstract class RegularExpressionSettings extends Settings {
 
+    //////////////////////////
+    // PARSE TREE CONTAINER //
+    //////////////////////////
+
+    // The color of the parse tree container.
+    public static final Color CONTAINER_COLOR = Color.WHITE;
+
     //////////////////////
     // Parse Tree Nodes //
     //////////////////////
@@ -16,7 +23,7 @@ public abstract class RegularExpressionSettings extends Settings {
     // The radius of a regex parse tree node.
     public static final double NODE_RADIUS = 20;
     // The color of the fill of a regex parse tree node.
-    public static final Color NODE_FILL = Color.WHITE;
+    public static final Color NODE_FILL = Color.LIGHTBLUE;
     // The radius of the stroke of a regex parse tree node.
     public static final double NODE_STROKE_RADIUS = 1;
     // The color of the stroke of a regex parse tree node.

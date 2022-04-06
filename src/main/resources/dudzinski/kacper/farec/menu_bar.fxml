@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
 
-<MenuBar BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:id="menuBar" fx:controller="dudzinski.kacper.farec.controllers.MenuBarController">
+<MenuBar fx:id="menuBar" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dudzinski.kacper.farec.controllers.MenuBarController">
     <menus>
         <Menu mnemonicParsing="false" text="Convert">
             <items>
-                <MenuItem mnemonicParsing="false" text="Convert finite automaton" onAction="#openCreateFAScreen" />
-                <MenuItem mnemonicParsing="false" text="Convert regular expression" onAction="#openCreateREScreen" />
+                <MenuItem mnemonicParsing="false" onAction="#openCreateFAScreen" text="Convert finite automaton" />
+                <MenuItem mnemonicParsing="false" onAction="#openCreateREScreen" text="Convert regular expression" />
             </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Save">
+        <Menu disable="true" mnemonicParsing="false" text="Save">
             <items>
                 <MenuItem mnemonicParsing="false" text="Save finite automaton" />
                 <MenuItem mnemonicParsing="false" text="Save regular expression" />
             </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Load">
+        <Menu disable="true" mnemonicParsing="false" text="Load">
             <items>
                 <MenuItem mnemonicParsing="false" text="Load finite automaton" />
                 <MenuItem mnemonicParsing="false" text="Load regular expression" />
             </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Settings">
+        <Menu disable="true" mnemonicParsing="false" text="Settings">
             <items>
                 <CheckMenuItem mnemonicParsing="false" text="Show Ø transitions" />
                 <MenuItem mnemonicParsing="false" text="Settings..." />
