@@ -24,7 +24,7 @@
                       <Button fx:id="nextButton" minWidth="60.0" mnemonicParsing="false" onAction="#next" text="Next" />
                   </children>
                   <padding>
-                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                   </padding>
               </HBox>
          </children>
