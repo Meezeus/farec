@@ -1,6 +1,7 @@
 package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.App;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
@@ -17,7 +18,8 @@ import java.io.IOException;
 public final class MenuBarController {
 
     private FXMLLoader fxmlLoader;
-    public MenuBar menuBar;
+    @FXML
+    private MenuBar menuBar;
 
     /**
      * Changes the view to the screen for creating finite automata. This method
@@ -26,8 +28,8 @@ public final class MenuBarController {
      * @throws IOException if the view fxml file cannot be found
      */
     public void openCreateFAScreen() throws IOException {
-        fxmlLoader = new FXMLLoader(App.class.getResource(
-                "create_fa_screen.fxml"));
+        fxmlLoader = new FXMLLoader(
+                App.class.getResource("create_fa_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),
                                 menuBar.getScene().getWidth(),
                                 menuBar.getScene().getHeight());
@@ -43,8 +45,8 @@ public final class MenuBarController {
      * @throws IOException if the view fxml file cannot be found
      */
     public void openCreateREScreen() throws IOException {
-        fxmlLoader = new FXMLLoader(App.class.getResource(
-                "create_re_screen.fxml"));
+        fxmlLoader = new FXMLLoader(
+                App.class.getResource("create_re_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),
                                 menuBar.getScene().getWidth(),
                                 menuBar.getScene().getHeight());

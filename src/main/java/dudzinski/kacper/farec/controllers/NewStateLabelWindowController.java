@@ -1,5 +1,6 @@
 package dudzinski.kacper.farec.controllers;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -11,7 +12,8 @@ import javafx.stage.Stage;
  */
 public final class NewStateLabelWindowController {
 
-    public TextField textField;
+    @FXML
+    private TextField textField;
     private String newStateLabelText = null;
 
     /**

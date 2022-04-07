@@ -1,5 +1,6 @@
 package dudzinski.kacper.farec.controllers;
 
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
@@ -14,7 +15,8 @@ import java.util.ResourceBundle;
  */
 public final class FAHelpWindowController implements Initializable {
 
-    public Label helpLabel;
+    @FXML
+    private Label helpLabel;
 
     /**
      * Sets the labels in the help window.

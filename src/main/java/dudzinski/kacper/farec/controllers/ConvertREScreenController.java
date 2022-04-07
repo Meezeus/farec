@@ -2,6 +2,7 @@ package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.finiteautomata.graphical.GraphicalFiniteAutomatonBuilder;
 import dudzinski.kacper.farec.regex.*;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -25,20 +26,28 @@ import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
  */
 public final class ConvertREScreenController implements Initializable {
 
-    public HBox centralContainer;
+    @FXML
+    private VBox leftVBox;
+    @FXML
+    private ScrollPane finiteAutomatonScrollPane;
+    @FXML
+    private StackPane blankPane;
+    @FXML
+    private Label explanationLabel;
 
-    public VBox leftVBox;
-    public ScrollPane finiteAutomatonScrollPane;
-    public StackPane blankPane;
-    public Label explanationLabel;
+    @FXML
+    private VBox rightVBox;
+    @FXML
+    private ScrollPane parseTreeScrollPane;
+    @FXML
+    private Label regularExpressionLabel;
 
-    public VBox rightVBox;
-    public ScrollPane parseTreeScrollPane;
-    public Label regularExpressionLabel;
-
-    public Label infoLabel;
-    public Button prevButton;
-    public Button nextButton;
+    @FXML
+    private Label infoLabel;
+    @FXML
+    private Button prevButton;
+    @FXML
+    private Button nextButton;
 
     private int currentPreorderIndex;
     private int maxPreorderIndex;

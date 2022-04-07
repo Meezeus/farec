@@ -1,6 +1,7 @@
 package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.App;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -15,24 +16,29 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  * This is the controller for the start screen view. The start screen is
  * displayed to the user when the application is first launched. It contains a
- * changelog as well as buttons to take the user to the screens for creating
- * finite automata and regular expressions.
+ * welcome message, a changelog and buttons to take the user to the screens for
+ * creating finite automata and regular expressions.
  */
 public final class StartScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
-    public Label welcomeLabel;
-    public ScrollPane scrollPane;
-    public Label changelogLabel;
-    public Button convertFAButton;
-    public Button convertREButton;
+    @FXML
+    private Label welcomeLabel;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private Label changelogLabel;
+    @FXML
+    private Button convertFAButton;
+    @FXML
+    private Button convertREButton;
 
     /**
      * Sets the welcome label. Reads the changelog file and sets the changelog
@@ -69,7 +75,7 @@ public final class StartScreenController implements Initializable {
             URL changelogURL = App.class.getResource("changelog.txt");
             if (changelogURL != null) {
                 List<String> changelogLines =
-                        Files.readAllLines(Paths.get(changelogURL.toURI()));
+                        Files.readAllLines(Path.of(changelogURL.toURI()));
 
                 // Get the latest entry in the changelog and set the label.
                 boolean readingLatestChanges = false;
@@ -88,44 +94,49 @@ public final class StartScreenController implements Initializable {
                     // Add the line to the changelogEntry.
                     changelogEntry.append(line).append("\n");
                 }
+
                 // Set the label.
                 changelogLabel.setText(changelogEntry.toString().trim());
-
-                // Set the background color of the label.
-                changelogLabel.setBackground(
-                        new Background(
-                                new BackgroundFill(Color.WHITE,
-                                                   CornerRadii.EMPTY,
-                                                   Insets.EMPTY
-                                )));
-
-                // Bind the height of the label to the height of the scroll
-                // pane. Subtract 5 so the scroll bar is not always visible.
-                changelogLabel.minHeightProperty()
-                              .bind(scrollPane.heightProperty().subtract(5));
-
-                // Set the background color of the scroll pane.
-                scrollPane.setBackground(
-                        new Background(
-                                new BackgroundFill(Color.WHITE,
-                                                   CornerRadii.EMPTY,
-                                                   Insets.EMPTY
-                                )));
-
-                // Set the border color of the scroll pane.
-                scrollPane.setBorder(
-                        new Border(
-                                new BorderStroke(Color.BLACK,
-                                                 BorderStrokeStyle.SOLID,
-                                                 CornerRadii.EMPTY,
-                                                 BorderWidths.DEFAULT
-                                )
-                        ));
+            }
+            // If the changelog cannot be found, display an error message.
+            else {
+                changelogLabel.setText("Unable to load the changelog!");
             }
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Set the background color of the label.
+        changelogLabel.setBackground(
+                new Background(
+                        new BackgroundFill(Color.WHITE,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
+
+        // Bind the height of the label to the height of the scroll
+        // pane. Subtract 5 so the scroll bar is not always visible.
+        changelogLabel.minHeightProperty()
+                      .bind(scrollPane.heightProperty().subtract(5));
+
+        // Set the background color of the scroll pane.
+        scrollPane.setBackground(
+                new Background(
+                        new BackgroundFill(Color.WHITE,
+                                           CornerRadii.EMPTY,
+                                           Insets.EMPTY
+                        )));
+
+        // Set the border color of the scroll pane.
+        scrollPane.setBorder(
+                new Border(
+                        new BorderStroke(Color.BLACK,
+                                         BorderStrokeStyle.SOLID,
+                                         CornerRadii.EMPTY,
+                                         BorderWidths.DEFAULT
+                        )
+                ));
     }
 
     /**
@@ -135,8 +146,8 @@ public final class StartScreenController implements Initializable {
      * @throws IOException if the view fxml file cannot be found
      */
     public void openCreateFAScreen() throws IOException {
-        fxmlLoader = new FXMLLoader(App.class.getResource(
-                "create_fa_screen.fxml"));
+        fxmlLoader = new FXMLLoader(
+                App.class.getResource("create_fa_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),
                                 convertFAButton.getScene().getWidth(),
                                 convertFAButton.getScene().getHeight());
@@ -151,8 +162,8 @@ public final class StartScreenController implements Initializable {
      * @throws IOException if the view fxml file cannot be found
      */
     public void openCreateREScreen() throws IOException {
-        fxmlLoader = new FXMLLoader(App.class.getResource(
-                "create_re_screen.fxml"));
+        fxmlLoader = new FXMLLoader(
+                App.class.getResource("create_re_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),
                                 convertREButton.getScene().getWidth(),
                                 convertREButton.getScene().getHeight());

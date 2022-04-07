@@ -4,6 +4,7 @@ import dudzinski.kacper.farec.App;
 import dudzinski.kacper.farec.regex.ParseTree;
 import dudzinski.kacper.farec.regex.Parser;
 import dudzinski.kacper.farec.regex.RegularExpression;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -34,11 +35,16 @@ import static dudzinski.kacper.farec.regex.RegularExpressionSettings.CONTAINER_C
 public final class CreateREScreenController implements Initializable {
 
     private FXMLLoader fxmlLoader;
-    public TextField regexStringTextField;
-    public ScrollPane scrollPane;
-    public Pane blankPane;
-    public Label infoLabel;
-    public Button convertButton;
+    @FXML
+    private TextField regexStringTextField;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private Pane blankPane;
+    @FXML
+    private Label infoLabel;
+    @FXML
+    private Button convertButton;
 
     private ParseTree parseTree;
 
@@ -83,8 +89,8 @@ public final class CreateREScreenController implements Initializable {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Help: Regular Expressions");
-        fxmlLoader = new FXMLLoader(App.class.getResource(
-                "re_help_window.fxml"));
+        fxmlLoader = new FXMLLoader(
+                App.class.getResource("re_help_window.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, -1);
         window.setScene(scene);
         window.showAndWait();
@@ -106,6 +112,9 @@ public final class CreateREScreenController implements Initializable {
         String regexString = regexStringTextField.getText()
                                                  .replaceAll("\\s+", "")
                                                  .trim();
+
+        // Try parsing the regex string. If it's valid, set the info label,
+        // display the parse tree and enable the convert button.
         try {
             // Parse the regex string.
             RegularExpression regularExpression =
@@ -123,6 +132,7 @@ public final class CreateREScreenController implements Initializable {
             // Enable the convert button.
             convertButton.setDisable(false);
         }
+        // If invalid, set the info label and disable the convert button.
         catch (IllegalArgumentException e) {
             // Update the info label.
             infoLabel.setText(e.getMessage());
@@ -140,8 +150,8 @@ public final class CreateREScreenController implements Initializable {
      * @throws IOException if the view fxml file cannot be found
      */
     public void openConvertREScreen() throws IOException {
-        fxmlLoader = new FXMLLoader(App.class.getResource(
-                "convert_re_screen.fxml"));
+        fxmlLoader = new FXMLLoader(
+                App.class.getResource("convert_re_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),
                                 convertButton.getScene().getWidth(),
                                 convertButton.getScene().getHeight());

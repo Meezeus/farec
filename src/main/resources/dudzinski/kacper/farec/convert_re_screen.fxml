@@ -32,7 +32,7 @@
       </VBox>
    </bottom>
    <center>
-      <HBox fx:id="centralContainer" BorderPane.alignment="CENTER">
+      <HBox BorderPane.alignment="CENTER">
          <children>
             <VBox fx:id="leftVBox" prefWidth="0.0" HBox.hgrow="ALWAYS">
                <children>

@@ -6,6 +6,7 @@ import dudzinski.kacper.farec.finiteautomata.smart.*;
 import dudzinski.kacper.farec.regex.Parser;
 import dudzinski.kacper.farec.regex.RegularExpressionSettings;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -50,10 +51,14 @@ public final class ConvertFAScreenController implements Initializable {
         SELECT, UPDATE, REMOVE
     }
 
-    public ScrollPane scrollPane;
-    public Label infoLabel;
-    public Button prevButton;
-    public Button nextButton;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private Label infoLabel;
+    @FXML
+    private Button prevButton;
+    @FXML
+    private Button nextButton;
 
     private SmartFiniteAutomaton finiteAutomaton;
     private SmartComponent currentlySelected;
@@ -101,8 +106,9 @@ public final class ConvertFAScreenController implements Initializable {
         finiteAutomaton.finalise(this);
         scrollPane.setContent(finiteAutomaton.getContainer());
 
+        // Name all unnamed states by performing breath-first search from the
+        // initial state.
         int counter = 1;
-        // Performs BFS
         ArrayList<SmartState> openList = new ArrayList<>();
         openList.add(finiteAutomaton.getInitialState());
         ArrayList<SmartState> closedList = new ArrayList<>();
@@ -114,6 +120,8 @@ public final class ConvertFAScreenController implements Initializable {
                 currentState.setLabelText("s" + counter);
                 counter++;
             }
+            // Add connected states to the open list (only if the state is not
+            // already in the open list and not in the closed list).
             for (SmartEdgeComponent outgoingEdge :
                     currentState.getOutgoingEdges()) {
                 SmartState child = outgoingEdge.getEndState();
@@ -263,8 +271,10 @@ public final class ConvertFAScreenController implements Initializable {
         // Get the edge container.
         Group container = edge.getContainer();
 
-        // Clicking on the edge will select it.
+        // Clicking on the edge will hide the context menu and select it.
         container.setOnMousePressed(event -> {
+            loopContextMenu.hide();
+
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 selectComponent(event);
                 event.consume();
@@ -590,8 +600,8 @@ public final class ConvertFAScreenController implements Initializable {
 
         MenuItem flip = new MenuItem("Flip");
         flip.setOnAction(event -> {
-            SmartLoopEdge loop = (SmartLoopEdge) currentlySelected;
-            loop.flip();
+            SmartLoopEdge edge = (SmartLoopEdge) currentlySelected;
+            edge.flip();
         });
 
         loopContextMenu.getItems().addAll(flip);

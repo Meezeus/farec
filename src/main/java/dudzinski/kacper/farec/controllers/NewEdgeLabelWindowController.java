@@ -1,6 +1,7 @@
 package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.regex.RegularExpressionSettings;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -24,8 +25,10 @@ import static dudzinski.kacper.farec.Settings.EMPTY_STRING;
  */
 public final class NewEdgeLabelWindowController implements Initializable {
 
-    public TextField textField;
-    public Button submitButton;
+    @FXML
+    private TextField textField;
+    @FXML
+    private Button submitButton;
     private String newEdgeLabelText = null;
 
     /**

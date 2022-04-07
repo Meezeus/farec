@@ -2,6 +2,7 @@ package dudzinski.kacper.farec.controllers;
 
 import dudzinski.kacper.farec.regex.RegexOperator;
 import dudzinski.kacper.farec.regex.RegularExpressionSettings;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
@@ -16,8 +17,10 @@ import java.util.ResourceBundle;
  */
 public final class REHelpWindowController implements Initializable {
 
-    public Label operatorsLabel;
-    public Label helpLabel;
+    @FXML
+    private Label operatorsLabel;
+    @FXML
+    private Label helpLabel;
 
     /**
      * Sets the labels in the help window.

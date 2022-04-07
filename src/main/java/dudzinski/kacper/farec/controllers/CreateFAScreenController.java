@@ -6,6 +6,7 @@ import dudzinski.kacper.farec.finiteautomata.smart.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -51,13 +52,20 @@ public final class CreateFAScreenController implements Initializable {
     }
 
     private FXMLLoader fxmlLoader;
-    public ScrollPane scrollPane;
-    public Button moveButton;
-    public Button stateButton;
-    public Button edgeButton;
-    public Label infoLabel;
-    public String infoLabelText;
-    public Button convertButton;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private Button moveButton;
+    @FXML
+    private Button stateButton;
+    @FXML
+    private Button edgeButton;
+    @FXML
+    private Label infoLabel;
+    @FXML
+    private String infoLabelText;
+    @FXML
+    private Button convertButton;
 
     private final SmartFiniteAutomaton finiteAutomaton =
             new SmartFiniteAutomaton(this);
@@ -91,11 +99,12 @@ public final class CreateFAScreenController implements Initializable {
                                            Insets.EMPTY
                         )));
 
-        // Set the key-press behaviour for the scene.
+        // Set the key-press behaviour for the scene as soon as it becomes
+        // available.
         scrollPane.sceneProperty()
-                  .addListener((observableScene, oldScene, newScene) -> {
-                      if (oldScene == null && newScene != null) {
-                          newScene.setOnKeyPressed(this::keyPressed);
+                  .addListener((observable, oldValue, newValue) -> {
+                      if (oldValue == null && newValue != null) {
+                          newValue.setOnKeyPressed(this::keyPressed);
                       }
                   });
 
@@ -257,6 +266,10 @@ public final class CreateFAScreenController implements Initializable {
 
         // Clicking on the edge
         container.setOnMousePressed(event -> {
+            // hides the context menu.
+            edgeContextMenu.hide();
+            loopContextMenu.hide();
+
             // in MOVE mode will select it.
             if ((workMode == WorkMode.MOVE)
                     && (event.getButton().equals(MouseButton.PRIMARY))) {
@@ -304,8 +317,8 @@ public final class CreateFAScreenController implements Initializable {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Help: Finite Automata");
-        fxmlLoader = new FXMLLoader(App.class.getResource(
-                "fa_help_window.fxml"));
+        fxmlLoader = new FXMLLoader(
+                App.class.getResource("fa_help_window.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, -1);
         window.setScene(scene);
         window.showAndWait();
@@ -328,8 +341,8 @@ public final class CreateFAScreenController implements Initializable {
         // If the finite automaton is valid, change views and pass the finite
         // automaton to the new controller.
         if (finiteAutomaton.isValid()) {
-            fxmlLoader = new FXMLLoader(App.class.getResource(
-                    "convert_fa_screen.fxml"));
+            fxmlLoader = new FXMLLoader(
+                    App.class.getResource("convert_fa_screen.fxml"));
             Scene scene = new Scene(fxmlLoader.load(),
                                     convertButton.getScene().getWidth(),
                                     convertButton.getScene().getHeight());
@@ -380,36 +393,36 @@ public final class CreateFAScreenController implements Initializable {
     }
 
     /**
-     * Sets the current work mode to the given work mode. Highlights the work
-     * mode button and unselects the currently selected component. Hides any
-     * active context menus.
+     * Sets the current work mode to the given work mode. Unselects the
+     * currently selected component and hides all context menus. Highlights the
+     * appropriate work mode button.
      *
-     * @param newWorkMode the new work mode
+     * @param workMode the new work mode
      */
-    private void setWorkMode(WorkMode newWorkMode) {
+    private void setWorkMode(WorkMode workMode) {
         // Unselect the currently selected component.
         unselectCurrentlySelected();
 
+        // Hide context menus.
+        stateContextMenu.hide();
+        edgeContextMenu.hide();
+        loopContextMenu.hide();
+
         // Set the new work mode.
-        workMode = newWorkMode;
+        this.workMode = workMode;
 
         // Highlight the appropriate button.
         moveButton.setBorder(null);
         stateButton.setBorder(null);
         edgeButton.setBorder(null);
         workModeToButton
-                .get(newWorkMode)
+                .get(workMode)
                 .setBorder(
                         new Border(
                                 new BorderStroke(USER_HIGHLIGHT_COLOR,
                                                  BorderStrokeStyle.SOLID,
                                                  new CornerRadii(3),
                                                  BorderStroke.DEFAULT_WIDTHS)));
-
-        // Hide context menus.
-        stateContextMenu.hide();
-        edgeContextMenu.hide();
-        loopContextMenu.hide();
     }
 
     /**
@@ -472,8 +485,8 @@ public final class CreateFAScreenController implements Initializable {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Rename State");
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(
-                "new_state_label_window.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                App.class.getResource("new_state_label_window.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         window.setScene(scene);
         window.showAndWait();
@@ -497,8 +510,8 @@ public final class CreateFAScreenController implements Initializable {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Rename Edge");
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(
-                "new_edge_label_window.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                App.class.getResource("new_edge_label_window.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         window.setScene(scene);
         window.showAndWait();
@@ -617,8 +630,8 @@ public final class CreateFAScreenController implements Initializable {
 
         MenuItem flip = new MenuItem("Flip");
         flip.setOnAction(event -> {
-            SmartLoopEdge loop = (SmartLoopEdge) currentlySelected;
-            loop.flip();
+            SmartLoopEdge edge = (SmartLoopEdge) currentlySelected;
+            edge.flip();
         });
 
         MenuItem delete = new MenuItem("Delete");
