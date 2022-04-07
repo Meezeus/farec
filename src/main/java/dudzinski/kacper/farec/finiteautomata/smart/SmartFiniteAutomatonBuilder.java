@@ -573,12 +573,12 @@ public final class SmartFiniteAutomatonBuilder {
 
         // Bind the curved line's controlX and controlY properties.
         curve.controlX1Property().bind(
-                curve.startXProperty().subtract(1 * STATE_RADIUS));
+                curve.startXProperty().subtract(STATE_RADIUS));
         curve.controlY1Property().bind(
                 curve.startYProperty()
                      .subtract(SIDE_MULTIPLIER * LOOP_CONTROL_POINT_DISTANCE));
         curve.controlX2Property().bind(
-                curve.endXProperty().add(1 * STATE_RADIUS));
+                curve.endXProperty().add(STATE_RADIUS));
         curve.controlY2Property().bind(
                 curve.endYProperty()
                      .subtract(SIDE_MULTIPLIER * LOOP_CONTROL_POINT_DISTANCE));
