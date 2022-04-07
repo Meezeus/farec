@@ -245,7 +245,8 @@ public final class Parser {
                                 " empty right operand!");
             }
             else {
-                rightOperand = parseRegexString(regexString.substring(rootIndex + 1));
+                rightOperand = parseRegexString(
+                        regexString.substring(rootIndex + 1));
             }
         }
         // If the regex operator is STAR, there shouldn't be a right operand

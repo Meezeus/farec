@@ -68,9 +68,9 @@ public final class ComplexRegularExpression extends RegularExpression {
             return leftOperand.getDepth() + 1;
         }
         else {
-            return Math.max(
-                    leftOperand.getDepth(),
-                    rightOperand.getDepth()) + 1;
+            return Math.max(leftOperand.getDepth(),
+                            rightOperand.getDepth())
+                    + 1;
         }
     }
 

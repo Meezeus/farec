@@ -32,7 +32,7 @@ public final class SimpleRegularExpression extends RegularExpression {
     }
 
     /**
-     * Returns the depth of this regular expression (0).
+     * Returns the depth of this regular expression.
      *
      * @return the depth of this regular expression
      */
