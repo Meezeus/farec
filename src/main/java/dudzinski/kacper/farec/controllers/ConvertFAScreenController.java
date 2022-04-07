@@ -181,8 +181,9 @@ public final class ConvertFAScreenController implements Initializable {
 
             // Replace commas with the UNION operator.
             label = label.replaceAll(",",
-                                     "" + RegularExpressionSettings
-                                             .getUnionOperatorChar());
+                                     String.valueOf(
+                                             RegularExpressionSettings
+                                                     .getUnionOperatorChar()));
 
             // Update the label text.
             edge.setLabelText(label);
@@ -440,9 +441,9 @@ public final class ConvertFAScreenController implements Initializable {
         // Otherwise, include it and the union operator.
         else {
             simplifiedLabelArray[0] = directLabel;
-            simplifiedLabelArray[1] = "" +
+            simplifiedLabelArray[1] = String.valueOf(
                     RegularExpressionSettings
-                            .getUnionOperatorChar();
+                            .getUnionOperatorChar());
         }
 
         // If the first indirect label is not an empty string, include it.
@@ -476,7 +477,8 @@ public final class ConvertFAScreenController implements Initializable {
             // If the third indirect label is also not an empty string, include
             // the second concatenation symbol.
             if (!indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-                simplifiedLabelArray[5] = "" + getConcatenationOperatorChar();
+                simplifiedLabelArray[5] =
+                        String.valueOf(getConcatenationOperatorChar());
             }
             // Otherwise, ignore it.
             else {

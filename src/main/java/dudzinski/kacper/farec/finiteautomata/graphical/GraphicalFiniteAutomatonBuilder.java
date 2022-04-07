@@ -412,7 +412,7 @@ public final class GraphicalFiniteAutomatonBuilder {
         double lineWidth = Math.abs(
                 Math.abs(initialStateContainer.getTranslateX())
                         + Math.abs(finalStateContainer.getTranslateX()));
-        String edgeLabel = "" + simpleRegularExpression.getSymbol();
+        String edgeLabel = String.valueOf(simpleRegularExpression.getSymbol());
         GraphicalEdge edge = createEdge(edgeLabel, lineWidth, 0, 0, true);
 
         // Create the simple finite automaton.

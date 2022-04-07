@@ -209,7 +209,7 @@ public final class ParseTree {
         circle.setStroke(NODE_STROKE_COLOR);
 
         // Create the circle label.
-        Label label = new Label("" + symbol);
+        Label label = new Label(String.valueOf(symbol));
 
         // Create the circle container and add the circle and the label.
         StackPane nodePane = new StackPane();

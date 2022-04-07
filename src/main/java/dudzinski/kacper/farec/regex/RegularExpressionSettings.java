@@ -104,14 +104,15 @@ public abstract class RegularExpressionSettings extends Settings {
      * must be a valid symbol in order for the link to be successful. The char
      * cannot be linked to any other regex operator.
      *
-     * @param operator the regex operator to set the char for
-     * @param operatorChar  the char that will represent the regex operator
+     * @param operator     the regex operator to set the char for
+     * @param operatorChar the char that will represent the regex operator
      * @return true if the char was valid and set successfully, false otherwise
      */
     public static boolean setOperatorChar(RegexOperator operator,
                                           char operatorChar) {
         // Check the char is a valid symbol.
-        if (!("" + operatorChar).matches(getValidRegexOperatorPattern())) {
+        if (!String.valueOf(operatorChar)
+                   .matches(getValidRegexOperatorPattern())) {
             return false;
         }
         // Check the char is not already linked.
