@@ -36,12 +36,12 @@ class ParseTreeTest {
     }
 
     /**
-     * Test class for the {@link ParseTree#preorderTraversal()} method.
+     * Test class for the {@link ParseTree#postorderTraversal()} method.
      */
     @Nested
-    @DisplayName("Preorder traversal returns the correct nodes when the regex" +
+    @DisplayName("Postorder traversal returns the correct nodes when the regex" +
             " string is")
-    class PreorderTraversalTest {
+    class PostorderTraversalTest {
         @Test
         @DisplayName("1")
         void test1() {
@@ -50,7 +50,7 @@ class ParseTreeTest {
                     Parser.parseRegexString(regexString);
             ParseTree parseTree = new ParseTree(regularExpression);
             ArrayList<ParseTreeNode> nodeList =
-                    parseTree.preorderTraversal();
+                    parseTree.postorderTraversal();
             assertEquals("1",
                          nodeList.stream()
                                  .map(ParseTreeNode::getLabelText)
@@ -65,7 +65,7 @@ class ParseTreeTest {
                     Parser.parseRegexString(regexString);
             ParseTree parseTree = new ParseTree(regularExpression);
             ArrayList<ParseTreeNode> nodeList =
-                    parseTree.preorderTraversal();
+                    parseTree.postorderTraversal();
             assertEquals("1,*",
                          nodeList.stream()
                                  .map(ParseTreeNode::getLabelText)
@@ -80,7 +80,7 @@ class ParseTreeTest {
                     Parser.parseRegexString(regexString);
             ParseTree parseTree = new ParseTree(regularExpression);
             ArrayList<ParseTreeNode> nodeList =
-                    parseTree.preorderTraversal();
+                    parseTree.postorderTraversal();
             assertEquals("1,2,+",
                          nodeList.stream()
                                  .map(ParseTreeNode::getLabelText)
@@ -95,7 +95,7 @@ class ParseTreeTest {
                     Parser.parseRegexString(regexString);
             ParseTree parseTree = new ParseTree(regularExpression);
             ArrayList<ParseTreeNode> nodeList =
-                    parseTree.preorderTraversal();
+                    parseTree.postorderTraversal();
             assertEquals("1,2,+,3,*,4,5,|,+,|",
                          nodeList.stream()
                                  .map(ParseTreeNode::getLabelText)
