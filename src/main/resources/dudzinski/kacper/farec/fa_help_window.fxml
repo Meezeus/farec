@@ -4,11 +4,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="10.0" stylesheets="@font_size.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dudzinski.kacper.farec.controllers.FAHelpWindowController">
-   <children>
-      <Label fx:id="helpLabel" text="HELP" textAlignment="JUSTIFY" wrapText="true" />
-   </children>
+<VBox spacing="10.0" stylesheets="@font_size.css" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="dudzinski.kacper.farec.controllers.FAHelpWindowController">
    <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
    </padding>
+   <Label fx:id="helpLabel" text="HELP" textAlignment="JUSTIFY" wrapText="true"/>
 </VBox>

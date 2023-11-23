@@ -10,41 +10,34 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@font_size.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dudzinski.kacper.farec.controllers.StartScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@font_size.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dudzinski.kacper.farec.controllers.StartScreenController">
    <top>
       <fx:include source="menu_bar.fxml" />
    </top>
    <right>
       <HBox BorderPane.alignment="CENTER">
-         <children>
-            <Separator orientation="VERTICAL" />
-            <VBox alignment="CENTER" prefWidth="200.0" spacing="50.0">
-               <children>
-                  <Button fx:id="convertFAButton" focusTraversable="false" mnemonicParsing="false" onAction="#openCreateFAScreen" prefHeight="50.0" prefWidth="150.0" text="Convert Finite Automata" textAlignment="CENTER" wrapText="true" />
-                  <Button fx:id="convertREButton" focusTraversable="false" mnemonicParsing="false" onAction="#openCreateREScreen" prefHeight="50.0" prefWidth="150.0" text="Convert Regular Expressions" textAlignment="CENTER" wrapText="true" />
-               </children>
-            </VBox>
-         </children>
+         <Separator orientation="VERTICAL" />
+         <VBox alignment="CENTER" prefWidth="200.0" spacing="50.0">
+            <Button fx:id="convertFAButton" focusTraversable="false" mnemonicParsing="false" onAction="#openCreateFAScreen" prefHeight="50.0" prefWidth="150.0" text="Convert Finite Automata" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="convertREButton" focusTraversable="false" mnemonicParsing="false" onAction="#openCreateREScreen" prefHeight="50.0" prefWidth="150.0" text="Convert Regular Expressions" textAlignment="CENTER" wrapText="true" />
+         </VBox>
       </HBox>
    </right>
    <center>
       <VBox spacing="20.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" text="FAREC" textAlignment="CENTER">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font></Label>
-            <Label fx:id="welcomeLabel" alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="Welcome!" textAlignment="JUSTIFY" wrapText="true" />
-            <Separator />
-            <ScrollPane fx:id="scrollPane" fitToWidth="true" focusTraversable="false" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
-               <content>
-                  <Label fx:id="changelogLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="CHANGELOG" wrapText="true" />
-               </content>
-            </ScrollPane>
-         </children>
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
+         <Label alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" text="FAREC" textAlignment="CENTER">
+            <font>
+               <Font name="System Bold" size="18.0" />
+            </font>
+         </Label>
+         <Label fx:id="welcomeLabel" alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" minHeight="-Infinity" text="Welcome!" textAlignment="JUSTIFY" wrapText="true" />
+         <Separator />
+         <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+            <Label fx:id="changelogLabel" alignment="TOP_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="CHANGELOG" wrapText="true" />
+         </ScrollPane>
       </VBox>
    </center>
 </BorderPane>
