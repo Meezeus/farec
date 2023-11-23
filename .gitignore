@@ -1,5 +1,6 @@
 .idea/
+*.iml
 target/
+launcher.vbs
 javafx-sdk-18.0.2/
 javafx-jmods-18.0.2/
-launcher.vbs
