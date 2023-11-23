@@ -9,7 +9,7 @@ public abstract class Settings {
     // Special Symbols //
     /////////////////////
 
-    public static final String EMPTY_STRING = "\u03B5";
-    public static final String EMPTY_SET = "\u00F8";
+    public static final String EMPTY_STRING = "ε";
+    public static final String EMPTY_SET = "ø";
 
 }
