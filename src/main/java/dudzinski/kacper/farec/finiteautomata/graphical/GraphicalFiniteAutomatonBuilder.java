@@ -313,7 +313,7 @@ public final class GraphicalFiniteAutomatonBuilder {
         }
         else {
             throw new IllegalArgumentException(
-                    "Regular expression is neither Simple nor Complex!");
+                    "Regular expression is neither simple nor complex!");
         }
     }
 
