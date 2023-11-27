@@ -179,8 +179,8 @@ public final class GraphicalFiniteAutomatonBuilder {
 
         // Adjust the minimum width of the finite automaton.
         Pane parentPane = (Pane) container.getParent();
-        parentPane.setMinWidth
-                          (parentPane.getMinWidth() - (2 * (
+        parentPane.setMinWidth(
+                parentPane.getMinWidth() - (2 * (
                                   INITIAL_STATE_EDGE_LENGTH
                                           + EDGE_STROKE_RADIUS)));
     }
