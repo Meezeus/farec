@@ -41,14 +41,13 @@ public final class ParseTree {
      *                          parse tree
      */
     public ParseTree(RegularExpression regularExpression) {
-        // Set the regular expression
+        // Set the regular expression.
         this.regularExpression = regularExpression;
 
-        // Create the parse tree and connect the nodes.
-        root = buildParseTree(regularExpression, 0, 0);
-        connectNodes(root);
+        // Build the parse tree.
+        root = buildParseTree();
 
-        // Initialise the container.
+        // Set the container properties.
         container.setAlignment(Pos.TOP_CENTER);
         container.setMinWidth((2 * greatestX) + (4 * NODE_RADIUS));
         container.setMinHeight(greatestY + (4 * NODE_RADIUS) + TOP_PADDING);
@@ -89,7 +88,19 @@ public final class ParseTree {
     }
 
     /**
-     * Builds a parse tree for the given regular expression.
+     * Builds the parse tree.
+     *
+     * @return the root node of the built parse tree
+     */
+    private ParseTreeNode buildParseTree() {
+        // Create the parse tree nodes and connect them.
+        ParseTreeNode rootNode = buildParseTreeNodes(regularExpression, 0, 0);
+        connectNodes(rootNode);
+        return rootNode;
+    }
+
+    /**
+     * Builds the parse tree nodes for the given regular expression.
      *
      * @param regularExpression the regular expression for which to build a
      *                          parse tree
@@ -98,17 +109,18 @@ public final class ParseTree {
      *                          0)
      * @param currentY          the vertical separation used in the construction
      *                          of the previous depth (initially 0)
+     * @return the root node of the built parse tree
      * @throws IllegalArgumentException if the regular expression is neither
      *                                  simple nor complex
      */
-    private ParseTreeNode buildParseTree(RegularExpression regularExpression,
-                                         double currentX, double currentY)
+    private ParseTreeNode buildParseTreeNodes(RegularExpression regularExpression,
+                                              double currentX, double currentY)
             throws IllegalArgumentException {
         // If the regular expression is simple, it's parse tree is just a single
         // node.
         if (regularExpression instanceof SimpleRegularExpression simpleRegex) {
             // Create the leaf node.
-            StackPane leafNodePane = createNode(simpleRegex.getSymbol());
+            StackPane leafNodePane = createNodePane(simpleRegex.getSymbol());
 
             // Move the leaf node into position.
             leafNodePane.setTranslateX(currentX);
@@ -127,7 +139,7 @@ public final class ParseTree {
             char operatorChar =
                     RegularExpressionSettings.getCharFromOperator(
                             complexRegex.getOperator());
-            StackPane operatorNodePane = createNode(operatorChar);
+            StackPane operatorNodePane = createNodePane(operatorChar);
 
             // Move the operator node into position.
             operatorNodePane.setTranslateX(currentX);
@@ -148,7 +160,7 @@ public final class ParseTree {
             if (complexRegex.getOperator() == RegexOperator.STAR) {
                 // Build the subtree rooted at the left child and add it to the
                 // parse tree.
-                operatorNode.setLeftChild(buildParseTree(
+                operatorNode.setLeftChild(buildParseTreeNodes(
                         complexRegex.getLeftOperand(), currentX, currentY));
             }
 
@@ -169,7 +181,7 @@ public final class ParseTree {
 
                 // Build the subtree rooted at the left child and add it to the
                 // parse tree.
-                operatorNode.setLeftChild(buildParseTree(
+                operatorNode.setLeftChild(buildParseTreeNodes(
                         complexRegex.getLeftOperand(), currentX, currentY));
 
                 // Move to the right.
@@ -180,7 +192,7 @@ public final class ParseTree {
 
                 // Build the subtree rooted at the right child and add it to the
                 // parse tree.
-                operatorNode.setRightChild(buildParseTree(
+                operatorNode.setRightChild(buildParseTreeNodes(
                         complexRegex.getRightOperand(), currentX, currentY));
             }
 
@@ -194,13 +206,13 @@ public final class ParseTree {
     }
 
     /**
-     * Creates a labelled node. The label on the node is a symbol: either a
-     * regex operator or a regex operand.
+     * Creates a labelled node in the form of a StackPane. The label on the node
+     * is a symbol: either a regex operator or a regex operand.
      *
      * @param symbol the node symbol
-     * @return a labelled node
+     * @return a StackPane containing the node elements
      */
-    private StackPane createNode(char symbol) {
+    private StackPane createNodePane(char symbol) {
         // Create the circle.
         Circle circle = new Circle();
         circle.setRadius(NODE_RADIUS);
