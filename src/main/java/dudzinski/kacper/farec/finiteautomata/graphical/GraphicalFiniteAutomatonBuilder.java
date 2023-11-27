@@ -409,9 +409,8 @@ public final class GraphicalFiniteAutomatonBuilder {
                         + (0.5 * STATE_SEPARATION));
 
         // Create the edge.
-        double lineWidth = Math.abs(
-                Math.abs(initialStateContainer.getTranslateX())
-                        + Math.abs(finalStateContainer.getTranslateX()));
+        double lineWidth = Math.abs(initialStateContainer.getTranslateX())
+                        + Math.abs(finalStateContainer.getTranslateX());
         String edgeLabel = String.valueOf(simpleRegularExpression.getSymbol());
         GraphicalEdge edge = createEdge(edgeLabel, lineWidth, 0, 0, true);
 
