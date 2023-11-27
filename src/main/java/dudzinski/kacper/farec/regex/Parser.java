@@ -222,7 +222,7 @@ public final class Parser {
 
         // Parse the left operand substring.
         String leftSubstring = regexString.substring(0, rootIndex);
-        if (leftSubstring.length() == 0) {
+        if (leftSubstring.isEmpty()) {
             throw new IllegalArgumentException(
                     "The expression \"" + regexString + "\" contains an" +
                             " empty left operand!");
