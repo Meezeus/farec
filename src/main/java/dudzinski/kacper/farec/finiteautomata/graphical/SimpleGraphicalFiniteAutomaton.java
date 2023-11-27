@@ -16,6 +16,7 @@ public final class SimpleGraphicalFiniteAutomaton extends GraphicalFiniteAutomat
      *
      * @param initialState the initial state of this finite automaton
      * @param finalState   the final state of this finite automaton
+     * @param transition   the edge between the initial and final state
      * @param minWidth     the minimum width of this finite automaton
      * @param minHeight    the minimum height of this finite automaton
      */
