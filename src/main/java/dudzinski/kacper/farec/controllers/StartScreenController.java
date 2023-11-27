@@ -104,6 +104,7 @@ public final class StartScreenController implements Initializable {
             }
         }
         catch (Exception e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
 
