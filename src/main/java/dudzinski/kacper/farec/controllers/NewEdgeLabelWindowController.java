@@ -54,8 +54,7 @@ public final class NewEdgeLabelWindowController implements Initializable {
         // label.
         textField.textProperty()
                  .addListener((observable, oldValue, newValue) -> {
-                     String text = textField.getText();
-                     submitButton.setDisable(!text.matches(validLabelPattern));
+                     submitButton.setDisable(!newValue.matches(validLabelPattern));
                  });
     }
 
