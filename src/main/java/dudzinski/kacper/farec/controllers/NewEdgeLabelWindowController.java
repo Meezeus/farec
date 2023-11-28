@@ -43,6 +43,7 @@ public final class NewEdgeLabelWindowController implements Initializable {
                 validOperands.substring(1, validOperands.length() - 1);
 
         // Create the valid label pattern.
+        //noinspection EscapedSpace
         String validLabelPattern = "^"
                 + validOperands
                 + "(,\s?"
@@ -53,9 +54,7 @@ public final class NewEdgeLabelWindowController implements Initializable {
         // depending on if the text conforms to the restrictions on an edge
         // label.
         textField.textProperty()
-                 .addListener((observable, oldValue, newValue) -> {
-                     submitButton.setDisable(!newValue.matches(validLabelPattern));
-                 });
+                 .addListener((observable, oldValue, newValue) -> submitButton.setDisable(!newValue.matches(validLabelPattern)));
     }
 
     /**
