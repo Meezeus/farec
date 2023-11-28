@@ -416,7 +416,6 @@ public final class ConvertFAScreenController implements Initializable {
                 Parser.removeOuterBrackets(directLabel);
         String indirectLabel1Bracketless =
                 Parser.removeOuterBrackets(indirectLabel1);
-        // Note: don't include the star operator in the second indirect label.
         String indirectLabel2Bracketless =
                 Parser.removeOuterBrackets(indirectLabel2);
         String indirectLabel3Bracketless =
