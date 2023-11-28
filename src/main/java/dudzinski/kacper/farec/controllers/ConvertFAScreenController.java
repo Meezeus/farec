@@ -274,9 +274,8 @@ public final class ConvertFAScreenController implements Initializable {
 
         // Clicking on the edge will hide the context menu and select it.
         container.setOnMousePressed(event -> {
-            loopContextMenu.hide();
-
             if (event.getButton().equals(MouseButton.PRIMARY)) {
+                loopContextMenu.hide();
                 selectComponent(event);
                 event.consume();
             }
