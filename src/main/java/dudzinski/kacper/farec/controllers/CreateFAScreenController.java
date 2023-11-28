@@ -541,6 +541,7 @@ public final class CreateFAScreenController implements Initializable {
                 }
             }
             catch (IOException e) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
         });
@@ -588,6 +589,7 @@ public final class CreateFAScreenController implements Initializable {
                 }
             }
             catch (IOException e) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
         });
@@ -623,6 +625,7 @@ public final class CreateFAScreenController implements Initializable {
                 }
             }
             catch (IOException e) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
         });
