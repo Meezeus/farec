@@ -184,12 +184,11 @@ public final class CreateFAScreenController implements Initializable {
                     && (event.getButton().equals(MouseButton.PRIMARY))) {
                 selectComponent(event);
                 edgeStartState = (SmartState) currentlySelected;
-                event.setDragDetect(true);
                 event.consume();
             }
         });
 
-        // Start full drag. Used when creating edges.
+        // Start full drag.
         container.setOnDragDetected(event -> container.startFullDrag());
 
         // Dragging the mouse on the state
