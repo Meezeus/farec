@@ -286,7 +286,7 @@ public final class CreateFAScreenController implements Initializable {
                                      event.getScreenX(),
                                      event.getScreenY());
             }
-            else {
+            else if (edge instanceof SmartEdge) {
                 edgeContextMenu.show(container,
                                      event.getScreenX(),
                                      event.getScreenY());
