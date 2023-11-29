@@ -2,9 +2,9 @@ package dudzinski.kacper.farec.regex;
 
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.DisplayName;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,12 +19,10 @@ class ParserTest {
      */
     @BeforeEach
     void resetOperatorChars() {
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.STAR, '*');
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.UNION, '+');
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.CONCATENATION, '|');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.STAR, '*');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.UNION, '+');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.CONCATENATION,
+                                                  '|');
     }
 
     /**
@@ -79,7 +77,7 @@ class ParserTest {
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
                 assertEquals("Regular expressions can only contain regex" +
-                                     " operands and regex operators!",
+                             " operands and regex operators!",
                              isValid.getValue());
             }
 
@@ -90,7 +88,7 @@ class ParserTest {
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
                 assertEquals("The regular expression has a closing bracket" +
-                                     " without an opening bracket!",
+                             " without an opening bracket!",
                              isValid.getValue());
             }
 
@@ -101,7 +99,7 @@ class ParserTest {
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
                 assertEquals("The regular expression has different numbers of" +
-                                     " opening and closing brackets!",
+                             " opening and closing brackets!",
                              isValid.getValue());
             }
         }
@@ -353,7 +351,7 @@ class ParserTest {
     class ParseRegexStringTest {
         @Nested
         @DisplayName("returns the correct regular expression when the regex" +
-                " string is")
+                     " string is")
         class ParseRegexStringPositiveTest {
             @Test
             @DisplayName("a")
@@ -424,7 +422,8 @@ class ParserTest {
                 String regexString = "(a+b)|(c+d)";
                 RegularExpression regularExpression =
                         Parser.parseRegexString(regexString);
-                assertEquals("((a)+(b))|((c)+(d))", regularExpression.toString());
+                assertEquals("((a)+(b))|((c)+(d))",
+                             regularExpression.toString());
             }
 
             @Test
@@ -433,7 +432,8 @@ class ParserTest {
                 String regexString = "((a+b)|c)|(d*+a)";
                 RegularExpression regularExpression =
                         Parser.parseRegexString(regexString);
-                assertEquals("(((a)+(b))|(c))|(((d)*)+(a))", regularExpression.toString());
+                assertEquals("(((a)+(b))|(c))|(((d)*)+(a))",
+                             regularExpression.toString());
             }
 
             @Test
@@ -564,7 +564,7 @@ class ParserTest {
     class SimplifyRegexStringTest {
         @Nested
         @DisplayName("returns the correct simplified string when the regex" +
-                " string is")
+                     " string is")
         class SimplifyRegexStringPositiveTest {
             @Test
             @DisplayName("(a)")
