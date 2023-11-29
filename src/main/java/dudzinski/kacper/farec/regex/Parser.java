@@ -172,8 +172,8 @@ public final class Parser {
 
     /**
      * Parses the given regex string into a regular expression object. For
-     * information about how the regex string is parsed, see {@link
-     * #findRootIndex(String)}.
+     * information about how the regex string is parsed, see
+     * {@link #findRootIndex(String)}.
      *
      * @param regexString the string to be parsed
      * @return the regular expression represented by the regex string
