@@ -151,7 +151,6 @@ class ConvertFAScreenControllerTest {
             assertEquals("ε+B|C*|D", simplifiedLabel);
         }
 
-
         @Test
         @DisplayName("(ε)+(ε)|(C)*|(D)")
         void test14() {
@@ -259,7 +258,6 @@ class ConvertFAScreenControllerTest {
                     ConvertFAScreenController.simplifyLabel(testLabel);
             assertEquals("B|C*|D", simplifiedLabel);
         }
-
 
         @Test
         @DisplayName("(ø)+(ε)|(C)*|(D)")
