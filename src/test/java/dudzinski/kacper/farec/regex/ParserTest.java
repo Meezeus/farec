@@ -560,7 +560,7 @@ class ParserTest {
 
             @Test
             @DisplayName("a*a")
-            void tes10() {
+            void test10() {
                 String regexString = "a*a";
                 assertThrows(IllegalArgumentException.class,
                              () -> Parser.parseRegexString(regexString));
@@ -568,7 +568,7 @@ class ParserTest {
 
             @Test
             @DisplayName("(a*)a")
-            void tes11() {
+            void test11() {
                 String regexString = "(a*)a";
                 assertThrows(IllegalArgumentException.class,
                              () -> Parser.parseRegexString(regexString));
@@ -576,7 +576,7 @@ class ParserTest {
 
             @Test
             @DisplayName("a*+")
-            void tes12() {
+            void test12() {
                 String regexString = "a*+";
                 assertThrows(IllegalArgumentException.class,
                              () -> Parser.parseRegexString(regexString));
