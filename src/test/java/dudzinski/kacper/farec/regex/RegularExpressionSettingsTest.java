@@ -22,6 +22,18 @@ public class RegularExpressionSettingsTest {
     }
 
     /**
+     * Make sure the operators are set to their default symbols after each
+     * test.
+     */
+    @AfterEach
+    void resetOperatorCharsAfter() {
+        RegularExpressionSettings.setOperatorChar(RegexOperator.STAR, '*');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.UNION, '+');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.CONCATENATION,
+                                                  '|');
+    }
+
+    /**
      * Test class for the
      * {@link RegularExpressionSettings#setOperatorChar(RegexOperator, char)}
      * method.
@@ -185,18 +197,6 @@ public class RegularExpressionSettingsTest {
                                      regexOperatorChar));
             }
         }
-    }
-
-    /**
-     * Make sure the operators are set to their default symbols after each
-     * test.
-     */
-    @AfterEach
-    void resetOperatorCharsAfter() {
-        RegularExpressionSettings.setOperatorChar(RegexOperator.STAR, '*');
-        RegularExpressionSettings.setOperatorChar(RegexOperator.UNION, '+');
-        RegularExpressionSettings.setOperatorChar(RegexOperator.CONCATENATION,
-                                                  '|');
     }
 
 }
