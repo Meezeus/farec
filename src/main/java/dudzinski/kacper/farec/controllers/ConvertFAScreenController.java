@@ -1024,8 +1024,8 @@ public final class ConvertFAScreenController implements Initializable {
 
                 // Update the info label.
                 infoLabel.setText(
-                        "Finished! The regular expression of the finite" +
-                        " automaton is: " +
+                        "Finished! The regular expression of the finite " +
+                        "automaton is: " +
                         Parser.removeOuterBrackets(regexString));
 
                 // Disable the next button.

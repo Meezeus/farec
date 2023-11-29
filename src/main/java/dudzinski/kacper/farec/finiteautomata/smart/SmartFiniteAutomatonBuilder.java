@@ -30,8 +30,8 @@ public final class SmartFiniteAutomatonBuilder {
      */
     private SmartFiniteAutomatonBuilder() {
         throw new RuntimeException(
-                "The SmartFiniteAutomatonBuilder class should never be" +
-                " instantiated!");
+                "The SmartFiniteAutomatonBuilder class should never be " +
+                "instantiated!");
     }
 
     /**

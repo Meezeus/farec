@@ -36,8 +36,8 @@ public final class Parser {
         // Check that string contains only regex operands and regex operators.
         if (!regexString.matches(
                 RegularExpressionSettings.getValidRegexStringPattern())) {
-            return new Pair<>(false, "Regular expressions can only contain" +
-                                     " regex operands and regex operators!");
+            return new Pair<>(false, "Regular expressions can only contain " +
+                                     "regex operands and regex operators!");
         }
 
         // Check that the number and placement of brackets is valid.
@@ -213,16 +213,16 @@ public final class Parser {
         int rootIndex = findRootIndex(regexString);
         if (rootIndex == -1) {
             throw new IllegalArgumentException(
-                    "The expression \"" + regexString + "\" does not have a" +
-                    " root operator!");
+                    "The expression \"" + regexString + "\" does not have a " +
+                    "root operator!");
         }
 
         // Parse the left operand substring.
         String leftSubstring = regexString.substring(0, rootIndex);
         if (leftSubstring.isEmpty()) {
             throw new IllegalArgumentException(
-                    "The expression \"" + regexString + "\" contains an" +
-                    " empty left operand!");
+                    "The expression \"" + regexString + "\" contains an " +
+                    "empty left operand!");
         }
         RegularExpression leftOperand = parseRegexString(leftSubstring);
 
@@ -238,8 +238,8 @@ public final class Parser {
             (operator == RegexOperator.UNION)) {
             if (rootIndex == regexString.length() - 1) {
                 throw new IllegalArgumentException(
-                        "The expression \"" + regexString + "\" contains an" +
-                        " empty right operand!");
+                        "The expression \"" + regexString + "\" contains an " +
+                        "empty right operand!");
             }
             else {
                 rightOperand =
@@ -251,8 +251,8 @@ public final class Parser {
         else if (operator == RegexOperator.STAR) {
             if (rootIndex != regexString.length() - 1) {
                 throw new IllegalArgumentException(
-                        "The expression \"" + regexString + "\" contains a" +
-                        " STAR operator with a right operand!");
+                        "The expression \"" + regexString + "\" contains a " +
+                        "STAR operator with a right operand!");
             }
         }
 

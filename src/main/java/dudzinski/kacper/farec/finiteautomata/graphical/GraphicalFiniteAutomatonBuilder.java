@@ -32,8 +32,8 @@ public final class GraphicalFiniteAutomatonBuilder {
      */
     private GraphicalFiniteAutomatonBuilder() {
         throw new RuntimeException(
-                "The GraphicalFiniteAutomatonBuilder class should never be" +
-                " instantiated!");
+                "The GraphicalFiniteAutomatonBuilder class should never be " +
+                "instantiated!");
     }
 
     /**
