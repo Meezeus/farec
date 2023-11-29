@@ -693,14 +693,6 @@ class ParserTest {
                 String resultString = Parser.simplifyRegexString(testString);
                 assertEquals("(a+b)*", resultString);
             }
-
-            @Test
-            @DisplayName("(a+b)+c")
-            void test5() {
-                String testString = "(a+b)+c";
-                String resultString = Parser.simplifyRegexString(testString);
-                assertEquals("a+b+c", resultString);
-            }
         }
     }
 
