@@ -373,7 +373,8 @@ public final class SmartFiniteAutomaton {
         while (!openList.isEmpty()) {
             SmartState currentState = openList.remove(0);
             closedList.add(currentState);
-            for (SmartEdgeComponent outgoingEdge : currentState.getOutgoingEdges()) {
+            for (SmartEdgeComponent outgoingEdge :
+                    currentState.getOutgoingEdges()) {
                 SmartState child = outgoingEdge.getEndState();
                 if (!openList.contains(child) && !closedList.contains(child)) {
                     openList.add(child);

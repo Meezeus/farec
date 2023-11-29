@@ -683,7 +683,8 @@ public final class GraphicalFiniteAutomatonBuilder {
         // Find out which automaton is the widest.
         GraphicalFiniteAutomaton widestFiniteAutomaton =
                 topFiniteAutomatonContainer.getMinWidth() >
-                bottomFiniteAutomatonContainer.getMinWidth() ? topFiniteAutomaton : bottomFiniteAutomaton;
+                bottomFiniteAutomatonContainer.getMinWidth() ?
+                        topFiniteAutomaton : bottomFiniteAutomaton;
 
         // Get the offset of the initial state and final state of the widest
         // finite automaton.

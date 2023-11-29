@@ -50,14 +50,16 @@ public final class Parser {
             else if (currentChar == ')') {
                 openingBracketCount--;
                 if (openingBracketCount < 0) {
-                    return new Pair<>(false, "The regular expression has a" +
-                                             " closing bracket without an opening bracket!");
+                    return new Pair<>(false, "The regular expression has a " +
+                                             "closing bracket without an " +
+                                             "opening bracket!");
                 }
             }
         }
         if (openingBracketCount != 0) {
-            return new Pair<>(false, "The regular expression has different" +
-                                     " numbers of opening and closing brackets!");
+            return new Pair<>(false, "The regular expression has different " +
+                                     "numbers of opening and closing " +
+                                     "brackets!");
         }
 
         // At this point, the regex string is considered valid.

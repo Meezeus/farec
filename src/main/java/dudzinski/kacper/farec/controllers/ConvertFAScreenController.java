@@ -288,7 +288,8 @@ public final class ConvertFAScreenController implements Initializable {
             }
             // Add connected states to the open list (only if the state is not
             // already in the open list and not in the closed list).
-            for (SmartEdgeComponent outgoingEdge : currentState.getOutgoingEdges()) {
+            for (SmartEdgeComponent outgoingEdge :
+                    currentState.getOutgoingEdges()) {
                 SmartState child = outgoingEdge.getEndState();
                 if (!openList.contains(child) && !closedList.contains(child)) {
                     openList.add(child);
@@ -765,7 +766,8 @@ public final class ConvertFAScreenController implements Initializable {
 
                 // Get the states with edges incoming to the state to remove.
                 incomingStates.clear();
-                for (SmartEdgeComponent incomingEdge : stateToRemove.getIncomingEdges()) {
+                for (SmartEdgeComponent incomingEdge :
+                        stateToRemove.getIncomingEdges()) {
                     incomingStates.add(incomingEdge.getStartState());
                 }
                 // Don't include the state to remove.
@@ -776,7 +778,8 @@ public final class ConvertFAScreenController implements Initializable {
 
                 // Get the states with edges incoming from the state to remove.
                 outgoingStates.clear();
-                for (SmartEdgeComponent outgoingEdge : stateToRemove.getOutgoingEdges()) {
+                for (SmartEdgeComponent outgoingEdge :
+                        stateToRemove.getOutgoingEdges()) {
                     outgoingStates.add(outgoingEdge.getEndState());
                 }
                 // Don't include the state to remove.
