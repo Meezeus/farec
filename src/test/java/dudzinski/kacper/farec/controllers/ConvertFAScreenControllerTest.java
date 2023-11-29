@@ -20,21 +20,19 @@ class ConvertFAScreenControllerTest {
      */
     @BeforeEach
     void resetOperatorChars() {
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.STAR, '*');
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.UNION, '+');
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.CONCATENATION, '|');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.STAR, '*');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.UNION, '+');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.CONCATENATION,
+                                                  '|');
     }
 
     /**
-     * Test class for the {@link ConvertFAScreenController#simplifyLabel(String)}
-     * method.
+     * Test class for the
+     * {@link ConvertFAScreenController#simplifyLabel(String)} method.
      */
     @Nested
     @DisplayName("Simplifying a label returns the simplified label when the" +
-            " label is")
+                 " label is")
     class SimplifyLabelTest {
         @Test
         @DisplayName("(A)+(B)|(C)*|(D)")
