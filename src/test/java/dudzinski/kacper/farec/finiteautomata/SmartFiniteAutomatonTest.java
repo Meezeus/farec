@@ -44,8 +44,7 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("adds it to the list of states")
         public void test1() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
 
             assertTrue(finiteAutomaton.getStates().contains(state));
@@ -53,20 +52,19 @@ public class SmartFiniteAutomatonTest {
 
         @Test
         @DisplayName("adds its container to the container of the finite" +
-                " automaton")
+                     " automaton")
         public void test2() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
 
             assertTrue(finiteAutomaton.getContainer().getChildren()
-                                      .contains(state.getContainer()));
+                               .contains(state.getContainer()));
         }
     }
 
     /**
-     * Test class for the {@link SmartFiniteAutomaton#addEdge(SmartEdgeComponent)}
-     * method.
+     * Test class for the
+     * {@link SmartFiniteAutomaton#addEdge(SmartEdgeComponent)} method.
      */
     @Nested
     @DisplayName("Adding an edge to a finite automaton")
@@ -74,17 +72,14 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("adds it to the list of edges")
         public void test1() {
-            SmartState state1 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
 
-            SmartState state2 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state2 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createStraightEdge("",
-                                                                   state1,
+                    SmartFiniteAutomatonBuilder.createStraightEdge("", state1,
                                                                    state2);
             finiteAutomaton.addEdge(edge);
 
@@ -93,46 +88,39 @@ public class SmartFiniteAutomatonTest {
 
         @Test
         @DisplayName("adds its container to the container of the finite" +
-                " automaton")
+                     " automaton")
         public void test2() {
-            SmartState state1 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
 
-            SmartState state2 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state2 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createStraightEdge("",
-                                                                   state1,
+                    SmartFiniteAutomatonBuilder.createStraightEdge("", state1,
                                                                    state2);
             finiteAutomaton.addEdge(edge);
 
             assertTrue(finiteAutomaton.getContainer().getChildren()
-                                      .contains(edge.getContainer()));
+                               .contains(edge.getContainer()));
         }
 
         @Test
         @DisplayName("replaces an existing, equivalent edge")
         public void test3() {
-            SmartState state1 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
 
-            SmartState state2 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state2 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state2);
 
             SmartEdge existingEdge =
-                    SmartFiniteAutomatonBuilder.createStraightEdge("",
-                                                                   state1,
+                    SmartFiniteAutomatonBuilder.createStraightEdge("", state1,
                                                                    state2);
             finiteAutomaton.addEdge(existingEdge);
 
             SmartEdge newEdge =
-                    SmartFiniteAutomatonBuilder.createStraightEdge("",
-                                                                   state1,
+                    SmartFiniteAutomatonBuilder.createStraightEdge("", state1,
                                                                    state2);
             finiteAutomaton.addEdge(newEdge);
 
@@ -143,17 +131,14 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("updates the states attached to the edge")
         public void test4() {
-            SmartState state1 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
 
-            SmartState state2 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state2 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createStraightEdge("",
-                                                                   state1,
+                    SmartFiniteAutomatonBuilder.createStraightEdge("", state1,
                                                                    state2);
             finiteAutomaton.addEdge(edge);
 
@@ -163,8 +148,8 @@ public class SmartFiniteAutomatonTest {
     }
 
     /**
-     * Test class for the {@link SmartFiniteAutomaton#removeEdge(SmartEdgeComponent)}
-     * method.
+     * Test class for the
+     * {@link SmartFiniteAutomaton#removeEdge(SmartEdgeComponent)} method.
      */
     @Nested
     @DisplayName("Removing an edge from a finite automaton")
@@ -172,17 +157,14 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("removes it from the list of edges")
         public void test1() {
-            SmartState state1 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
 
-            SmartState state2 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state2 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createStraightEdge("",
-                                                                   state1,
+                    SmartFiniteAutomatonBuilder.createStraightEdge("", state1,
                                                                    state2);
             finiteAutomaton.addEdge(edge);
             finiteAutomaton.removeEdge(edge);
@@ -192,41 +174,35 @@ public class SmartFiniteAutomatonTest {
 
         @Test
         @DisplayName("removes its container from the container of the finite" +
-                " automaton")
+                     " automaton")
         public void test2() {
-            SmartState state1 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
 
-            SmartState state2 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state2 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createStraightEdge("",
-                                                                   state1,
+                    SmartFiniteAutomatonBuilder.createStraightEdge("", state1,
                                                                    state2);
             finiteAutomaton.addEdge(edge);
             finiteAutomaton.removeEdge(edge);
 
             assertFalse(finiteAutomaton.getContainer().getChildren()
-                                       .contains(edge.getContainer()));
+                                .contains(edge.getContainer()));
         }
 
         @Test
         @DisplayName("updates the states attached to the edge")
         public void test3() {
-            SmartState state1 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
 
-            SmartState state2 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state2 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createStraightEdge("",
-                                                                   state1,
+                    SmartFiniteAutomatonBuilder.createStraightEdge("", state1,
                                                                    state2);
             finiteAutomaton.addEdge(edge);
             finiteAutomaton.removeEdge(edge);
@@ -246,8 +222,7 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("removes it from the list of states")
         public void test1() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.removeState(state);
 
@@ -256,23 +231,21 @@ public class SmartFiniteAutomatonTest {
 
         @Test
         @DisplayName("removes its container from the container of the finite" +
-                " automaton")
+                     " automaton")
         public void test2() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.removeState(state);
 
             assertFalse(finiteAutomaton.getContainer().getChildren()
-                                       .contains(state.getContainer()));
+                                .contains(state.getContainer()));
         }
 
         @Test
         @DisplayName("resets the initial state of the finite automaton" +
-                " accordingly")
+                     " accordingly")
         public void test3() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.setInitialState(state);
             finiteAutomaton.removeState(state);
@@ -282,10 +255,9 @@ public class SmartFiniteAutomatonTest {
 
         @Test
         @DisplayName("resets the initial state of the finite automaton" +
-                " accordingly")
+                     " accordingly")
         public void test4() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.setFinalState(state);
             finiteAutomaton.removeState(state);
@@ -296,22 +268,18 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("removes all edges connected to the state")
         public void test5() {
-            SmartState state1 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
-            SmartState state2 =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state2 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state2);
 
             SmartEdge edge =
-                    SmartFiniteAutomatonBuilder.createStraightEdge("",
-                                                                   state1,
+                    SmartFiniteAutomatonBuilder.createStraightEdge("", state1,
                                                                    state2);
             finiteAutomaton.addEdge(edge);
 
             SmartLoopEdge loopEdge =
-                    SmartFiniteAutomatonBuilder.createLoopEdge("",
-                                                               state1);
+                    SmartFiniteAutomatonBuilder.createLoopEdge("", state1);
             finiteAutomaton.addEdge(loopEdge);
 
             finiteAutomaton.removeState(state1);
@@ -322,8 +290,8 @@ public class SmartFiniteAutomatonTest {
     }
 
     /**
-     * Test class for the {@link SmartFiniteAutomaton#setInitialState(SmartState)}
-     * method.
+     * Test class for the
+     * {@link SmartFiniteAutomaton#setInitialState(SmartState)} method.
      */
     @Nested
     @DisplayName("Setting a state as the initial state")
@@ -331,8 +299,7 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("sets it as the initial state of the finite automaton")
         public void test1() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.setInitialState(state);
 
@@ -342,8 +309,7 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("sets it as an initial state")
         public void test2() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.setInitialState(state);
 
@@ -371,8 +337,7 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("removes it as the final state")
         public void test4() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.setFinalState(state);
             finiteAutomaton.setInitialState(state);
@@ -393,8 +358,7 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("sets it as the final state of the finite automaton")
         public void test1() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.setFinalState(state);
 
@@ -404,8 +368,7 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("sets it as a final state")
         public void test2() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.setFinalState(state);
 
@@ -433,8 +396,7 @@ public class SmartFiniteAutomatonTest {
         @Test
         @DisplayName("removes it as the initial state")
         public void test4() {
-            SmartState state =
-                    SmartFiniteAutomatonBuilder.createState("");
+            SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
             finiteAutomaton.setInitialState(state);
             finiteAutomaton.setFinalState(state);
