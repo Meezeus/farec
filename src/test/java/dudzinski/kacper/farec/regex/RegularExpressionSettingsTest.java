@@ -175,7 +175,6 @@ public class RegularExpressionSettingsTest {
         @Nested
         @DisplayName("throws an error when the char is")
         class GetOperatorFromCharNegativeTest {
-            @SuppressWarnings("ResultOfMethodCallIgnored")
             @Test
             @DisplayName("not linked to any operator")
             void test1() {
