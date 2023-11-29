@@ -51,8 +51,8 @@ public class SmartFiniteAutomatonTest {
         }
 
         @Test
-        @DisplayName("adds its container to the container of the finite" +
-                     " automaton")
+        @DisplayName("adds its container to the container of the finite " +
+                     "automaton")
         public void test2() {
             SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
@@ -87,8 +87,8 @@ public class SmartFiniteAutomatonTest {
         }
 
         @Test
-        @DisplayName("adds its container to the container of the finite" +
-                     " automaton")
+        @DisplayName("adds its container to the container of the finite " +
+                     "automaton")
         public void test2() {
             SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
@@ -173,8 +173,8 @@ public class SmartFiniteAutomatonTest {
         }
 
         @Test
-        @DisplayName("removes its container from the container of the finite" +
-                     " automaton")
+        @DisplayName("removes its container from the container of the finite " +
+                     "automaton")
         public void test2() {
             SmartState state1 = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state1);
@@ -230,8 +230,8 @@ public class SmartFiniteAutomatonTest {
         }
 
         @Test
-        @DisplayName("removes its container from the container of the finite" +
-                     " automaton")
+        @DisplayName("removes its container from the container of the finite " +
+                     "automaton")
         public void test2() {
             SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
@@ -242,8 +242,8 @@ public class SmartFiniteAutomatonTest {
         }
 
         @Test
-        @DisplayName("resets the initial state of the finite automaton" +
-                     " accordingly")
+        @DisplayName("resets the initial state of the finite automaton " +
+                     "accordingly")
         public void test3() {
             SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);
@@ -254,8 +254,8 @@ public class SmartFiniteAutomatonTest {
         }
 
         @Test
-        @DisplayName("resets the final state of the finite automaton" +
-                     " accordingly")
+        @DisplayName("resets the final state of the finite automaton " +
+                     "accordingly")
         public void test4() {
             SmartState state = SmartFiniteAutomatonBuilder.createState("");
             finiteAutomaton.addState(state);

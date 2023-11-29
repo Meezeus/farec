@@ -31,8 +31,8 @@ class ConvertFAScreenControllerTest {
      * {@link ConvertFAScreenController#simplifyLabel(String)} method.
      */
     @Nested
-    @DisplayName("Simplifying a label returns the simplified label when the" +
-                 " label is")
+    @DisplayName("Simplifying a label returns the simplified label when the " +
+                 "label is")
     class SimplifyLabelTest {
         @Test
         @DisplayName("(A)+(B)|(C)*|(D)")

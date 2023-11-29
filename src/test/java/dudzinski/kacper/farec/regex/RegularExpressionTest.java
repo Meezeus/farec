@@ -30,8 +30,8 @@ public class RegularExpressionTest {
      * Test class for the {@link RegularExpression#getDepth()} method.
      */
     @Nested
-    @DisplayName("The depth of a regular expression is returned correctly" +
-                 " when the regex string is")
+    @DisplayName("The depth of a regular expression is returned correctly " +
+                 "when the regex string is")
     class GetDepthTest {
         @Test
         @DisplayName("a")
@@ -117,8 +117,8 @@ public class RegularExpressionTest {
      * Test class for the {@link RegularExpression#preorderTraversal()} method.
      */
     @Nested
-    @DisplayName("Preorder traversal returns the correct regular expressions" +
-                 " when the regex string is")
+    @DisplayName("Preorder traversal returns the correct regular expressions " +
+                 "when the regex string is")
     class PreorderTraversalTest {
         @Test
         @DisplayName("1")

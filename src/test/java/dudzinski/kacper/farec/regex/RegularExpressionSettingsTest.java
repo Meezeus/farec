@@ -79,8 +79,8 @@ public class RegularExpressionSettingsTest {
             }
 
             @Test
-            @DisplayName("CONCATENATION as ! when ! is already linked to" +
-                         " CONCATENATION")
+            @DisplayName("CONCATENATION as ! when ! is already linked to " +
+                         "CONCATENATION")
             void test3() {
                 RegularExpressionSettings.setOperatorChar(
                         RegexOperator.CONCATENATION, '!');
@@ -97,8 +97,9 @@ public class RegularExpressionSettingsTest {
      * method.
      */
     @Nested
-    @DisplayName("Getting the char from an operator returns the corresponding" +
-                 " char when the operator is")
+    @DisplayName(
+            "Getting the char from an operator returns the corresponding " +
+            "char when the operator is")
     class GetCharFromOperatorTest {
         @Test
         @DisplayName("STAR")

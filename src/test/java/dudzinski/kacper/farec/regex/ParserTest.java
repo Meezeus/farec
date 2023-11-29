@@ -92,8 +92,8 @@ class ParserTest {
                 String regexString = "($+&)|!*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
-                assertEquals("Regular expressions can only contain regex" +
-                             " operands and regex operators!",
+                assertEquals("Regular expressions can only contain regex " +
+                             "operands and regex operators!",
                              isValid.getValue());
             }
 
@@ -103,9 +103,8 @@ class ParserTest {
                 String regexString = ")a+b(|c*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
-                assertEquals("The regular expression has a closing bracket" +
-                             " without an opening bracket!",
-                             isValid.getValue());
+                assertEquals("The regular expression has a closing bracket " +
+                             "without an opening bracket!", isValid.getValue());
             }
 
             @Test
@@ -114,9 +113,9 @@ class ParserTest {
                 String regexString = "(a+b|c*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
-                assertEquals("The regular expression has different numbers of" +
-                             " opening and closing brackets!",
-                             isValid.getValue());
+                assertEquals(
+                        "The regular expression has different numbers of " +
+                        "opening and closing brackets!", isValid.getValue());
             }
 
             @Test
@@ -125,10 +124,8 @@ class ParserTest {
                 String regexString = "a+b)|c*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertFalse(isValid.getKey());
-                assertEquals(
-                        "The regular expression has a closing bracket without" +
-                        " an opening bracket!",
-                        isValid.getValue());
+                assertEquals("The regular expression has a closing bracket " +
+                             "without an opening bracket!", isValid.getValue());
             }
         }
     }
@@ -378,8 +375,8 @@ class ParserTest {
     @DisplayName("Parsing a regex string")
     class ParseRegexStringTest {
         @Nested
-        @DisplayName("returns the correct regular expression when the regex" +
-                     " string is")
+        @DisplayName("returns the correct regular expression when the regex " +
+                     "string is")
         class ParseRegexStringPositiveTest {
             @Test
             @DisplayName("a")
@@ -591,8 +588,8 @@ class ParserTest {
     @DisplayName("Simplifying a regex string")
     class SimplifyRegexStringTest {
         @Nested
-        @DisplayName("returns the correct simplified string when the regex" +
-                     " string is")
+        @DisplayName("returns the correct simplified string when the regex " +
+                     "string is")
         class SimplifyRegexStringPositiveTest {
             @Test
             @DisplayName("(a)")

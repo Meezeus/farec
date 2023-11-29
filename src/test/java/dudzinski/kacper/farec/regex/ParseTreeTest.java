@@ -37,8 +37,9 @@ class ParseTreeTest {
      * Test class for the {@link ParseTree#preorderTraversal()} method.
      */
     @Nested
-    @DisplayName("Preorder traversal returns the correct nodes when the regex" +
-                 " string is")
+    @DisplayName(
+            "Preorder traversal returns the correct nodes when the regex " +
+            "string is")
     class PreorderTraversalTest {
         @Test
         @DisplayName("1")
