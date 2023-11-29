@@ -51,8 +51,16 @@ class ParserTest {
             }
 
             @Test
-            @DisplayName("a+b")
+            @DisplayName("a|b")
             void test3() {
+                String regexString = "a|b";
+                Pair<Boolean, String> isValid = Parser.isValid(regexString);
+                assertTrue(isValid.getKey());
+            }
+
+            @Test
+            @DisplayName("a+b")
+            void test4() {
                 String regexString = "a+b";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertTrue(isValid.getKey());
@@ -60,7 +68,7 @@ class ParserTest {
 
             @Test
             @DisplayName("(a+b)|c*")
-            void test4() {
+            void test5() {
                 String regexString = "(a+b)|c*";
                 Pair<Boolean, String> isValid = Parser.isValid(regexString);
                 assertTrue(isValid.getKey());
