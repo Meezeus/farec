@@ -136,7 +136,7 @@ class ConvertFAScreenControllerTest {
         @Test
         @DisplayName("(A)+(ε)|(ε)*|(ε)")
         void test12() {
-            String testLabel = "(A)+(ε)|(ø)*|(ε)";
+            String testLabel = "(A)+(ε)|(ε)*|(ε)";
             String simplifiedLabel =
                     ConvertFAScreenController.simplifyLabel(testLabel);
             assertEquals("A+ε", simplifiedLabel);
@@ -352,7 +352,7 @@ class ConvertFAScreenControllerTest {
         @Test
         @DisplayName("(ø)+(ε)|(ε)*|(ε)")
         void test36() {
-            String testLabel = "(ø)+(ε)|(ø)*|(ε)";
+            String testLabel = "(ø)+(ε)|(ε)*|(ε)";
             String simplifiedLabel =
                     ConvertFAScreenController.simplifyLabel(testLabel);
             assertEquals("ε", simplifiedLabel);
