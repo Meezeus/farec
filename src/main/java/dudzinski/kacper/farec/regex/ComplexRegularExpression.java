@@ -48,8 +48,9 @@ public final class ComplexRegularExpression extends RegularExpression {
      */
     @Override
     public String toString() {
-        String regexString = "(" + leftOperand + ")"
-                + RegularExpressionSettings.getCharFromOperator(operator);
+        String regexString = "(" + leftOperand + ")" +
+                             RegularExpressionSettings.getCharFromOperator(
+                                     operator);
         if (rightOperand != null) {
             regexString += "(" + rightOperand + ")";
         }
@@ -68,9 +69,8 @@ public final class ComplexRegularExpression extends RegularExpression {
             return leftOperand.getDepth() + 1;
         }
         else {
-            return Math.max(leftOperand.getDepth(),
-                            rightOperand.getDepth())
-                    + 1;
+            return Math.max(leftOperand.getDepth(), rightOperand.getDepth()) +
+                   1;
         }
     }
 

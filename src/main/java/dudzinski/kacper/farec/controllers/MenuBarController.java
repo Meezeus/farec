@@ -28,11 +28,11 @@ public final class MenuBarController {
      * @throws IOException if the view fxml file cannot be found
      */
     public void openCreateFAScreen() throws IOException {
-        fxmlLoader = new FXMLLoader(
-                App.class.getResource("create_fa_screen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(),
-                                menuBar.getScene().getWidth(),
-                                menuBar.getScene().getHeight());
+        fxmlLoader =
+                new FXMLLoader(App.class.getResource("create_fa_screen.fxml"));
+        Scene scene =
+                new Scene(fxmlLoader.load(), menuBar.getScene().getWidth(),
+                          menuBar.getScene().getHeight());
         Stage stage = (Stage) menuBar.getScene().getWindow();
         stage.setScene(scene);
     }
@@ -45,11 +45,11 @@ public final class MenuBarController {
      * @throws IOException if the view fxml file cannot be found
      */
     public void openCreateREScreen() throws IOException {
-        fxmlLoader = new FXMLLoader(
-                App.class.getResource("create_re_screen.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(),
-                                menuBar.getScene().getWidth(),
-                                menuBar.getScene().getHeight());
+        fxmlLoader =
+                new FXMLLoader(App.class.getResource("create_re_screen.fxml"));
+        Scene scene =
+                new Scene(fxmlLoader.load(), menuBar.getScene().getWidth(),
+                          menuBar.getScene().getHeight());
         Stage stage = (Stage) menuBar.getScene().getWindow();
         stage.setScene(scene);
     }

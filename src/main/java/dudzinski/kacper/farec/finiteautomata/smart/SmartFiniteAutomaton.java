@@ -59,12 +59,9 @@ public final class SmartFiniteAutomaton {
         this.createFAController = createFAController;
 
         // Set the background color of the container.
-        container.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        container.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
 
         // Set the user interaction behaviour for the container.
         createFAController.setFAContainerMouseControl(this);
@@ -185,8 +182,8 @@ public final class SmartFiniteAutomaton {
         // Check for an existing, equivalent edge.
         SmartEdgeComponent oldEdge = null;
         for (SmartEdgeComponent existingEdge : edges) {
-            if ((existingEdge.getStartState() == startState)
-                    && (existingEdge.getEndState() == endState)) {
+            if ((existingEdge.getStartState() == startState) &&
+                (existingEdge.getEndState() == endState)) {
                 oldEdge = existingEdge;
             }
         }
@@ -377,8 +374,7 @@ public final class SmartFiniteAutomaton {
         while (!openList.isEmpty()) {
             SmartState currentState = openList.remove(0);
             closedList.add(currentState);
-            for (SmartEdgeComponent outgoingEdge :
-                    currentState.getOutgoingEdges()) {
+            for (SmartEdgeComponent outgoingEdge : currentState.getOutgoingEdges()) {
                 SmartState child = outgoingEdge.getEndState();
                 if (!openList.contains(child) && !closedList.contains(child)) {
                     openList.add(child);

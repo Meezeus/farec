@@ -43,9 +43,8 @@ public final class ComplexGraphicalFiniteAutomaton extends GraphicalFiniteAutoma
 
         // Add the transition containers to the container of this finite
         // automaton.
-        edges.forEach(transition ->
-                              container.getChildren()
-                                       .add(transition.getContainer()));
+        edges.forEach(transition -> container.getChildren()
+                .add(transition.getContainer()));
         // If the second finite automaton container is not null, add it to the
         // container of this finite automaton.
         if (faContainer2 != null) {
@@ -53,9 +52,9 @@ public final class ComplexGraphicalFiniteAutomaton extends GraphicalFiniteAutoma
         }
         // Add the first finite automaton container as well as the containers of
         // the initial state and final state to this finite automaton.
-        container.getChildren().addAll(faContainer1,
-                                       initialState.getContainer(),
-                                       finalState.getContainer());
+        container.getChildren()
+                .addAll(faContainer1, initialState.getContainer(),
+                        finalState.getContainer());
 
         // Set the minimum width and height of this finite automaton.
         container.setMinSize(minWidth, minHeight);

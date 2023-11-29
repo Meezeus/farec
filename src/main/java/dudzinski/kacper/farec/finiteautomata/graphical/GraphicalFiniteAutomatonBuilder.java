@@ -33,7 +33,7 @@ public final class GraphicalFiniteAutomatonBuilder {
     private GraphicalFiniteAutomatonBuilder() {
         throw new RuntimeException(
                 "The GraphicalFiniteAutomatonBuilder class should never be" +
-                        " instantiated!");
+                " instantiated!");
     }
 
     /**
@@ -43,8 +43,7 @@ public final class GraphicalFiniteAutomatonBuilder {
      *                          finite automaton
      * @return a finite automaton for the given regular expression
      */
-    public static GraphicalFiniteAutomaton
-    buildFiniteAutomaton(
+    public static GraphicalFiniteAutomaton buildFiniteAutomaton(
             RegularExpression regularExpression) {
         // Base case: the regular expression is a simple regular expression.
         if (regularExpression instanceof SimpleRegularExpression) {
@@ -55,8 +54,7 @@ public final class GraphicalFiniteAutomatonBuilder {
 
         // Recursive case: the regular expression is a complex regular
         // expression.
-        else if (regularExpression instanceof
-                ComplexRegularExpression complexRegularExpression) {
+        else if (regularExpression instanceof ComplexRegularExpression complexRegularExpression) {
             // Get the regex operator of the regular expression.
             RegexOperator regexOperator =
                     complexRegularExpression.getOperator();
@@ -102,8 +100,8 @@ public final class GraphicalFiniteAutomatonBuilder {
 
                 // Combine the finite automata of the operands to create the
                 // complex finite automaton.
-                return buildComplexFiniteAutomatonUnion(
-                        finiteAutomaton1, finiteAutomaton2);
+                return buildComplexFiniteAutomatonUnion(finiteAutomaton1,
+                                                        finiteAutomaton2);
             }
             else {
                 throw new IllegalArgumentException(
@@ -133,13 +131,12 @@ public final class GraphicalFiniteAutomatonBuilder {
         Line line = new Line(0, 0, INITIAL_STATE_EDGE_LENGTH, 0);
         line.setStrokeWidth(2 * EDGE_STROKE_RADIUS);
         line.setStroke(EDGE_STROKE_COLOR);
-        line.setTranslateX(-(STATE_RADIUS + STATE_STROKE_RADIUS
-                + (INITIAL_STATE_EDGE_LENGTH / 2)));
+        line.setTranslateX(-(STATE_RADIUS + STATE_STROKE_RADIUS +
+                             (INITIAL_STATE_EDGE_LENGTH / 2)));
         line.setId("line");
 
         // Create the arrowhead.
-        Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
-                                        0, -ARROWHEAD_SIZE,
+        Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE, 0, -ARROWHEAD_SIZE,
                                         ARROWHEAD_SIZE, 0);
         arrowhead.setTranslateX(-(STATE_RADIUS + (ARROWHEAD_SIZE / 2)));
         arrowhead.setId("arrowhead");
@@ -150,10 +147,9 @@ public final class GraphicalFiniteAutomatonBuilder {
 
         // Adjust the minimum width of the finite automaton.
         Pane parentPane = (Pane) stateContainer.getParent();
-        parentPane.setMinWidth(
-                parentPane.getMinWidth() + (2 * (
-                        INITIAL_STATE_EDGE_LENGTH
-                                + EDGE_STROKE_RADIUS)));
+        parentPane.setMinWidth(parentPane.getMinWidth() + (2 *
+                                                           (INITIAL_STATE_EDGE_LENGTH +
+                                                            EDGE_STROKE_RADIUS)));
     }
 
     /**
@@ -179,10 +175,9 @@ public final class GraphicalFiniteAutomatonBuilder {
 
         // Adjust the minimum width of the finite automaton.
         Pane parentPane = (Pane) container.getParent();
-        parentPane.setMinWidth(
-                parentPane.getMinWidth() - (2 * (
-                                  INITIAL_STATE_EDGE_LENGTH
-                                          + EDGE_STROKE_RADIUS)));
+        parentPane.setMinWidth(parentPane.getMinWidth() - (2 *
+                                                           (INITIAL_STATE_EDGE_LENGTH +
+                                                            EDGE_STROKE_RADIUS)));
     }
 
     /**
@@ -234,16 +229,14 @@ public final class GraphicalFiniteAutomatonBuilder {
      */
     public static String getExplanationText(
             RegularExpression regularExpression) {
-        if (regularExpression instanceof
-                SimpleRegularExpression simpleRegularExpression) {
-            return "The finite automaton for the regular expression" +
-                    " \"" + simpleRegularExpression + "\" is built by" +
-                    " creating an initial state and final state with a" +
-                    " labelled edge between them. The label of the edge is" +
-                    " \"" + simpleRegularExpression.getSymbol() + "\".";
+        if (regularExpression instanceof SimpleRegularExpression simpleRegularExpression) {
+            return "The finite automaton for the regular expression \"" +
+                   simpleRegularExpression +
+                   "\" is built by creating an initial state and final state " +
+                   "with a labelled edge between them. The label of the edge " +
+                   "is \"" + simpleRegularExpression.getSymbol() + "\".";
         }
-        else if (regularExpression instanceof
-                ComplexRegularExpression complexRegularExpression) {
+        else if (regularExpression instanceof ComplexRegularExpression complexRegularExpression) {
             String explanation;
             RegexOperator regexOperator =
                     complexRegularExpression.getOperator();
@@ -256,16 +249,17 @@ public final class GraphicalFiniteAutomatonBuilder {
                 String rightOperand = Parser.simplifyRegexString(
                         complexRegularExpression.getRightOperand().toString());
 
-                explanation = "The finite automaton for the regular" +
-                        " expression \"" + regexString + "\" is built by" +
-                        " combining the finite automata of its two" +
-                        " subexpressions: \"" + leftOperand + "\" and" +
-                        " \"" + rightOperand + "\". A new initial state and" +
-                        " a new final state are created. The new initial" +
-                        " state is connected to the previous initial states" +
-                        " by empty string transitions and the previous final" +
-                        " states are connected to the new final state by" +
-                        " empty string transitions.";
+                explanation =
+                        "The finite automaton for the regular expression \"" +
+                        regexString +
+                        "\" is built by combining the finite automata of its " +
+                        "two subexpressions: \"" + leftOperand + "\" and \"" +
+                        rightOperand +
+                        "\". A new initial state and a new final state are " +
+                        "created. The new initial state is connected to the " +
+                        "previous initial states by empty string transitions " +
+                        "and the previous final states are connected to the " +
+                        "new final state by empty string transitions.";
             }
             else if (regexOperator == RegexOperator.CONCATENATION) {
                 String regexString = Parser.simplifyRegexString(
@@ -275,14 +269,16 @@ public final class GraphicalFiniteAutomatonBuilder {
                 String rightOperand = Parser.simplifyRegexString(
                         complexRegularExpression.getRightOperand().toString());
 
-                explanation = "The finite automaton for the regular" +
-                        " expression \"" + regexString + "\" is built by" +
-                        " combining the finite automata of its two" +
-                        " subexpressions: \"" + leftOperand + "\" and" +
-                        " \"" + rightOperand + "\". The final state of the" +
-                        " finite automaton for \"" + leftOperand + "\"" +
-                        " and the initial state of the finite automaton" +
-                        " for \"" + rightOperand + "\" are merged together.";
+                explanation = "The finite automaton for the regular " +
+                              "expression \"" + regexString +
+                              "\" is built by combining the finite automata " +
+                              "of its two subexpressions: \"" + leftOperand +
+                              "\" and \"" + rightOperand +
+                              "\". The final state of the finite automaton " +
+                              "for \"" + leftOperand +
+                              "\" and the initial state of the finite " +
+                              "automaton for \"" + rightOperand +
+                              "\" are merged together.";
             }
             else if (regexOperator == RegexOperator.STAR) {
                 String regexString = Parser.simplifyRegexString(
@@ -290,20 +286,20 @@ public final class GraphicalFiniteAutomatonBuilder {
                 String leftOperand = Parser.simplifyRegexString(
                         complexRegularExpression.getLeftOperand().toString());
 
-                explanation = "The finite automaton for the regular" +
-                        " expression \"" + regexString + "\" is built by" +
-                        " expanding the finite automaton of its" +
-                        " subexpression \"" + leftOperand + "\". A new" +
-                        " initial state and a new final state are created." +
-                        " The new initial state is connected to the previous" +
-                        " initial state by an empty string transition and the" +
-                        " previous final state is connected to the new final" +
-                        " state by an empty string transition. In addition," +
-                        " the previous final state is connected to the" +
-                        " previous initial state by an empty string" +
-                        " transition and the new initial state is connected" +
-                        " to the new final state by an empty string" +
-                        " transition.";
+                explanation = "The finite automaton for the regular " +
+                              "expression \"" + regexString +
+                              "\" is built by expanding the finite automaton " +
+                              "of its subexpression \"" + leftOperand +
+                              "\". A new initial state and a " +
+                              "new final state are created. The new initial " +
+                              "state is connected to the previous initial " +
+                              "state by an empty string transition and the " +
+                              "previous final state is connected to the new " +
+                              "final state by an empty string transition. In " +
+                              "addition, the previous final state is " +
+                              "connected to transition and the new initial " +
+                              "state is connected to the new final state by " +
+                              "an empty string transition.";
             }
             else {
                 throw new IllegalArgumentException(
@@ -344,14 +340,12 @@ public final class GraphicalFiniteAutomatonBuilder {
      * @param directed   whether to include an arrowhead
      * @return an edge
      */
-    private static GraphicalEdge createEdge(String labelText,
-                                            double lineWidth,
-                                            double lineHeight,
-                                            double angle,
+    private static GraphicalEdge createEdge(String labelText, double lineWidth,
+                                            double lineHeight, double angle,
                                             boolean directed) {
         // Get the length of the line.
-        double lineLength = Math.sqrt(Math.pow(lineWidth, 2)
-                                              + Math.pow(lineHeight, 2));
+        double lineLength =
+                Math.sqrt(Math.pow(lineWidth, 2) + Math.pow(lineHeight, 2));
 
         // Create the line.
         Line line = new Line(0, 0, lineLength, 0);
@@ -363,11 +357,11 @@ public final class GraphicalFiniteAutomatonBuilder {
         edgeGroup.getChildren().add(line);
         if (directed) {
             // Create the arrowhead and move it to the end of the line.
-            Polygon arrowhead = new Polygon(0, ARROWHEAD_SIZE,
-                                            0, -ARROWHEAD_SIZE,
-                                            ARROWHEAD_SIZE, 0);
-            arrowhead.setTranslateX(lineLength
-                                            - (ARROWHEAD_SIZE + STATE_RADIUS));
+            Polygon arrowhead =
+                    new Polygon(0, ARROWHEAD_SIZE, 0, -ARROWHEAD_SIZE,
+                                ARROWHEAD_SIZE, 0);
+            arrowhead.setTranslateX(
+                    lineLength - (ARROWHEAD_SIZE + STATE_RADIUS));
             edgeGroup.getChildren().add(arrowhead);
         }
 
@@ -391,33 +385,31 @@ public final class GraphicalFiniteAutomatonBuilder {
      * @return a simple finite automaton for the given simple regular
      * expression.
      */
-    private static SimpleGraphicalFiniteAutomaton
-    buildSimpleFiniteAutomaton(
+    private static SimpleGraphicalFiniteAutomaton buildSimpleFiniteAutomaton(
             SimpleRegularExpression simpleRegularExpression) {
         // Create the initial state and move it into position.
         GraphicalState initialState = createState();
         StackPane initialStateContainer = initialState.getContainer();
         initialStateContainer.setTranslateX(
-                -(STATE_RADIUS + STATE_STROKE_RADIUS
-                        + (0.5 * STATE_SEPARATION)));
+                -(STATE_RADIUS + STATE_STROKE_RADIUS +
+                  (0.5 * STATE_SEPARATION)));
 
         // Create the final state and move it into position.
         GraphicalState finalState = createState();
         StackPane finalStateContainer = finalState.getContainer();
         finalStateContainer.setTranslateX(
-                STATE_RADIUS + STATE_STROKE_RADIUS
-                        + (0.5 * STATE_SEPARATION));
+                STATE_RADIUS + STATE_STROKE_RADIUS + (0.5 * STATE_SEPARATION));
 
         // Create the edge.
-        double lineWidth = Math.abs(initialStateContainer.getTranslateX())
-                        + Math.abs(finalStateContainer.getTranslateX());
+        double lineWidth = Math.abs(initialStateContainer.getTranslateX()) +
+                           Math.abs(finalStateContainer.getTranslateX());
         String edgeLabel = String.valueOf(simpleRegularExpression.getSymbol());
         GraphicalEdge edge = createEdge(edgeLabel, lineWidth, 0, 0, true);
 
         // Create the simple finite automaton.
-        double minWidth = finalStateContainer.getTranslateX()
-                - initialStateContainer.getTranslateX()
-                + (2 * STATE_STROKE_RADIUS) + (2 * STATE_RADIUS);
+        double minWidth = finalStateContainer.getTranslateX() -
+                          initialStateContainer.getTranslateX() +
+                          (2 * STATE_STROKE_RADIUS) + (2 * STATE_RADIUS);
         double minHeight = (2 * STATE_RADIUS) + (2 * STATE_STROKE_RADIUS);
         return new SimpleGraphicalFiniteAutomaton(initialState, finalState,
                                                   edge, minWidth, minHeight);
@@ -430,8 +422,7 @@ public final class GraphicalFiniteAutomatonBuilder {
      * @param finiteAutomaton the finite automaton to be extended
      * @return a complex finite automaton
      */
-    private static ComplexGraphicalFiniteAutomaton
-    buildComplexFiniteAutomatonStar(
+    private static ComplexGraphicalFiniteAutomaton buildComplexFiniteAutomatonStar(
             GraphicalFiniteAutomaton finiteAutomaton) {
         // Disable the initial state and final state of the finite automaton.
         finiteAutomaton.enableInitialState(false);
@@ -448,9 +439,9 @@ public final class GraphicalFiniteAutomatonBuilder {
 
         // Calculate the offset needed to move a state from the position of
         // some other state to its new position, in the positive direction.
-        double newStatePositiveOffset = (2 * STATE_RADIUS)
-                + (2 * STATE_STROKE_RADIUS)
-                + STATE_SEPARATION;
+        double newStatePositiveOffset =
+                (2 * STATE_RADIUS) + (2 * STATE_STROKE_RADIUS) +
+                STATE_SEPARATION;
 
         // Create the new initial state and move it into position.
         GraphicalState newInitialState = createState();
@@ -491,12 +482,12 @@ public final class GraphicalFiniteAutomatonBuilder {
 
         // Calculate the vertical line height.
         double verticalLineHeight =
-                (0.5 * finiteAutomatonContainer.getMinHeight())
-                        + (2 * STATE_RADIUS);  // Extra node radius for spacing.
+                (0.5 * finiteAutomatonContainer.getMinHeight()) +
+                (2 * STATE_RADIUS);  // Extra node radius for spacing.
 
         // Calculate line width and height for the f to i transition.
-        lineWidth = Math.abs(oldInitialStateOffset)
-                + Math.abs(oldFinalStateOffset);
+        lineWidth =
+                Math.abs(oldInitialStateOffset) + Math.abs(oldFinalStateOffset);
         lineHeight = verticalLineHeight;
 
         // Connect the old final state to the old initial state.
@@ -506,7 +497,8 @@ public final class GraphicalFiniteAutomatonBuilder {
         fToIUpContainer.setTranslateY(-(0.5 * lineHeight));
         edges.add(fToIUp);
 
-        GraphicalEdge fToILeft = createEdge(EMPTY_STRING, lineWidth, 0, 180, false);
+        GraphicalEdge fToILeft =
+                createEdge(EMPTY_STRING, lineWidth, 0, 180, false);
         StackPane fToILeftContainer = fToILeft.getContainer();
         fToILeftContainer.setTranslateY(-lineHeight);
         edges.add(fToILeft);
@@ -518,8 +510,8 @@ public final class GraphicalFiniteAutomatonBuilder {
         edges.add(fToIDown);
 
         // Calculate line width and height for i to f transition.
-        lineWidth = Math.abs(newInitialStateContainer.getTranslateX())
-                + Math.abs(newFinalStateContainer.getTranslateX());
+        lineWidth = Math.abs(newInitialStateContainer.getTranslateX()) +
+                    Math.abs(newFinalStateContainer.getTranslateX());
         lineHeight = verticalLineHeight;
 
         // Connect the new initial state to the new final state.
@@ -530,30 +522,28 @@ public final class GraphicalFiniteAutomatonBuilder {
         iToFDownContainer.setTranslateY(0.5 * lineHeight);
         edges.add(iToFDown);
 
-        GraphicalEdge iToFRight = createEdge(EMPTY_STRING, lineWidth, 0, 0, false);
+        GraphicalEdge iToFRight =
+                createEdge(EMPTY_STRING, lineWidth, 0, 0, false);
         StackPane iToFRightContainer = iToFRight.getContainer();
         iToFRightContainer.setTranslateY(lineHeight);
         edges.add(iToFRight);
 
         GraphicalEdge iToFUp = createEdge("", 0, lineHeight, -90, true);
         StackPane iToFUpContainer = iToFUp.getContainer();
-        iToFUpContainer.setTranslateX(
-                newFinalStateContainer.getTranslateX());
+        iToFUpContainer.setTranslateX(newFinalStateContainer.getTranslateX());
         iToFUpContainer.setTranslateY(0.5 * lineHeight);
         edges.add(iToFUp);
 
         // Create the new complex finite automaton.
-        double minWidth = Math.abs(newFinalStateContainer.getTranslateX())
-                + Math.abs(newInitialStateContainer.getTranslateX())
-                + (2 * STATE_STROKE_RADIUS) + (2 * STATE_RADIUS);
-        double minHeight = 2 * verticalLineHeight
-                + 50;   // Extra 50 for labels
+        double minWidth = Math.abs(newFinalStateContainer.getTranslateX()) +
+                          Math.abs(newInitialStateContainer.getTranslateX()) +
+                          (2 * STATE_STROKE_RADIUS) + (2 * STATE_RADIUS);
+        double minHeight = 2 * verticalLineHeight + 50;   // Extra 50 for labels
         return new ComplexGraphicalFiniteAutomaton(newInitialState,
                                                    newFinalState,
                                                    finiteAutomatonContainer,
-                                                   edges,
-                                                   null,
-                                                   minWidth, minHeight);
+                                                   edges, null, minWidth,
+                                                   minHeight);
     }
 
     /**
@@ -564,8 +554,7 @@ public final class GraphicalFiniteAutomatonBuilder {
      * @param rightFiniteAutomaton the finite automaton on the right
      * @return a complex finite automaton
      */
-    private static ComplexGraphicalFiniteAutomaton
-    buildComplexFiniteAutomatonConcatenation(
+    private static ComplexGraphicalFiniteAutomaton buildComplexFiniteAutomatonConcatenation(
             GraphicalFiniteAutomaton leftFiniteAutomaton,
             GraphicalFiniteAutomaton rightFiniteAutomaton) {
         // Disable the initial state and final state of the left finite
@@ -583,20 +572,20 @@ public final class GraphicalFiniteAutomatonBuilder {
         StackPane initialStateContainer = initialState.getContainer();
 
         // Remove the initial state from the left finite automaton.
-        leftFiniteAutomatonContainer.getChildren().remove(
-                initialStateContainer);
+        leftFiniteAutomatonContainer.getChildren()
+                .remove(initialStateContainer);
 
         // Move the left finite automaton and the initial state to the left,
         // such that the final state of the left finite automaton is in the
         // centre. Note that the initial state is no longer connected to the
         // left finite automaton, and so needs to be moved separately.
         double leftOffset =
-                (-(0.5 * leftFiniteAutomatonContainer.getMinWidth()))
-                        + (STATE_RADIUS + STATE_STROKE_RADIUS);
+                (-(0.5 * leftFiniteAutomatonContainer.getMinWidth())) +
+                (STATE_RADIUS + STATE_STROKE_RADIUS);
         leftFiniteAutomatonContainer.setTranslateX(leftOffset);
         initialStateContainer.setTranslateX(
-                leftFiniteAutomatonContainer.getTranslateX()
-                        + initialStateContainer.getTranslateX());
+                leftFiniteAutomatonContainer.getTranslateX() +
+                initialStateContainer.getTranslateX());
 
         // Disable the initial and final states of the right finite automaton.
         rightFiniteAutomaton.enableInitialState(false);
@@ -611,25 +600,24 @@ public final class GraphicalFiniteAutomatonBuilder {
         StackPane finalStateContainer = finalState.getContainer();
 
         // Remove the final state from the right finite automaton.
-        rightFiniteAutomatonContainer.getChildren().remove(
-                finalStateContainer);
+        rightFiniteAutomatonContainer.getChildren().remove(finalStateContainer);
 
         // Move the right finite automaton and the final state to the right,
         // such that the initial state of the right finite automaton is in the
         // centre. Note that the final state is no longer connected to the
         // right finite automaton, and so needs to be moved separately.
         double rightOffset =
-                (0.5 * rightFiniteAutomatonContainer.getMinWidth())
-                        - (STATE_RADIUS + STATE_STROKE_RADIUS);
+                (0.5 * rightFiniteAutomatonContainer.getMinWidth()) -
+                (STATE_RADIUS + STATE_STROKE_RADIUS);
         rightFiniteAutomatonContainer.setTranslateX(rightOffset);
         finalStateContainer.setTranslateX(
-                rightFiniteAutomatonContainer.getTranslateX()
-                        + finalStateContainer.getTranslateX());
+                rightFiniteAutomatonContainer.getTranslateX() +
+                finalStateContainer.getTranslateX());
 
         // Find the distance needed to center the finite automaton.
         double centerOffset = 0.5 *
-                (rightFiniteAutomatonContainer.getMinWidth()
-                        - leftFiniteAutomatonContainer.getMinWidth());
+                              (rightFiniteAutomatonContainer.getMinWidth() -
+                               leftFiniteAutomatonContainer.getMinWidth());
 
         // Move everything to the left by the offset (note offset may be
         // negative, moving things to the right).
@@ -643,14 +631,12 @@ public final class GraphicalFiniteAutomatonBuilder {
                 finalStateContainer.getTranslateX() - centerOffset);
 
         // Create the new complex finite automaton.
-        double minWidth = leftFiniteAutomatonContainer.getMinWidth()
-                + rightFiniteAutomatonContainer.getMinWidth()
-                - ((2 * STATE_RADIUS) + (2 * STATE_STROKE_RADIUS));
-        double minHeight = Math.max(
-                leftFiniteAutomatonContainer.getMinHeight(),
-                rightFiniteAutomatonContainer.getMinHeight());
-        return new ComplexGraphicalFiniteAutomaton(initialState,
-                                                   finalState,
+        double minWidth = leftFiniteAutomatonContainer.getMinWidth() +
+                          rightFiniteAutomatonContainer.getMinWidth() -
+                          ((2 * STATE_RADIUS) + (2 * STATE_STROKE_RADIUS));
+        double minHeight = Math.max(leftFiniteAutomatonContainer.getMinHeight(),
+                                    rightFiniteAutomatonContainer.getMinHeight());
+        return new ComplexGraphicalFiniteAutomaton(initialState, finalState,
                                                    leftFiniteAutomatonContainer,
                                                    new ArrayList<>(),
                                                    rightFiniteAutomatonContainer,
@@ -665,8 +651,7 @@ public final class GraphicalFiniteAutomatonBuilder {
      * @param bottomFiniteAutomaton the finite automaton on the bottom
      * @return a complex finite automaton
      */
-    private static ComplexGraphicalFiniteAutomaton
-    buildComplexFiniteAutomatonUnion(
+    private static ComplexGraphicalFiniteAutomaton buildComplexFiniteAutomatonUnion(
             GraphicalFiniteAutomaton topFiniteAutomaton,
             GraphicalFiniteAutomaton bottomFiniteAutomaton) {
         // Disable the initial state and final state of the top finite
@@ -677,9 +662,9 @@ public final class GraphicalFiniteAutomatonBuilder {
         // Move the top finite automaton above the baseline.
         StackPane topFiniteAutomatonContainer =
                 topFiniteAutomaton.getContainer();
-        double topOffset = -(
-                (0.5 * topFiniteAutomatonContainer.getMinHeight())
-                        + STATE_RADIUS + STATE_STROKE_RADIUS);
+        double topOffset =
+                -((0.5 * topFiniteAutomatonContainer.getMinHeight()) +
+                  STATE_RADIUS + STATE_STROKE_RADIUS);
         topFiniteAutomatonContainer.setTranslateY(topOffset);
 
         // Disable the initial state and final state of the bottom finite
@@ -691,30 +676,28 @@ public final class GraphicalFiniteAutomatonBuilder {
         StackPane bottomFiniteAutomatonContainer =
                 bottomFiniteAutomaton.getContainer();
         double bottomOffset =
-                (0.5 * bottomFiniteAutomatonContainer.getMinHeight())
-                        + STATE_RADIUS + STATE_STROKE_RADIUS;
+                (0.5 * bottomFiniteAutomatonContainer.getMinHeight()) +
+                STATE_RADIUS + STATE_STROKE_RADIUS;
         bottomFiniteAutomatonContainer.setTranslateY(bottomOffset);
 
         // Find out which automaton is the widest.
         GraphicalFiniteAutomaton widestFiniteAutomaton =
-                topFiniteAutomatonContainer.getMinWidth()
-                        > bottomFiniteAutomatonContainer.getMinWidth()
-                        ? topFiniteAutomaton : bottomFiniteAutomaton;
+                topFiniteAutomatonContainer.getMinWidth() >
+                bottomFiniteAutomatonContainer.getMinWidth() ? topFiniteAutomaton : bottomFiniteAutomaton;
 
         // Get the offset of the initial state and final state of the widest
         // finite automaton.
         double widestInitialStateOffset =
-                widestFiniteAutomaton.initialState
-                        .getContainer().getTranslateX();
+                widestFiniteAutomaton.initialState.getContainer()
+                        .getTranslateX();
         double widestFinalStateOffset =
-                widestFiniteAutomaton.finalState
-                        .getContainer().getTranslateX();
+                widestFiniteAutomaton.finalState.getContainer().getTranslateX();
 
         // Calculate the offset needed to move a state from the position of
         // some other state to its new position, in the positive direction.
-        double newStatePositiveOffset = (2 * STATE_RADIUS)
-                + (2 * STATE_STROKE_RADIUS)
-                + STATE_SEPARATION;
+        double newStatePositiveOffset =
+                (2 * STATE_RADIUS) + (2 * STATE_STROKE_RADIUS) +
+                STATE_SEPARATION;
 
         // Create the new initial state and move it into position.
         GraphicalState newInitialState = createState();
@@ -739,24 +722,18 @@ public final class GraphicalFiniteAutomatonBuilder {
         StackPane topInitialStateContainer =
                 topFiniteAutomaton.initialState.getContainer();
         lineWidth = Math.abs(
-                Math.abs(newInitialStateContainer
-                                 .getTranslateX())
-                        - Math.abs(topInitialStateContainer
-                                           .getTranslateX()));
+                Math.abs(newInitialStateContainer.getTranslateX()) -
+                Math.abs(topInitialStateContainer.getTranslateX()));
         lineHeight = Math.abs(
-                Math.abs(newInitialStateContainer
-                                 .getTranslateY())
-                        - Math.abs(topFiniteAutomatonContainer
-                                           .getTranslateY()));
+                Math.abs(newInitialStateContainer.getTranslateY()) -
+                Math.abs(topFiniteAutomatonContainer.getTranslateY()));
         angleInDegrees = Math.toDegrees(Math.atan(lineHeight / lineWidth));
 
         // Create the edge from the new initial state to the old initial state
         // of the top finite automaton.
-        GraphicalEdge iToI1 = createEdge(EMPTY_STRING,
-                                         lineWidth,
-                                         lineHeight,
-                                         -angleInDegrees,
-                                         true);
+        GraphicalEdge iToI1 =
+                createEdge(EMPTY_STRING, lineWidth, lineHeight, -angleInDegrees,
+                           true);
         StackPane iToI1Container = iToI1.getContainer();
         iToI1Container.setTranslateX(
                 newInitialStateContainer.getTranslateX() + (0.5 * lineWidth));
@@ -765,11 +742,9 @@ public final class GraphicalFiniteAutomatonBuilder {
 
         // Create the edge from the old final state of the top finite automaton
         // to the new final state.
-        GraphicalEdge f1ToF = createEdge(EMPTY_STRING,
-                                         lineWidth,
-                                         lineHeight,
-                                         angleInDegrees,
-                                         true);
+        GraphicalEdge f1ToF =
+                createEdge(EMPTY_STRING, lineWidth, lineHeight, angleInDegrees,
+                           true);
         StackPane f1ToFContainer = f1ToF.getContainer();
         f1ToFContainer.setTranslateX(
                 finalStateContainer.getTranslateX() - (0.5 * lineWidth));
@@ -781,25 +756,18 @@ public final class GraphicalFiniteAutomatonBuilder {
         StackPane bottomInitialStateContainer =
                 bottomFiniteAutomaton.initialState.getContainer();
         lineWidth = Math.abs(
-                Math.abs(newInitialStateContainer
-                                 .getTranslateX())
-                        - Math.abs(bottomInitialStateContainer
-                                           .getTranslateX()));
+                Math.abs(newInitialStateContainer.getTranslateX()) -
+                Math.abs(bottomInitialStateContainer.getTranslateX()));
         lineHeight = Math.abs(
-                Math.abs(
-                        newInitialStateContainer
-                                .getTranslateY())
-                        - Math.abs(bottomFiniteAutomatonContainer
-                                           .getTranslateY()));
+                Math.abs(newInitialStateContainer.getTranslateY()) -
+                Math.abs(bottomFiniteAutomatonContainer.getTranslateY()));
         angleInDegrees = Math.toDegrees(Math.atan(lineHeight / lineWidth));
 
         // Create the edge from the new initial state to the old initial state
         // of the bottom finite automaton.
-        GraphicalEdge iToI2 = createEdge(EMPTY_STRING,
-                                         lineWidth,
-                                         lineHeight,
-                                         angleInDegrees,
-                                         true);
+        GraphicalEdge iToI2 =
+                createEdge(EMPTY_STRING, lineWidth, lineHeight, angleInDegrees,
+                           true);
         StackPane iToI2Container = iToI2.getContainer();
         iToI2Container.setTranslateX(
                 newInitialStateContainer.getTranslateX() + (0.5 * lineWidth));
@@ -808,11 +776,9 @@ public final class GraphicalFiniteAutomatonBuilder {
 
         // Create the edge from the old final state of the bottom finite
         // automaton to the new final state.
-        GraphicalEdge f2ToF = createEdge(EMPTY_STRING,
-                                         lineWidth,
-                                         lineHeight,
-                                         -angleInDegrees,
-                                         true);
+        GraphicalEdge f2ToF =
+                createEdge(EMPTY_STRING, lineWidth, lineHeight, -angleInDegrees,
+                           true);
         StackPane f2ToFContainer = f2ToF.getContainer();
         f2ToFContainer.setTranslateX(
                 finalStateContainer.getTranslateX() - (0.5 * lineWidth));
@@ -820,16 +786,16 @@ public final class GraphicalFiniteAutomatonBuilder {
         edges.add(f2ToF);
 
         // Create the new complex finite automaton.
-        double tallestFiniteAutomatonHeight = Math.max(
-                topFiniteAutomatonContainer.getMinHeight(),
-                bottomFiniteAutomatonContainer.getMinHeight());
-        double minWidth = (finalStateContainer.getTranslateX()
-                - newInitialStateContainer.getTranslateX())
-                + (2 * STATE_STROKE_RADIUS) + (2 * STATE_RADIUS);
-        double minHeight = (2 * tallestFiniteAutomatonHeight)
-                + (2 * STATE_RADIUS) + (2 * STATE_STROKE_RADIUS);
-        return new ComplexGraphicalFiniteAutomaton(newInitialState,
-                                                   finalState,
+        double tallestFiniteAutomatonHeight =
+                Math.max(topFiniteAutomatonContainer.getMinHeight(),
+                         bottomFiniteAutomatonContainer.getMinHeight());
+        double minWidth = (finalStateContainer.getTranslateX() -
+                           newInitialStateContainer.getTranslateX()) +
+                          (2 * STATE_STROKE_RADIUS) + (2 * STATE_RADIUS);
+        double minHeight =
+                (2 * tallestFiniteAutomatonHeight) + (2 * STATE_RADIUS) +
+                (2 * STATE_STROKE_RADIUS);
+        return new ComplexGraphicalFiniteAutomaton(newInitialState, finalState,
                                                    topFiniteAutomatonContainer,
                                                    edges,
                                                    bottomFiniteAutomatonContainer,

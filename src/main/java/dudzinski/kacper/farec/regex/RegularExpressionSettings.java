@@ -64,14 +64,9 @@ public abstract class RegularExpressionSettings extends Settings {
      * @return a regex string representing valid regex strings
      */
     public static String getValidRegexStringPattern() {
-        return "^[" +
-                VALID_REGEX_OPERANDS +
-                EMPTY_STRING +
-                EMPTY_SET +
-                starOperatorChar +
-                concatenationOperatorChar +
-                unionOperatorChar +
-                "()]*$";
+        return "^[" + VALID_REGEX_OPERANDS + EMPTY_STRING + EMPTY_SET +
+               starOperatorChar + concatenationOperatorChar +
+               unionOperatorChar + "()]*$";
     }
 
     /**
@@ -81,9 +76,7 @@ public abstract class RegularExpressionSettings extends Settings {
      * @return a regex string representing valid regex operators
      */
     public static String getValidRegexOperatorPattern() {
-        return "^[" +
-                VALID_REGEX_OPERATORS +
-                "]$";
+        return "^[" + VALID_REGEX_OPERATORS + "]$";
     }
 
     /**
@@ -92,11 +85,7 @@ public abstract class RegularExpressionSettings extends Settings {
      * @return a regex string representing a single valid regex operand
      */
     public static String getValidRegexOperandPattern() {
-        return "^[" +
-                VALID_REGEX_OPERANDS +
-                EMPTY_STRING +
-                EMPTY_SET +
-                "]$";
+        return "^[" + VALID_REGEX_OPERANDS + EMPTY_STRING + EMPTY_SET + "]$";
     }
 
     /**
@@ -112,13 +101,13 @@ public abstract class RegularExpressionSettings extends Settings {
                                           char operatorChar) {
         // Check the char is a valid symbol.
         if (!String.valueOf(operatorChar)
-                   .matches(getValidRegexOperatorPattern())) {
+                .matches(getValidRegexOperatorPattern())) {
             return false;
         }
         // Check the char is not already linked.
-        if ((starOperatorChar == operatorChar)
-                || (concatenationOperatorChar == operatorChar)
-                || (unionOperatorChar == operatorChar)) {
+        if ((starOperatorChar == operatorChar) ||
+            (concatenationOperatorChar == operatorChar) ||
+            (unionOperatorChar == operatorChar)) {
             return false;
         }
 

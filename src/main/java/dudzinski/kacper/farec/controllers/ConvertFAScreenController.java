@@ -79,12 +79,9 @@ public final class ConvertFAScreenController implements Initializable {
      */
     public void initialize(URL location, ResourceBundle resources) {
         // Set the background color of the scroll pane.
-        scrollPane.setBackground(
-                new Background(
-                        new BackgroundFill(FiniteAutomatonSettings.CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        scrollPane.setBackground(new Background(
+                new BackgroundFill(FiniteAutomatonSettings.CONTAINER_COLOR,
+                                   CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
     /**
@@ -121,8 +118,7 @@ public final class ConvertFAScreenController implements Initializable {
             }
             // Add connected states to the open list (only if the state is not
             // already in the open list and not in the closed list).
-            for (SmartEdgeComponent outgoingEdge :
-                    currentState.getOutgoingEdges()) {
+            for (SmartEdgeComponent outgoingEdge : currentState.getOutgoingEdges()) {
                 SmartState child = outgoingEdge.getEndState();
                 if (!openList.contains(child) && !closedList.contains(child)) {
                     openList.add(child);
@@ -135,10 +131,10 @@ public final class ConvertFAScreenController implements Initializable {
         SmartState oldFinalState = finiteAutomaton.getFinalState();
 
         // Add a new initial state.
-        SmartState newInitialState = SmartFiniteAutomatonBuilder
-                .createState("s0");
-        newInitialState.getContainer().setTranslateX(
-                oldInitialState.getContainer().getTranslateX());
+        SmartState newInitialState =
+                SmartFiniteAutomatonBuilder.createState("s0");
+        newInitialState.getContainer()
+                .setTranslateX(oldInitialState.getContainer().getTranslateX());
         newInitialState.getContainer().setTranslateY(
                 oldInitialState.getContainer().getTranslateY() + 100);
         finiteAutomaton.addState(newInitialState);
@@ -146,17 +142,16 @@ public final class ConvertFAScreenController implements Initializable {
 
         // Add a transition from the new initial state to the old initial state.
         SmartEdge iToI =
-                SmartFiniteAutomatonBuilder
-                        .createStraightEdge(EMPTY_STRING,
-                                            newInitialState,
-                                            oldInitialState);
+                SmartFiniteAutomatonBuilder.createStraightEdge(EMPTY_STRING,
+                                                               newInitialState,
+                                                               oldInitialState);
         finiteAutomaton.addEdge(iToI);
 
         // Add a new final state.
-        SmartState newFinalState = SmartFiniteAutomatonBuilder
-                .createState("s" + counter);
-        newFinalState.getContainer().setTranslateX(
-                oldFinalState.getContainer().getTranslateX());
+        SmartState newFinalState =
+                SmartFiniteAutomatonBuilder.createState("s" + counter);
+        newFinalState.getContainer()
+                .setTranslateX(oldFinalState.getContainer().getTranslateX());
         newFinalState.getContainer().setTranslateY(
                 oldFinalState.getContainer().getTranslateY() + 100);
         finiteAutomaton.addState(newFinalState);
@@ -164,10 +159,9 @@ public final class ConvertFAScreenController implements Initializable {
 
         // Add a transition from the old final state to the new final state.
         SmartEdge fToF =
-                SmartFiniteAutomatonBuilder
-                        .createStraightEdge(EMPTY_STRING,
-                                            oldFinalState,
-                                            newFinalState);
+                SmartFiniteAutomatonBuilder.createStraightEdge(EMPTY_STRING,
+                                                               oldFinalState,
+                                                               newFinalState);
         finiteAutomaton.addEdge(fToF);
 
         // Remove whitespace and replace commas with the UNION operator.
@@ -179,10 +173,8 @@ public final class ConvertFAScreenController implements Initializable {
             label = label.replaceAll("\\s+", "").trim();
 
             // Replace commas with the UNION operator.
-            label = label.replaceAll(",",
-                                     String.valueOf(
-                                             RegularExpressionSettings
-                                                     .getUnionOperatorChar()));
+            label = label.replaceAll(",", String.valueOf(
+                    RegularExpressionSettings.getUnionOperatorChar()));
 
             // Update the label text.
             edge.setLabelText(label);
@@ -239,12 +231,12 @@ public final class ConvertFAScreenController implements Initializable {
             if (event.getButton().equals(MouseButton.PRIMARY)) {
                 // Don't allow the state to be moved past the left boundary.
                 if (event.getSceneX() + offset.x >
-                        STATE_RADIUS + STATE_STROKE_RADIUS) {
+                    STATE_RADIUS + STATE_STROKE_RADIUS) {
                     container.setTranslateX(event.getSceneX() + offset.x);
                 }
                 // Don't allow the state to be moved past the top boundary.
                 if (event.getSceneY() + offset.y >
-                        STATE_RADIUS + STATE_STROKE_RADIUS) {
+                    STATE_RADIUS + STATE_STROKE_RADIUS) {
                     container.setTranslateY(event.getSceneY() + offset.y);
                 }
                 // Update the size of the finite automaton container.
@@ -285,8 +277,7 @@ public final class ConvertFAScreenController implements Initializable {
         container.setOnContextMenuRequested(event -> {
             if (edge instanceof SmartLoopEdge) {
                 selectComponent(event);
-                loopContextMenu.show(container,
-                                     event.getScreenX(),
+                loopContextMenu.show(container, event.getScreenX(),
                                      event.getScreenY());
             }
             event.consume();
@@ -322,8 +313,7 @@ public final class ConvertFAScreenController implements Initializable {
 
         // In REMOVE mode, the chosen state is removed.
         else if (workMode == WorkMode.REMOVE) {
-            RemoveStateCommand removeStateCommand =
-                    new RemoveStateCommand();
+            RemoveStateCommand removeStateCommand = new RemoveStateCommand();
             removeStateCommand.execute();
             commandHistory.add(removeStateCommand);
         }
@@ -384,14 +374,12 @@ public final class ConvertFAScreenController implements Initializable {
             else if (currentChar == ')') {
                 depth--;
             }
-            else if ((depth == 0)
-                    && (currentChar == RegularExpressionSettings
-                                        .getUnionOperatorChar())) {
+            else if ((depth == 0) && (currentChar ==
+                                      RegularExpressionSettings.getUnionOperatorChar())) {
                 unionIndex = index;
             }
-            else if ((depth == 0)
-                    && (currentChar == RegularExpressionSettings
-                                        .getConcatenationOperatorChar())) {
+            else if ((depth == 0) && (currentChar ==
+                                      RegularExpressionSettings.getConcatenationOperatorChar())) {
                 if (concatIndex1 == -1) {
                     concatIndex1 = index;
                 }
@@ -402,19 +390,15 @@ public final class ConvertFAScreenController implements Initializable {
         }
 
         // Get the component labels.
-        String directLabel =
-                label.substring(0, unionIndex);
-        String indirectLabel1 =
-                label.substring(unionIndex + 1, concatIndex1);
+        String directLabel = label.substring(0, unionIndex);
+        String indirectLabel1 = label.substring(unionIndex + 1, concatIndex1);
         // Note: don't include the star operator in the second indirect label.
         String indirectLabel2 =
                 label.substring(concatIndex1 + 1, concatIndex2 - 1);
-        String indirectLabel3 =
-                label.substring(concatIndex2 + 1);
+        String indirectLabel3 = label.substring(concatIndex2 + 1);
 
         // Get the component labels without outer brackets.
-        String directLabelBracketless =
-                Parser.removeOuterBrackets(directLabel);
+        String directLabelBracketless = Parser.removeOuterBrackets(directLabel);
         String indirectLabel1Bracketless =
                 Parser.removeOuterBrackets(indirectLabel1);
         String indirectLabel2Bracketless =
@@ -441,8 +425,7 @@ public final class ConvertFAScreenController implements Initializable {
         else {
             simplifiedLabelArray[0] = directLabel;
             simplifiedLabelArray[1] = String.valueOf(
-                    RegularExpressionSettings
-                            .getUnionOperatorChar());
+                    RegularExpressionSettings.getUnionOperatorChar());
         }
 
         // If the first indirect label is not an empty string, include it.
@@ -451,11 +434,10 @@ public final class ConvertFAScreenController implements Initializable {
 
             // If one of the other indirect labels is also not an empty string,
             // include the first concatenation symbol.
-            if (!indirectLabel2Bracketless.equals(EMPTY_STRING)
-                    || !indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+            if (!indirectLabel2Bracketless.equals(EMPTY_STRING) ||
+                !indirectLabel3Bracketless.equals(EMPTY_STRING)) {
                 simplifiedLabelArray[3] = String.valueOf(
-                        RegularExpressionSettings
-                                .getConcatenationOperatorChar());
+                        RegularExpressionSettings.getConcatenationOperatorChar());
             }
             // Otherwise, ignore it.
             else {
@@ -471,15 +453,14 @@ public final class ConvertFAScreenController implements Initializable {
         // If the second indirect label is not an empty string, include it.
         if (!indirectLabel2Bracketless.equals(EMPTY_STRING)) {
             // Note: have to add the star operator back.
-            simplifiedLabelArray[4] = indirectLabel2
-                    + RegularExpressionSettings.getStarOperatorChar();
+            simplifiedLabelArray[4] = indirectLabel2 +
+                                      RegularExpressionSettings.getStarOperatorChar();
 
             // If the third indirect label is also not an empty string, include
             // the second concatenation symbol.
             if (!indirectLabel3Bracketless.equals(EMPTY_STRING)) {
                 simplifiedLabelArray[5] = String.valueOf(
-                        RegularExpressionSettings
-                                .getConcatenationOperatorChar());
+                        RegularExpressionSettings.getConcatenationOperatorChar());
             }
             // Otherwise, ignore it.
             else {
@@ -503,43 +484,42 @@ public final class ConvertFAScreenController implements Initializable {
 
         // If all three indirect labels are an empty string, we have to include
         // one of them.
-        if (indirectLabel1Bracketless.equals(EMPTY_STRING)
-                && indirectLabel2Bracketless.equals(EMPTY_STRING)
-                && indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+        if (indirectLabel1Bracketless.equals(EMPTY_STRING) &&
+            indirectLabel2Bracketless.equals(EMPTY_STRING) &&
+            indirectLabel3Bracketless.equals(EMPTY_STRING)) {
             simplifiedLabelArray[2] = "(" + EMPTY_STRING + ")";
         }
 
         // If the label is in the form R UNION R, replace it with just R...
         // ...if the direct label is equal to the first indirect label.
-        if (directLabelBracketless.equals(indirectLabel1Bracketless)
-                && indirectLabel2Bracketless.equals(EMPTY_STRING)
-                && indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+        if (directLabelBracketless.equals(indirectLabel1Bracketless) &&
+            indirectLabel2Bracketless.equals(EMPTY_STRING) &&
+            indirectLabel3Bracketless.equals(EMPTY_STRING)) {
             simplifiedLabelArray[1] = "";
             simplifiedLabelArray[2] = "";
         }
         // ...if the direct label is equal to the second indirect label.
         // This can only happen if the direct label = (R*) and the second
         // indirect label = (R)*.
-        else if (directLabelBracketless
-                .equals(indirectLabel2Bracketless
-                        + RegularExpressionSettings.getStarOperatorChar())
-                && indirectLabel1Bracketless.equals(EMPTY_STRING)
-                && indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+        else if (directLabelBracketless.equals(indirectLabel2Bracketless +
+                                               RegularExpressionSettings.getStarOperatorChar()) &&
+                 indirectLabel1Bracketless.equals(EMPTY_STRING) &&
+                 indirectLabel3Bracketless.equals(EMPTY_STRING)) {
             simplifiedLabelArray[1] = "";
             simplifiedLabelArray[4] = "";
         }
         // ...if the direct label is equal to the third indirect label:
-        else if (directLabelBracketless.equals(indirectLabel3Bracketless)
-                && indirectLabel1Bracketless.equals(EMPTY_STRING)
-                && indirectLabel2Bracketless.equals(EMPTY_STRING)) {
+        else if (directLabelBracketless.equals(indirectLabel3Bracketless) &&
+                 indirectLabel1Bracketless.equals(EMPTY_STRING) &&
+                 indirectLabel2Bracketless.equals(EMPTY_STRING)) {
             simplifiedLabelArray[1] = "";
             simplifiedLabelArray[6] = "";
         }
 
         // Build the simplified label.
         StringBuilder simplifiedLabelBuilder = new StringBuilder();
-        Arrays.stream(simplifiedLabelArray).toList().forEach(
-                simplifiedLabelBuilder::append);
+        Arrays.stream(simplifiedLabelArray).toList()
+                .forEach(simplifiedLabelBuilder::append);
 
         // Use the Parser to remove unnecessary brackets and return the
         // simplified label.
@@ -569,8 +549,8 @@ public final class ConvertFAScreenController implements Initializable {
 
         // Find the container of the clicked component.
         Node target = (Node) event.getTarget();
-        while ((target != null)
-                && (!Objects.equals(target.getId(), "selectable"))) {
+        while ((target != null) &&
+               (!Objects.equals(target.getId(), "selectable"))) {
             target = target.getParent();
         }
 
@@ -666,8 +646,8 @@ public final class ConvertFAScreenController implements Initializable {
         // If there is an edge between the two states, return its label and the
         // edge itself.
         for (SmartEdgeComponent edge : finiteAutomaton.getEdges()) {
-            if ((edge.getStartState() == startState)
-                    && (edge.getEndState() == endState)) {
+            if ((edge.getStartState() == startState) &&
+                (edge.getEndState() == endState)) {
                 return new Pair<>("(" + edge.getLabelText() + ")", edge);
             }
         }
@@ -692,8 +672,7 @@ public final class ConvertFAScreenController implements Initializable {
      * list of edges on that path
      */
     private Pair<String, ArrayList<SmartEdgeComponent>> getIndirectPath(
-            SmartState startState,
-            SmartState middleState,
+            SmartState startState, SmartState middleState,
             SmartState endState) {
         // Create the list to store path edges.
         ArrayList<SmartEdgeComponent> pathEdges = new ArrayList<>();
@@ -735,12 +714,12 @@ public final class ConvertFAScreenController implements Initializable {
         }
 
         // Create the path label for the indirect path.
-        String pathLabel = startToMiddleLabel
-                + RegularExpressionSettings.getConcatenationOperatorChar()
-                + middleToMiddleLabel
-                + RegularExpressionSettings.getStarOperatorChar()
-                + RegularExpressionSettings.getConcatenationOperatorChar()
-                + middleToEndLabel;
+        String pathLabel = startToMiddleLabel +
+                           RegularExpressionSettings.getConcatenationOperatorChar() +
+                           middleToMiddleLabel +
+                           RegularExpressionSettings.getStarOperatorChar() +
+                           RegularExpressionSettings.getConcatenationOperatorChar() +
+                           middleToEndLabel;
 
         // Return the path label and the path edges.
         return new Pair<>(pathLabel, pathEdges);
@@ -789,8 +768,7 @@ public final class ConvertFAScreenController implements Initializable {
 
                 // Get the states with edges incoming to the state to remove.
                 incomingStates.clear();
-                for (SmartEdgeComponent incomingEdge :
-                        stateToRemove.getIncomingEdges()) {
+                for (SmartEdgeComponent incomingEdge : stateToRemove.getIncomingEdges()) {
                     incomingStates.add(incomingEdge.getStartState());
                 }
                 // Don't include the state to remove.
@@ -801,8 +779,7 @@ public final class ConvertFAScreenController implements Initializable {
 
                 // Get the states with edges incoming from the state to remove.
                 outgoingStates.clear();
-                for (SmartEdgeComponent outgoingEdge :
-                        stateToRemove.getOutgoingEdges()) {
+                for (SmartEdgeComponent outgoingEdge : stateToRemove.getOutgoingEdges()) {
                     outgoingStates.add(outgoingEdge.getEndState());
                 }
                 // Don't include the state to remove.
@@ -892,17 +869,16 @@ public final class ConvertFAScreenController implements Initializable {
                     getIndirectPath(startState, stateToRemove, endState);
 
             // Highlight the indirect path edges.
-            indirectPath.getValue().forEach(
-                    edge -> {
-                        if (edge != null) {
-                            edge.setStroke(PATH_HIGHLIGHT_COLOR);
-                        }
-                    });
+            indirectPath.getValue().forEach(edge -> {
+                if (edge != null) {
+                    edge.setStroke(PATH_HIGHLIGHT_COLOR);
+                }
+            });
 
             // Create the new label.
-            String newLabel = directPath.getKey()
-                    + RegularExpressionSettings.getUnionOperatorChar()
-                    + indirectPath.getKey();
+            String newLabel = directPath.getKey() +
+                              RegularExpressionSettings.getUnionOperatorChar() +
+                              indirectPath.getKey();
 
             // Simplify the label.
             String simplifiedLabel = simplifyLabel(newLabel);
@@ -920,18 +896,14 @@ public final class ConvertFAScreenController implements Initializable {
                 // a straight edge.
                 if (startState != endState) {
                     updatedEdge =
-                            SmartFiniteAutomatonBuilder
-                                    .createStraightEdge(simplifiedLabel,
-                                                        startState,
-                                                        endState);
+                            SmartFiniteAutomatonBuilder.createStraightEdge(
+                                    simplifiedLabel, startState, endState);
                 }
                 // Otherwise, the start state and end state are the same state.
                 // Create a loop edge.
                 else {
-                    updatedEdge =
-                            SmartFiniteAutomatonBuilder
-                                    .createLoopEdge(simplifiedLabel,
-                                                    startState);
+                    updatedEdge = SmartFiniteAutomatonBuilder.createLoopEdge(
+                            simplifiedLabel, startState);
                 }
 
                 // Add the created edge to the finite automaton.
@@ -948,10 +920,8 @@ public final class ConvertFAScreenController implements Initializable {
             savedInfoLabelText = infoLabel.getText();
 
             // Update the info label.
-            infoLabel.setText("New label: "
-                                      + newLabel
-                                      + " = "
-                                      + simplifiedLabel);
+            infoLabel.setText(
+                    "New label: " + newLabel + " = " + simplifiedLabel);
 
             // Save the current indices.
             savedIncomingIndex = incomingIndex;
@@ -1050,14 +1020,13 @@ public final class ConvertFAScreenController implements Initializable {
                 // Get the regex string.
                 String regexString =
                         getDirectPath(finiteAutomaton.getInitialState(),
-                                      finiteAutomaton.getFinalState())
-                                .getKey();
+                                      finiteAutomaton.getFinalState()).getKey();
 
                 // Update the info label.
                 infoLabel.setText(
                         "Finished! The regular expression of the finite" +
-                                " automaton is: " +
-                                Parser.removeOuterBrackets(regexString));
+                        " automaton is: " +
+                        Parser.removeOuterBrackets(regexString));
 
                 // Disable the next button.
                 nextButton.setDisable(true);

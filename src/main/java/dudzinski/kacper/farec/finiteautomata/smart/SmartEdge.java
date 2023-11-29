@@ -76,9 +76,7 @@ public final class SmartEdge extends SmartEdgeComponent {
 
             // Clear the container and add the new components.
             container.getChildren().clear();
-            container.getChildren().addAll(edgeShape,
-                                           arrowhead,
-                                           label);
+            container.getChildren().addAll(edgeShape, arrowhead, label);
         }
     }
 

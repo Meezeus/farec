@@ -31,33 +31,30 @@ public final class REHelpWindowController implements Initializable {
                 new StringBuilder("Available regex operators:\n");
         for (RegexOperator operator : RegexOperator.values()) {
             operatorLabelText.append("  -").append(operator)
-                             .append(", using the character '")
-                             .append(RegularExpressionSettings
-                                             .getCharFromOperator(operator))
-                             .append("'\n");
+                    .append(", using the character '")
+                    .append(RegularExpressionSettings.getCharFromOperator(
+                            operator)).append("'\n");
         }
         operatorsLabel.setText(operatorLabelText.toString());
 
         // Set the help label.
-        helpLabel.setText(
-                """
-                A valid regular expression can only contain letters, numbers, \
-                brackets and regex operators.
-                    
-                Valid regular expressions must have a root operator: an \
-                operator that is not contained within any brackets (excluding \
-                outer brackets surrounding the whole expression).
-                    
-                The STAR operator has the highest precedence, then \
-                CONCATENATION, then UNION. This means that, for example, the \
-                regular expression a|b+c|d will be parsed as (a|b)+(c|d), and \
-                the regular expression a|b*+c will be parsed as (a|(b*))+c.
-                    
-                When looking for the root operator, the regular expression is \
-                parsed from right to left. As a result, expressions such as \
-                a+b+c are parsed as (a+b)+c.
-                """
-        );
+        helpLabel.setText("""
+            A valid regular expression can only contain letters, numbers, \
+            brackets and regex operators.
+            
+            Valid regular expressions must have a root operator: an \
+            operator that is not contained within any brackets (excluding \
+            outer brackets surrounding the whole expression).
+            
+            The STAR operator has the highest precedence, then \
+            CONCATENATION, then UNION. This means that, for example, the \
+            regular expression a|b+c|d will be parsed as (a|b)+(c|d), and \
+            the regular expression a|b*+c will be parsed as (a|(b*))+c.
+            
+            When looking for the root operator, the regular expression is \
+            parsed from right to left. As a result, expressions such as \
+            a+b+c are parsed as (a+b)+c.
+            """);
     }
 
 }

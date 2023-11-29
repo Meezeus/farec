@@ -56,26 +56,19 @@ public final class CreateREScreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // Add a listener to the regex string text field so that any changes to
         // it disable the convert button.
-        regexStringTextField.textProperty()
-                            .addListener(
-                                    (observable, oldValue, newValue)
-                                            -> convertButton.setDisable(true));
+        regexStringTextField.textProperty().addListener(
+                (observable, oldValue, newValue) -> convertButton.setDisable(
+                        true));
 
         // Set the background color of the scroll pane.
-        scrollPane.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        scrollPane.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
 
         // Set the background color of the blank pane.
-        blankPane.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        blankPane.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
     }
 
     /**
@@ -89,8 +82,8 @@ public final class CreateREScreenController implements Initializable {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Help: Regular Expressions");
-        fxmlLoader = new FXMLLoader(
-                App.class.getResource("re_help_window.fxml"));
+        fxmlLoader =
+                new FXMLLoader(App.class.getResource("re_help_window.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, -1);
         window.setScene(scene);
         window.showAndWait();
@@ -109,9 +102,8 @@ public final class CreateREScreenController implements Initializable {
         scrollPane.setContent(blankPane);
 
         // Get the regex string and remove whitespace.
-        String regexString = regexStringTextField.getText()
-                                                 .replaceAll("\\s+", "")
-                                                 .trim();
+        String regexString =
+                regexStringTextField.getText().replaceAll("\\s+", "").trim();
 
         // Try parsing the regex string. If it's valid, set the info label,
         // display the parse tree and enable the convert button.
@@ -150,8 +142,8 @@ public final class CreateREScreenController implements Initializable {
      * @throws IOException if the view fxml file cannot be found
      */
     public void openConvertREScreen() throws IOException {
-        fxmlLoader = new FXMLLoader(
-                App.class.getResource("convert_re_screen.fxml"));
+        fxmlLoader =
+                new FXMLLoader(App.class.getResource("convert_re_screen.fxml"));
         Scene scene = new Scene(fxmlLoader.load(),
                                 convertButton.getScene().getWidth(),
                                 convertButton.getScene().getHeight());

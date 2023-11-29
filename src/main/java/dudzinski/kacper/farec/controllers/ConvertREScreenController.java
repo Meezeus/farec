@@ -65,44 +65,29 @@ public final class ConvertREScreenController implements Initializable {
         HBox.setHgrow(rightVBox, Priority.ALWAYS);
 
         // Set the background color of the parse tree scroll pane.
-        finiteAutomatonScrollPane.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        finiteAutomatonScrollPane.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
 
         // Set the background color of the blank pane.
-        blankPane.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        blankPane.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
 
         // Set the background color of the explanation label.
-        explanationLabel.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        explanationLabel.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
 
         // Set the background color of the parse tree scroll pane.
-        parseTreeScrollPane.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        parseTreeScrollPane.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
 
         // Set the background color of the regular expression label.
-        regularExpressionLabel.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        regularExpressionLabel.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
     }
 
     /**
@@ -120,17 +105,17 @@ public final class ConvertREScreenController implements Initializable {
         // Get the preorder list of parse tree nodes and the preorder list of
         // regular expressions, and set the indices accordingly.
         parseTreeNodesPreorder = parseTree.preorderTraversal();
-        regularExpressionsPreorder = parseTree.getRegularExpression()
-                                              .preorderTraversal();
+        regularExpressionsPreorder =
+                parseTree.getRegularExpression().preorderTraversal();
         currentPreorderIndex = 0;
         maxPreorderIndex = parseTreeNodesPreorder.size() - 1;
 
         // Display the parse tree and update the regular expression label.
         parseTreeScrollPane.setContent(parseTree.getContainer());
-        regularExpressionLabel.setText(
-                "Regular Expression: "
-                        + Parser.simplifyRegexString(
-                        parseTree.getRegularExpression().toString()));
+        regularExpressionLabel.setText("Regular Expression: " +
+                                       Parser.simplifyRegexString(
+                                               parseTree.getRegularExpression()
+                                                       .toString()));
 
         // Disable the prev button (and possibly the next button).
         prevButton.setDisable(true);
@@ -147,23 +132,20 @@ public final class ConvertREScreenController implements Initializable {
         // traversal.
         RegularExpression currentRegularExpression =
                 regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText(
-                "Showing the finite automaton for "
-                        + Parser.simplifyRegexString(
-                        currentRegularExpression.toString())
-                        + ".");
+        infoLabel.setText("Showing the finite automaton for " +
+                          Parser.simplifyRegexString(
+                                  currentRegularExpression.toString()) + ".");
 
         // Set the explanation label.
         explanationLabel.setText(
-                GraphicalFiniteAutomatonBuilder
-                        .getExplanationText(currentRegularExpression));
+                GraphicalFiniteAutomatonBuilder.getExplanationText(
+                        currentRegularExpression));
 
         // Display the first finite automaton.
         blankPane.getChildren().clear();
-        blankPane.getChildren().add(
-                GraphicalFiniteAutomatonBuilder
-                        .buildFiniteAutomaton(currentRegularExpression)
-                        .getContainer());
+        blankPane.getChildren()
+                .add(GraphicalFiniteAutomatonBuilder.buildFiniteAutomaton(
+                        currentRegularExpression).getContainer());
     }
 
     /**
@@ -196,23 +178,20 @@ public final class ConvertREScreenController implements Initializable {
         // Update the info label.
         RegularExpression previousRegularExpression =
                 regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText(
-                "Showing the finite automaton for "
-                        + Parser.simplifyRegexString(
-                        previousRegularExpression.toString())
-                        + ".");
+        infoLabel.setText("Showing the finite automaton for " +
+                          Parser.simplifyRegexString(
+                                  previousRegularExpression.toString()) + ".");
 
         // Update the explanation label.
         explanationLabel.setText(
-                GraphicalFiniteAutomatonBuilder
-                        .getExplanationText(previousRegularExpression));
+                GraphicalFiniteAutomatonBuilder.getExplanationText(
+                        previousRegularExpression));
 
         // Display the previous finite automaton.
         blankPane.getChildren().clear();
-        blankPane.getChildren().add(
-                GraphicalFiniteAutomatonBuilder
-                        .buildFiniteAutomaton(previousRegularExpression)
-                        .getContainer());
+        blankPane.getChildren()
+                .add(GraphicalFiniteAutomatonBuilder.buildFiniteAutomaton(
+                        previousRegularExpression).getContainer());
     }
 
     /**
@@ -245,23 +224,20 @@ public final class ConvertREScreenController implements Initializable {
         // Update the info label.
         RegularExpression nextRegularExpression =
                 regularExpressionsPreorder.get(currentPreorderIndex);
-        infoLabel.setText(
-                "Showing the finite automaton for "
-                        + Parser.simplifyRegexString(
-                        nextRegularExpression.toString())
-                        + ".");
+        infoLabel.setText("Showing the finite automaton for " +
+                          Parser.simplifyRegexString(
+                                  nextRegularExpression.toString()) + ".");
 
         // Update the explanation label.
         explanationLabel.setText(
-                GraphicalFiniteAutomatonBuilder
-                        .getExplanationText(nextRegularExpression));
+                GraphicalFiniteAutomatonBuilder.getExplanationText(
+                        nextRegularExpression));
 
         // Display the next finite automaton.
         blankPane.getChildren().clear();
-        blankPane.getChildren().add(
-                GraphicalFiniteAutomatonBuilder
-                        .buildFiniteAutomaton(nextRegularExpression)
-                        .getContainer());
+        blankPane.getChildren()
+                .add(GraphicalFiniteAutomatonBuilder.buildFiniteAutomaton(
+                        nextRegularExpression).getContainer());
     }
 
 }

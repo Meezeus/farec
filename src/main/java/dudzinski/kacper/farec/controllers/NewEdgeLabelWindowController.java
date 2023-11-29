@@ -39,22 +39,19 @@ public final class NewEdgeLabelWindowController implements Initializable {
         // Get the valid operand pattern and remove the start and end anchors.
         String validOperands =
                 RegularExpressionSettings.getValidRegexOperandPattern();
-        validOperands =
-                validOperands.substring(1, validOperands.length() - 1);
+        validOperands = validOperands.substring(1, validOperands.length() - 1);
 
         // Create the valid label pattern.
         //noinspection EscapedSpace
-        String validLabelPattern = "^"
-                + validOperands
-                + "(,\s?"
-                + validOperands
-                + ")*$";
+        String validLabelPattern =
+                "^" + validOperands + "(,\s?" + validOperands + ")*$";
 
         // Add a listener to the text field to enable/disable the submit button
         // depending on if the text conforms to the restrictions on an edge
         // label.
-        textField.textProperty()
-                 .addListener((observable, oldValue, newValue) -> submitButton.setDisable(!newValue.matches(validLabelPattern)));
+        textField.textProperty().addListener(
+                (observable, oldValue, newValue) -> submitButton.setDisable(
+                        !newValue.matches(validLabelPattern)));
     }
 
     /**

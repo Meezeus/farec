@@ -77,8 +77,8 @@ public final class ParseTreeNode {
      */
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     public String getLabelText() {
-        Label label = (Label) container.getChildren().stream().filter(
-                child -> child instanceof Label).findFirst().get();
+        Label label = (Label) container.getChildren().stream()
+                .filter(child -> child instanceof Label).findFirst().get();
         return label.getText();
     }
 
@@ -89,8 +89,8 @@ public final class ParseTreeNode {
      */
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     public void setStroke(Color color) {
-        Circle circle = (Circle) container.getChildren().stream().filter(
-                child -> child instanceof Circle).findFirst().get();
+        Circle circle = (Circle) container.getChildren().stream()
+                .filter(child -> child instanceof Circle).findFirst().get();
         circle.setStroke(color);
     }
 

@@ -37,7 +37,7 @@ public final class Parser {
         if (!regexString.matches(
                 RegularExpressionSettings.getValidRegexStringPattern())) {
             return new Pair<>(false, "Regular expressions can only contain" +
-                    " regex operands and regex operators!");
+                                     " regex operands and regex operators!");
         }
 
         // Check that the number and placement of brackets is valid.
@@ -51,13 +51,13 @@ public final class Parser {
                 openingBracketCount--;
                 if (openingBracketCount < 0) {
                     return new Pair<>(false, "The regular expression has a" +
-                            " closing bracket without an opening bracket!");
+                                             " closing bracket without an opening bracket!");
                 }
             }
         }
         if (openingBracketCount != 0) {
             return new Pair<>(false, "The regular expression has different" +
-                    " numbers of opening and closing brackets!");
+                                     " numbers of opening and closing brackets!");
         }
 
         // At this point, the regex string is considered valid.
@@ -90,8 +90,8 @@ public final class Parser {
                 // If we have closed all brackets but are not at the end, the
                 // opening bracket at the start and the closing bracket at the
                 // end are not linked.
-                if ((openingBracketCount == 0)
-                        && (index != regexString.length() - 1)) {
+                if ((openingBracketCount == 0) &&
+                    (index != regexString.length() - 1)) {
                     return regexString;
                 }
             }
@@ -135,22 +135,17 @@ public final class Parser {
             else if (currentChar == '(') {
                 depth--;
             }
-            else if ((depth == 0)
-                    && (unionIndex == -1)
-                    && (currentChar == RegularExpressionSettings
-                    .getUnionOperatorChar())) {
+            else if ((depth == 0) && (unionIndex == -1) && (currentChar ==
+                                                            RegularExpressionSettings.getUnionOperatorChar())) {
                 unionIndex = index;
             }
-            else if ((depth == 0)
-                    && (concatenationIndex == -1)
-                    && (currentChar == RegularExpressionSettings
-                    .getConcatenationOperatorChar())) {
+            else if ((depth == 0) && (concatenationIndex == -1) &&
+                     (currentChar ==
+                      RegularExpressionSettings.getConcatenationOperatorChar())) {
                 concatenationIndex = index;
             }
-            else if ((depth == 0)
-                    && (starIndex == -1)
-                    && (currentChar == RegularExpressionSettings
-                    .getStarOperatorChar())) {
+            else if ((depth == 0) && (starIndex == -1) && (currentChar ==
+                                                           RegularExpressionSettings.getStarOperatorChar())) {
                 starIndex = index;
             }
         }
@@ -202,8 +197,8 @@ public final class Parser {
         // represents a simple regular expression.
         if (regexString.length() == 1) {
             // Check if the operand is valid.
-            if (regexString.matches(RegularExpressionSettings
-                                            .getValidRegexOperandPattern())) {
+            if (regexString.matches(
+                    RegularExpressionSettings.getValidRegexOperandPattern())) {
                 return new SimpleRegularExpression(regexString.charAt(0));
             }
             else {
@@ -217,7 +212,7 @@ public final class Parser {
         if (rootIndex == -1) {
             throw new IllegalArgumentException(
                     "The expression \"" + regexString + "\" does not have a" +
-                            " root operator!");
+                    " root operator!");
         }
 
         // Parse the left operand substring.
@@ -225,7 +220,7 @@ public final class Parser {
         if (leftSubstring.isEmpty()) {
             throw new IllegalArgumentException(
                     "The expression \"" + regexString + "\" contains an" +
-                            " empty left operand!");
+                    " empty left operand!");
         }
         RegularExpression leftOperand = parseRegexString(leftSubstring);
 
@@ -237,16 +232,16 @@ public final class Parser {
         RegularExpression rightOperand = null;
         // If the regex operator is CONCATENATION or UNION, there should be a
         // right operand substring.
-        if ((operator == RegexOperator.CONCATENATION)
-                || (operator == RegexOperator.UNION)) {
+        if ((operator == RegexOperator.CONCATENATION) ||
+            (operator == RegexOperator.UNION)) {
             if (rootIndex == regexString.length() - 1) {
                 throw new IllegalArgumentException(
                         "The expression \"" + regexString + "\" contains an" +
-                                " empty right operand!");
+                        " empty right operand!");
             }
             else {
-                rightOperand = parseRegexString(
-                        regexString.substring(rootIndex + 1));
+                rightOperand =
+                        parseRegexString(regexString.substring(rootIndex + 1));
             }
         }
         // If the regex operator is STAR, there shouldn't be a right operand
@@ -255,13 +250,12 @@ public final class Parser {
             if (rootIndex != regexString.length() - 1) {
                 throw new IllegalArgumentException(
                         "The expression \"" + regexString + "\" contains a" +
-                                " STAR operator with a right operand!");
+                        " STAR operator with a right operand!");
             }
         }
 
         // Return the complex regular expression.
-        return new ComplexRegularExpression(leftOperand,
-                                            operator,
+        return new ComplexRegularExpression(leftOperand, operator,
                                             rightOperand);
     }
 
@@ -310,9 +304,8 @@ public final class Parser {
                 // If the current char is a closing bracket at the same depth as
                 // the found opening bracket, take note of its index and stop
                 // searching.
-                if ((currentChar == ')')
-                        && (openingBracketIndex != -1)
-                        && (currentDepth == openingBracketDepth)) {
+                if ((currentChar == ')') && (openingBracketIndex != -1) &&
+                    (currentDepth == openingBracketDepth)) {
                     closingBracketIndex = index;
                     break;
                 }
@@ -330,7 +323,7 @@ public final class Parser {
                 StringBuilder newRegexStringBuilder =
                         new StringBuilder(regexString);
                 newRegexStringBuilder.deleteCharAt(closingBracketIndex)
-                                     .deleteCharAt(openingBracketIndex);
+                        .deleteCharAt(openingBracketIndex);
                 String newRegexString = newRegexStringBuilder.toString();
 
                 // Get the regular expression represented by the new regex
@@ -340,9 +333,8 @@ public final class Parser {
 
                 // If the regular expression has not changed, set the regex
                 // string to the new regex string.
-                if (Objects.equals(
-                        originalRegularExpressionAsString,
-                        newRegularExpressionAsString)) {
+                if (Objects.equals(originalRegularExpressionAsString,
+                                   newRegularExpressionAsString)) {
                     regexString = newRegexString;
                 }
                 // If the regular expression has changed, increase the offset.

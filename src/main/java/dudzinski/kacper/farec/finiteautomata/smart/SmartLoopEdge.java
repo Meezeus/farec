@@ -40,8 +40,9 @@ public final class SmartLoopEdge extends SmartEdgeComponent {
      */
     public void flip() {
         topside = !topside;
-        SmartFiniteAutomatonBuilder.setLoopEdgeBindings(
-                (CubicCurve) edgeShape, arrowhead, label, startState, topside);
+        SmartFiniteAutomatonBuilder.setLoopEdgeBindings((CubicCurve) edgeShape,
+                                                        arrowhead, label,
+                                                        startState, topside);
     }
 
 }

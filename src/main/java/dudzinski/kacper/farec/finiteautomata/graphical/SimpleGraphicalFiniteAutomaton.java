@@ -30,9 +30,9 @@ public final class SimpleGraphicalFiniteAutomaton extends GraphicalFiniteAutomat
 
         // Add the transition, initial state and final state containers to the
         // container of this finite automaton.
-        container.getChildren().addAll(transition.getContainer(),
-                                       initialState.getContainer(),
-                                       finalState.getContainer());
+        container.getChildren()
+                .addAll(transition.getContainer(), initialState.getContainer(),
+                        finalState.getContainer());
 
         // Set the minimum width and height of this finite automaton.
         container.setMinSize(minWidth, minHeight);

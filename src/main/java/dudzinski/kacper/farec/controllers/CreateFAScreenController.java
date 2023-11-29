@@ -92,38 +92,33 @@ public final class CreateFAScreenController implements Initializable {
         infoLabel.setText(infoLabelText);
 
         // Set the background color of the scroll pane.
-        scrollPane.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        scrollPane.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
 
         // Set the key-press behaviour for the scene as soon as it becomes
         // available.
         scrollPane.sceneProperty()
-                  .addListener((observable, oldValue, newValue) -> {
-                      if (oldValue == null && newValue != null) {
-                          newValue.setOnKeyPressed(this::keyPressed);
-                      }
-                  });
+                .addListener((observable, oldValue, newValue) -> {
+                    if (oldValue == null && newValue != null) {
+                        newValue.setOnKeyPressed(this::keyPressed);
+                    }
+                });
 
         // Set the finite automaton container as the content of the scroll pane.
         scrollPane.setContent(finiteAutomaton.getContainer());
 
         // Create the mapping from buttons to work modes.
-        buttonToWorkMode = Map.of(
-                moveButton, WorkMode.MOVE,
-                stateButton, WorkMode.STATE,
-                edgeButton, WorkMode.EDGE
-        );
+        buttonToWorkMode =
+                Map.of(moveButton, WorkMode.MOVE,
+                       stateButton, WorkMode.STATE,
+                       edgeButton, WorkMode.EDGE);
 
         // Create the mapping from work modes to buttons.
-        workModeToButton = Map.of(
-                WorkMode.MOVE, moveButton,
-                WorkMode.STATE, stateButton,
-                WorkMode.EDGE, edgeButton
-        );
+        workModeToButton =
+                Map.of(WorkMode.MOVE, moveButton,
+                       WorkMode.STATE, stateButton,
+                       WorkMode.EDGE, edgeButton);
     }
 
     /**
@@ -141,8 +136,8 @@ public final class CreateFAScreenController implements Initializable {
             unselectCurrentlySelected();
 
             // in STATE mode will create a new state.
-            if ((workMode == WorkMode.STATE)
-                    && (event.getButton().equals(MouseButton.PRIMARY))) {
+            if ((workMode == WorkMode.STATE) &&
+                (event.getButton().equals(MouseButton.PRIMARY))) {
                 SmartState state = SmartFiniteAutomatonBuilder.createState("");
                 state.getContainer().setTranslateX(event.getX());
                 state.getContainer().setTranslateY(event.getY());
@@ -172,16 +167,16 @@ public final class CreateFAScreenController implements Initializable {
             stateContextMenu.hide();
 
             // in MOVE mode will select it and set the offset.
-            if ((workMode == WorkMode.MOVE)
-                    && (event.getButton().equals(MouseButton.PRIMARY))) {
+            if ((workMode == WorkMode.MOVE) &&
+                (event.getButton().equals(MouseButton.PRIMARY))) {
                 selectComponent(event);
                 offset.x = container.getTranslateX() - event.getSceneX();
                 offset.y = container.getTranslateY() - event.getSceneY();
                 event.consume();
             }
             // in EDGE mode will select it as starting state of the edge.
-            if ((workMode == WorkMode.EDGE)
-                    && (event.getButton().equals(MouseButton.PRIMARY))) {
+            if ((workMode == WorkMode.EDGE) &&
+                (event.getButton().equals(MouseButton.PRIMARY))) {
                 selectComponent(event);
                 edgeStartState = (SmartState) currentlySelected;
                 event.consume();
@@ -194,16 +189,16 @@ public final class CreateFAScreenController implements Initializable {
         // Dragging the mouse on the state
         container.setOnMouseDragged(event -> {
             // in MOVE mode will move it along with the mouse.
-            if ((workMode == WorkMode.MOVE)
-                    && (event.getButton().equals(MouseButton.PRIMARY))) {
+            if ((workMode == WorkMode.MOVE) &&
+                (event.getButton().equals(MouseButton.PRIMARY))) {
                 // Don't allow the state to be moved past the left boundary.
                 if (event.getSceneX() + offset.x >
-                        STATE_RADIUS + STATE_STROKE_RADIUS) {
+                    STATE_RADIUS + STATE_STROKE_RADIUS) {
                     container.setTranslateX(event.getSceneX() + offset.x);
                 }
                 // Don't allow the state to be moved past the top boundary.
                 if (event.getSceneY() + offset.y >
-                        STATE_RADIUS + STATE_STROKE_RADIUS) {
+                    STATE_RADIUS + STATE_STROKE_RADIUS) {
                     container.setTranslateY(event.getSceneY() + offset.y);
                 }
                 // Update the size of the finite automaton container.
@@ -216,8 +211,8 @@ public final class CreateFAScreenController implements Initializable {
         container.setOnMouseDragReleased(event -> {
             // in EDGE mode will select it as the end state of the edge and
             // create the edge.
-            if ((workMode == WorkMode.EDGE)
-                    && (event.getButton().equals(MouseButton.PRIMARY))) {
+            if ((workMode == WorkMode.EDGE) &&
+                (event.getButton().equals(MouseButton.PRIMARY))) {
                 // Select the state.
                 selectComponent(event);
                 edgeEndState = (SmartState) currentlySelected;
@@ -226,17 +221,14 @@ public final class CreateFAScreenController implements Initializable {
                 // If the start state and end state are not the same state,
                 // create an edge between them.
                 if (edgeStartState != edgeEndState) {
-                    edge = SmartFiniteAutomatonBuilder
-                            .createStraightEdge(EMPTY_STRING,
-                                                edgeStartState,
-                                                edgeEndState);
+                    edge = SmartFiniteAutomatonBuilder.createStraightEdge(
+                            EMPTY_STRING, edgeStartState, edgeEndState);
                 }
                 // If the start state and end state are the same state, create a
                 // loop edge.
                 else {
-                    edge = SmartFiniteAutomatonBuilder
-                            .createLoopEdge(EMPTY_STRING,
-                                            edgeStartState);
+                    edge = SmartFiniteAutomatonBuilder.createLoopEdge(
+                            EMPTY_STRING, edgeStartState);
                 }
                 finiteAutomaton.addEdge(edge);
                 event.consume();
@@ -247,8 +239,7 @@ public final class CreateFAScreenController implements Initializable {
         // context menu, regardless of work mode.
         container.setOnContextMenuRequested(event -> {
             selectComponent(event);
-            stateContextMenu.show(container,
-                                  event.getScreenX(),
+            stateContextMenu.show(container, event.getScreenX(),
                                   event.getScreenY());
             event.consume();
         });
@@ -270,8 +261,8 @@ public final class CreateFAScreenController implements Initializable {
             loopContextMenu.hide();
 
             // in MOVE mode will select it.
-            if ((workMode == WorkMode.MOVE)
-                    && (event.getButton().equals(MouseButton.PRIMARY))) {
+            if ((workMode == WorkMode.MOVE) &&
+                (event.getButton().equals(MouseButton.PRIMARY))) {
                 selectComponent(event);
                 event.consume();
             }
@@ -282,13 +273,11 @@ public final class CreateFAScreenController implements Initializable {
         container.setOnContextMenuRequested(event -> {
             selectComponent(event);
             if (edge instanceof SmartLoopEdge) {
-                loopContextMenu.show(container,
-                                     event.getScreenX(),
+                loopContextMenu.show(container, event.getScreenX(),
                                      event.getScreenY());
             }
             else if (edge instanceof SmartEdge) {
-                edgeContextMenu.show(container,
-                                     event.getScreenX(),
+                edgeContextMenu.show(container, event.getScreenX(),
                                      event.getScreenY());
             }
             event.consume();
@@ -316,8 +305,8 @@ public final class CreateFAScreenController implements Initializable {
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Help: Finite Automata");
-        fxmlLoader = new FXMLLoader(
-                App.class.getResource("fa_help_window.fxml"));
+        fxmlLoader =
+                new FXMLLoader(App.class.getResource("fa_help_window.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 500, -1);
         window.setScene(scene);
         window.showAndWait();
@@ -414,14 +403,10 @@ public final class CreateFAScreenController implements Initializable {
         moveButton.setBorder(null);
         stateButton.setBorder(null);
         edgeButton.setBorder(null);
-        workModeToButton
-                .get(workMode)
-                .setBorder(
-                        new Border(
-                                new BorderStroke(USER_HIGHLIGHT_COLOR,
-                                                 BorderStrokeStyle.SOLID,
-                                                 new CornerRadii(3),
-                                                 BorderStroke.DEFAULT_WIDTHS)));
+        workModeToButton.get(workMode).setBorder(new Border(
+                new BorderStroke(USER_HIGHLIGHT_COLOR, BorderStrokeStyle.SOLID,
+                                 new CornerRadii(3),
+                                 BorderStroke.DEFAULT_WIDTHS)));
     }
 
     /**
@@ -448,8 +433,8 @@ public final class CreateFAScreenController implements Initializable {
 
         // Find the container of the clicked component.
         Node target = (Node) event.getTarget();
-        while ((target != null)
-                && (!Objects.equals(target.getId(), "selectable"))) {
+        while ((target != null) &&
+               (!Objects.equals(target.getId(), "selectable"))) {
             target = target.getParent();
         }
 
@@ -566,7 +551,7 @@ public final class CreateFAScreenController implements Initializable {
         });
 
         stateContextMenu.getItems()
-                        .addAll(rename, setInitial, setFinal, delete);
+                .addAll(rename, setInitial, setFinal, delete);
         return stateContextMenu;
     }
 

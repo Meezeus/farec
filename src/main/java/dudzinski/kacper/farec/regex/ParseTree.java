@@ -52,12 +52,9 @@ public final class ParseTree {
         container.setMinWidth((2 * greatestX) + (4 * NODE_RADIUS));
         container.setMinHeight(greatestY + (4 * NODE_RADIUS) + TOP_PADDING);
         container.setPadding(new Insets(TOP_PADDING, 0, 0, 0));
-        container.setBackground(
-                new Background(
-                        new BackgroundFill(CONTAINER_COLOR,
-                                           CornerRadii.EMPTY,
-                                           Insets.EMPTY
-                        )));
+        container.setBackground(new Background(
+                new BackgroundFill(CONTAINER_COLOR, CornerRadii.EMPTY,
+                                   Insets.EMPTY)));
     }
 
     /**
@@ -113,9 +110,9 @@ public final class ParseTree {
      * @throws IllegalArgumentException if the regular expression is neither
      *                                  simple nor complex
      */
-    private ParseTreeNode buildParseTreeNodes(RegularExpression regularExpression,
-                                              double currentX, double currentY)
-            throws IllegalArgumentException {
+    private ParseTreeNode buildParseTreeNodes(
+            RegularExpression regularExpression, double currentX,
+            double currentY) throws IllegalArgumentException {
         // If the regular expression is simple, it's parse tree is just a single
         // node.
         if (regularExpression instanceof SimpleRegularExpression simpleRegex) {
@@ -133,12 +130,10 @@ public final class ParseTree {
 
         // If the regular expression is complex, it's parse tree will include an
         // operator node and one or two children.
-        else if (regularExpression instanceof
-                ComplexRegularExpression complexRegex) {
+        else if (regularExpression instanceof ComplexRegularExpression complexRegex) {
             // Create the operator node.
-            char operatorChar =
-                    RegularExpressionSettings.getCharFromOperator(
-                            complexRegex.getOperator());
+            char operatorChar = RegularExpressionSettings.getCharFromOperator(
+                    complexRegex.getOperator());
             StackPane operatorNodePane = createNodePane(operatorChar);
 
             // Move the operator node into position.
@@ -160,14 +155,16 @@ public final class ParseTree {
             if (complexRegex.getOperator() == RegexOperator.STAR) {
                 // Build the subtree rooted at the left child and add it to the
                 // parse tree.
-                operatorNode.setLeftChild(buildParseTreeNodes(
-                        complexRegex.getLeftOperand(), currentX, currentY));
+                operatorNode.setLeftChild(
+                        buildParseTreeNodes(complexRegex.getLeftOperand(),
+                                            currentX, currentY));
             }
 
             // If the operator is CONCATENATION or UNION, there are two
             // children, and we will need to move left/right.
-            else if ((complexRegex.getOperator() == RegexOperator.CONCATENATION)
-                    || (complexRegex.getOperator() == RegexOperator.UNION)) {
+            else if ((complexRegex.getOperator() ==
+                      RegexOperator.CONCATENATION) ||
+                     (complexRegex.getOperator() == RegexOperator.UNION)) {
                 // Calculate the horizontal distance between the operator node
                 // and its children.
                 double maxDepth = complexRegex.getDepth();
@@ -181,8 +178,9 @@ public final class ParseTree {
 
                 // Build the subtree rooted at the left child and add it to the
                 // parse tree.
-                operatorNode.setLeftChild(buildParseTreeNodes(
-                        complexRegex.getLeftOperand(), currentX, currentY));
+                operatorNode.setLeftChild(
+                        buildParseTreeNodes(complexRegex.getLeftOperand(),
+                                            currentX, currentY));
 
                 // Move to the right.
                 currentX += xChange * 2;
@@ -192,8 +190,9 @@ public final class ParseTree {
 
                 // Build the subtree rooted at the right child and add it to the
                 // parse tree.
-                operatorNode.setRightChild(buildParseTreeNodes(
-                        complexRegex.getRightOperand(), currentX, currentY));
+                operatorNode.setRightChild(
+                        buildParseTreeNodes(complexRegex.getRightOperand(),
+                                            currentX, currentY));
             }
 
             // Return the operator node.
@@ -287,8 +286,8 @@ public final class ParseTree {
 
         // Add the offset to move the line to the left/right so that it connects
         // the parent and child nodes.
-        double xSeparation = Math.abs(parent.getTranslateX()
-                                              - child.getTranslateX());
+        double xSeparation =
+                Math.abs(parent.getTranslateX() - child.getTranslateX());
         // If the child is a left child, we need to move the edge to the left.
         if (child.getTranslateX() < parent.getTranslateX()) {
             xTranslate -= 0.5 * xSeparation;
