@@ -254,7 +254,7 @@ public class SmartFiniteAutomatonTest {
         }
 
         @Test
-        @DisplayName("resets the initial state of the finite automaton" +
+        @DisplayName("resets the final state of the finite automaton" +
                      " accordingly")
         public void test4() {
             SmartState state = SmartFiniteAutomatonBuilder.createState("");
