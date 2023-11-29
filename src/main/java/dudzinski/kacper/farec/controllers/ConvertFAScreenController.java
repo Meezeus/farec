@@ -681,8 +681,8 @@ public final class ConvertFAScreenController implements Initializable {
      * state to the end state, going through the middle state. The label of this
      * path is the concatenation of the labels of the individual direct paths,
      * with the star regex operator being applied to the path from the middle
-     * state to the middle state. Thus, the label has the format:<br> (start to
-     * middle) | (middle to middle)* | (middle to end)
+     * state to the middle state. Thus, the label has the format:<br>
+     * (start to middle) | (middle to middle)* | (middle to end)
      *
      * @param startState  the start state of the path
      * @param middleState the middle state of the path
