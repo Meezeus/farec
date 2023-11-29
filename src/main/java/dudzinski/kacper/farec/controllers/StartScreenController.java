@@ -52,18 +52,18 @@ public final class StartScreenController implements Initializable {
             FAREC (Finite Automata and Regular Expression Converter) is an \
             educational tool designed to demonstrate the algorithms used \
             to convert between finite automata and regular expressions.
-            
+                     
             FAREC allows you to create a finite automaton/regular \
             expression and then convert it into an equivalent regular \
             expression/finite automaton. Each step of the conversion \
             process is shown.
-                       
+                     
             To convert finite automata into regular expressions, FAREC \
             uses the State Elimination with GNFAs algorithm. To convert \
             regular expressions into finite automata, FAREC uses the \
             McNaughton–Yamada–Thompson algorithm (also known as Thompson's \
             construction algorithm).
-                                                     
+                        
             To begin, press one of the buttons on the right.
             """);
 

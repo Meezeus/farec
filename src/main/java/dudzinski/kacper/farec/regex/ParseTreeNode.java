@@ -44,21 +44,21 @@ public final class ParseTreeNode {
     }
 
     /**
-     * Returns the right child of this parse tree node.
-     *
-     * @return the right child of this parse tree node
-     */
-    public ParseTreeNode getRightChild() {
-        return rightChild;
-    }
-
-    /**
      * Sets the left child of this parse tree node.
      *
      * @param leftChild the new left child
      */
     public void setLeftChild(ParseTreeNode leftChild) {
         this.leftChild = leftChild;
+    }
+
+    /**
+     * Returns the right child of this parse tree node.
+     *
+     * @return the right child of this parse tree node
+     */
+    public ParseTreeNode getRightChild() {
+        return rightChild;
     }
 
     /**

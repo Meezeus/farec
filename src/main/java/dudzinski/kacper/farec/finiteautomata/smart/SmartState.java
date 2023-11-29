@@ -59,6 +59,16 @@ public final class SmartState extends SmartComponent {
     }
 
     /**
+     * Returns the stroke colour of this state.
+     *
+     * @return the stroke colour
+     */
+    @Override
+    public Paint getStroke() {
+        return circle.getStroke();
+    }
+
+    /**
      * Sets the stroke colour of this state. The stroke colour is applied to the
      * state circle.
      *
@@ -70,13 +80,13 @@ public final class SmartState extends SmartComponent {
     }
 
     /**
-     * Returns the stroke colour of this state.
+     * Returns the text of this state's label.
      *
-     * @return the stroke colour
+     * @return the text of this state's label
      */
     @Override
-    public Paint getStroke() {
-        return circle.getStroke();
+    public String getLabelText() {
+        return label.getText();
     }
 
     /**
@@ -87,16 +97,6 @@ public final class SmartState extends SmartComponent {
     @Override
     public void setLabelText(String labelText) {
         label.setText(labelText);
-    }
-
-    /**
-     * Returns the text of this state's label.
-     *
-     * @return the text of this state's label
-     */
-    @Override
-    public String getLabelText() {
-        return label.getText();
     }
 
     /**

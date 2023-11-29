@@ -35,12 +35,11 @@ import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
 public final class SmartFiniteAutomaton {
 
     private final CreateFAScreenController createFAController;
-    private ConvertFAScreenController convertFAController;
-    private boolean underConstruction = true;
-
     private final Pane container = new Pane();
     private final ArrayList<SmartState> states = new ArrayList<>();
     private final ArrayList<SmartEdgeComponent> edges = new ArrayList<>();
+    private ConvertFAScreenController convertFAController;
+    private boolean underConstruction = true;
     private SmartState initialState;
     private SmartState finalState;
 

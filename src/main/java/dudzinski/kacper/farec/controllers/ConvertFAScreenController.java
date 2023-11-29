@@ -36,20 +36,8 @@ import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
  */
 public final class ConvertFAScreenController implements Initializable {
 
-    /**
-     * This enum represents the available work modes. The work mode changes how
-     * the user can interact with the finite automaton. There are three work
-     * modes:<br>
-     * <ul>
-     *     <li>SELECT:  allows the user to select a state to remove</li>
-     *     <li>UPDATE:  allows the user to update edges</li>
-     *     <li>REMOVE:  allows the user to remove the chosen state</li>
-     * </ul>>
-     */
-    enum WorkMode {
-        SELECT, UPDATE, REMOVE
-    }
-
+    private static final String SELECT_STRING = "Select a state to remove.";
+    private final ArrayList<Command> commandHistory = new ArrayList<>();
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -58,21 +46,203 @@ public final class ConvertFAScreenController implements Initializable {
     private Button prevButton;
     @FXML
     private Button nextButton;
-
     private SmartFiniteAutomaton finiteAutomaton;
     private SmartComponent currentlySelected;
-    private Paint currentlySelectedColor;
     private final ContextMenu loopContextMenu = createLoopContextMenu();
-
+    private Paint currentlySelectedColor;
     private WorkMode workMode = WorkMode.SELECT;
-    private final ArrayList<Command> commandHistory = new ArrayList<>();
     private SmartState stateToRemove;
     private int incomingIndex = 0;
     private ArrayList<SmartState> incomingStates = new ArrayList<>();
     private int outgoingIndex = 0;
     private ArrayList<SmartState> outgoingStates = new ArrayList<>();
 
-    private static final String SELECT_STRING = "Select a state to remove.";
+    /**
+     * Given a label in the form (A)+(B)|(C)*|(D) where A, B, C and D are
+     * regular expressions, returns the simplified version of the label. The
+     * label is simplified according to the following rules (where R is a
+     * regular expression):
+     * <ul>
+     *     <li>EMPTY_SET UNION R = R UNION EMPTY_SET = R</li>
+     *     <li>R CONCATENATION EMPTY_STRING = EMPTY_STRING CONCATENATION R = R</li>
+     *     <li>If R = EMPTY_SET*, then R = EMPTY_STRING</li>
+     *     <li>R UNION R = R</li>
+     * </ul>
+     * <p>
+     * In addition, unnecessary brackets are removed from the label: see
+     * {@link Parser#simplifyRegexString(String)}
+     *
+     * @param label a label in the form (A)+(B)|(C)*|(D) where A, B, C and D are
+     *              regular expressions
+     * @return a simplified version of the label
+     */
+    @SuppressWarnings("ProtectedMemberInFinalClass")
+    protected static String simplifyLabel(String label) {
+        int depth = 0;
+        int unionIndex = -1;
+        int concatIndex1 = -1;
+        int concatIndex2 = -1;
+
+        // Find the positions of the root regex operators.
+        for (int index = 0; index < label.length(); index++) {
+            char currentChar = label.charAt(index);
+            if (currentChar == '(') {
+                depth++;
+            }
+            else if (currentChar == ')') {
+                depth--;
+            }
+            else if ((depth == 0) && (currentChar ==
+                                      RegularExpressionSettings.getUnionOperatorChar())) {
+                unionIndex = index;
+            }
+            else if ((depth == 0) && (currentChar ==
+                                      RegularExpressionSettings.getConcatenationOperatorChar())) {
+                if (concatIndex1 == -1) {
+                    concatIndex1 = index;
+                }
+                else if (concatIndex2 == -1) {
+                    concatIndex2 = index;
+                }
+            }
+        }
+
+        // Get the component labels.
+        String directLabel = label.substring(0, unionIndex);
+        String indirectLabel1 = label.substring(unionIndex + 1, concatIndex1);
+        // Note: don't include the star operator in the second indirect label.
+        String indirectLabel2 =
+                label.substring(concatIndex1 + 1, concatIndex2 - 1);
+        String indirectLabel3 = label.substring(concatIndex2 + 1);
+
+        // Get the component labels without outer brackets.
+        String directLabelBracketless = Parser.removeOuterBrackets(directLabel);
+        String indirectLabel1Bracketless =
+                Parser.removeOuterBrackets(indirectLabel1);
+        String indirectLabel2Bracketless =
+                Parser.removeOuterBrackets(indirectLabel2);
+        String indirectLabel3Bracketless =
+                Parser.removeOuterBrackets(indirectLabel3);
+
+        String[] simplifiedLabelArray = new String[7];
+
+        // If the second indirect label is an empty set, then replace it with
+        // an empty string.
+        if (indirectLabel2Bracketless.equals(EMPTY_SET)) {
+            indirectLabel2 = "(" + EMPTY_STRING + ")";
+            indirectLabel2Bracketless = EMPTY_STRING;
+        }
+
+        // If the direct label is an empty set, ignore it and the union
+        // operator.
+        if (directLabelBracketless.equals(EMPTY_SET)) {
+            simplifiedLabelArray[0] = "";
+            simplifiedLabelArray[1] = "";
+        }
+        // Otherwise, include it and the union operator.
+        else {
+            simplifiedLabelArray[0] = directLabel;
+            simplifiedLabelArray[1] = String.valueOf(
+                    RegularExpressionSettings.getUnionOperatorChar());
+        }
+
+        // If the first indirect label is not an empty string, include it.
+        if (!indirectLabel1Bracketless.equals(EMPTY_STRING)) {
+            simplifiedLabelArray[2] = indirectLabel1;
+
+            // If one of the other indirect labels is also not an empty string,
+            // include the first concatenation symbol.
+            if (!indirectLabel2Bracketless.equals(EMPTY_STRING) ||
+                !indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+                simplifiedLabelArray[3] = String.valueOf(
+                        RegularExpressionSettings.getConcatenationOperatorChar());
+            }
+            // Otherwise, ignore it.
+            else {
+                simplifiedLabelArray[3] = "";
+            }
+        }
+        // Otherwise, ignore it and the first concatenation symbol.
+        else {
+            simplifiedLabelArray[2] = "";
+            simplifiedLabelArray[3] = "";
+        }
+
+        // If the second indirect label is not an empty string, include it.
+        if (!indirectLabel2Bracketless.equals(EMPTY_STRING)) {
+            // Note: have to add the star operator back.
+            simplifiedLabelArray[4] = indirectLabel2 +
+                                      RegularExpressionSettings.getStarOperatorChar();
+
+            // If the third indirect label is also not an empty string, include
+            // the second concatenation symbol.
+            if (!indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+                simplifiedLabelArray[5] = String.valueOf(
+                        RegularExpressionSettings.getConcatenationOperatorChar());
+            }
+            // Otherwise, ignore it.
+            else {
+                simplifiedLabelArray[5] = "";
+            }
+        }
+        // Otherwise, ignore it and the second concatenation symbol.
+        else {
+            simplifiedLabelArray[4] = "";
+            simplifiedLabelArray[5] = "";
+        }
+
+        // If the third indirect label is not an empty string we include it.
+        if (!indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+            simplifiedLabelArray[6] = indirectLabel3;
+        }
+        // Otherwise, we ignore it.
+        else {
+            simplifiedLabelArray[6] = "";
+        }
+
+        // If all three indirect labels are an empty string, we have to include
+        // one of them.
+        if (indirectLabel1Bracketless.equals(EMPTY_STRING) &&
+            indirectLabel2Bracketless.equals(EMPTY_STRING) &&
+            indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+            simplifiedLabelArray[2] = "(" + EMPTY_STRING + ")";
+        }
+
+        // If the label is in the form R UNION R, replace it with just R...
+        // ...if the direct label is equal to the first indirect label.
+        if (directLabelBracketless.equals(indirectLabel1Bracketless) &&
+            indirectLabel2Bracketless.equals(EMPTY_STRING) &&
+            indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+            simplifiedLabelArray[1] = "";
+            simplifiedLabelArray[2] = "";
+        }
+        // ...if the direct label is equal to the second indirect label.
+        // This can only happen if the direct label = (R*) and the second
+        // indirect label = (R)*.
+        else if (directLabelBracketless.equals(indirectLabel2Bracketless +
+                                               RegularExpressionSettings.getStarOperatorChar()) &&
+                 indirectLabel1Bracketless.equals(EMPTY_STRING) &&
+                 indirectLabel3Bracketless.equals(EMPTY_STRING)) {
+            simplifiedLabelArray[1] = "";
+            simplifiedLabelArray[4] = "";
+        }
+        // ...if the direct label is equal to the third indirect label:
+        else if (directLabelBracketless.equals(indirectLabel3Bracketless) &&
+                 indirectLabel1Bracketless.equals(EMPTY_STRING) &&
+                 indirectLabel2Bracketless.equals(EMPTY_STRING)) {
+            simplifiedLabelArray[1] = "";
+            simplifiedLabelArray[6] = "";
+        }
+
+        // Build the simplified label.
+        StringBuilder simplifiedLabelBuilder = new StringBuilder();
+        Arrays.stream(simplifiedLabelArray).toList()
+                .forEach(simplifiedLabelBuilder::append);
+
+        // Use the Parser to remove unnecessary brackets and return the
+        // simplified label.
+        return Parser.simplifyRegexString(simplifiedLabelBuilder.toString());
+    }
 
     /**
      * Sets the background color of the scroll pane.
@@ -340,193 +510,6 @@ public final class ConvertFAScreenController implements Initializable {
     }
 
     /**
-     * Given a label in the form (A)+(B)|(C)*|(D) where A, B, C and D are
-     * regular expressions, returns the simplified version of the label. The
-     * label is simplified according to the following rules (where R is a
-     * regular expression):
-     * <ul>
-     *     <li>EMPTY_SET UNION R = R UNION EMPTY_SET = R</li>
-     *     <li>R CONCATENATION EMPTY_STRING = EMPTY_STRING CONCATENATION R = R</li>
-     *     <li>If R = EMPTY_SET*, then R = EMPTY_STRING</li>
-     *     <li>R UNION R = R</li>
-     * </ul>
-     * <p>
-     * In addition, unnecessary brackets are removed from the label: see
-     * {@link Parser#simplifyRegexString(String)}
-     *
-     * @param label a label in the form (A)+(B)|(C)*|(D) where A, B, C and D are
-     *              regular expressions
-     * @return a simplified version of the label
-     */
-    @SuppressWarnings("ProtectedMemberInFinalClass")
-    protected static String simplifyLabel(String label) {
-        int depth = 0;
-        int unionIndex = -1;
-        int concatIndex1 = -1;
-        int concatIndex2 = -1;
-
-        // Find the positions of the root regex operators.
-        for (int index = 0; index < label.length(); index++) {
-            char currentChar = label.charAt(index);
-            if (currentChar == '(') {
-                depth++;
-            }
-            else if (currentChar == ')') {
-                depth--;
-            }
-            else if ((depth == 0) && (currentChar ==
-                                      RegularExpressionSettings.getUnionOperatorChar())) {
-                unionIndex = index;
-            }
-            else if ((depth == 0) && (currentChar ==
-                                      RegularExpressionSettings.getConcatenationOperatorChar())) {
-                if (concatIndex1 == -1) {
-                    concatIndex1 = index;
-                }
-                else if (concatIndex2 == -1) {
-                    concatIndex2 = index;
-                }
-            }
-        }
-
-        // Get the component labels.
-        String directLabel = label.substring(0, unionIndex);
-        String indirectLabel1 = label.substring(unionIndex + 1, concatIndex1);
-        // Note: don't include the star operator in the second indirect label.
-        String indirectLabel2 =
-                label.substring(concatIndex1 + 1, concatIndex2 - 1);
-        String indirectLabel3 = label.substring(concatIndex2 + 1);
-
-        // Get the component labels without outer brackets.
-        String directLabelBracketless = Parser.removeOuterBrackets(directLabel);
-        String indirectLabel1Bracketless =
-                Parser.removeOuterBrackets(indirectLabel1);
-        String indirectLabel2Bracketless =
-                Parser.removeOuterBrackets(indirectLabel2);
-        String indirectLabel3Bracketless =
-                Parser.removeOuterBrackets(indirectLabel3);
-
-        String[] simplifiedLabelArray = new String[7];
-
-        // If the second indirect label is an empty set, then replace it with
-        // an empty string.
-        if (indirectLabel2Bracketless.equals(EMPTY_SET)) {
-            indirectLabel2 = "(" + EMPTY_STRING + ")";
-            indirectLabel2Bracketless = EMPTY_STRING;
-        }
-
-        // If the direct label is an empty set, ignore it and the union
-        // operator.
-        if (directLabelBracketless.equals(EMPTY_SET)) {
-            simplifiedLabelArray[0] = "";
-            simplifiedLabelArray[1] = "";
-        }
-        // Otherwise, include it and the union operator.
-        else {
-            simplifiedLabelArray[0] = directLabel;
-            simplifiedLabelArray[1] = String.valueOf(
-                    RegularExpressionSettings.getUnionOperatorChar());
-        }
-
-        // If the first indirect label is not an empty string, include it.
-        if (!indirectLabel1Bracketless.equals(EMPTY_STRING)) {
-            simplifiedLabelArray[2] = indirectLabel1;
-
-            // If one of the other indirect labels is also not an empty string,
-            // include the first concatenation symbol.
-            if (!indirectLabel2Bracketless.equals(EMPTY_STRING) ||
-                !indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-                simplifiedLabelArray[3] = String.valueOf(
-                        RegularExpressionSettings.getConcatenationOperatorChar());
-            }
-            // Otherwise, ignore it.
-            else {
-                simplifiedLabelArray[3] = "";
-            }
-        }
-        // Otherwise, ignore it and the first concatenation symbol.
-        else {
-            simplifiedLabelArray[2] = "";
-            simplifiedLabelArray[3] = "";
-        }
-
-        // If the second indirect label is not an empty string, include it.
-        if (!indirectLabel2Bracketless.equals(EMPTY_STRING)) {
-            // Note: have to add the star operator back.
-            simplifiedLabelArray[4] = indirectLabel2 +
-                                      RegularExpressionSettings.getStarOperatorChar();
-
-            // If the third indirect label is also not an empty string, include
-            // the second concatenation symbol.
-            if (!indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-                simplifiedLabelArray[5] = String.valueOf(
-                        RegularExpressionSettings.getConcatenationOperatorChar());
-            }
-            // Otherwise, ignore it.
-            else {
-                simplifiedLabelArray[5] = "";
-            }
-        }
-        // Otherwise, ignore it and the second concatenation symbol.
-        else {
-            simplifiedLabelArray[4] = "";
-            simplifiedLabelArray[5] = "";
-        }
-
-        // If the third indirect label is not an empty string we include it.
-        if (!indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-            simplifiedLabelArray[6] = indirectLabel3;
-        }
-        // Otherwise, we ignore it.
-        else {
-            simplifiedLabelArray[6] = "";
-        }
-
-        // If all three indirect labels are an empty string, we have to include
-        // one of them.
-        if (indirectLabel1Bracketless.equals(EMPTY_STRING) &&
-            indirectLabel2Bracketless.equals(EMPTY_STRING) &&
-            indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-            simplifiedLabelArray[2] = "(" + EMPTY_STRING + ")";
-        }
-
-        // If the label is in the form R UNION R, replace it with just R...
-        // ...if the direct label is equal to the first indirect label.
-        if (directLabelBracketless.equals(indirectLabel1Bracketless) &&
-            indirectLabel2Bracketless.equals(EMPTY_STRING) &&
-            indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-            simplifiedLabelArray[1] = "";
-            simplifiedLabelArray[2] = "";
-        }
-        // ...if the direct label is equal to the second indirect label.
-        // This can only happen if the direct label = (R*) and the second
-        // indirect label = (R)*.
-        else if (directLabelBracketless.equals(indirectLabel2Bracketless +
-                                               RegularExpressionSettings.getStarOperatorChar()) &&
-                 indirectLabel1Bracketless.equals(EMPTY_STRING) &&
-                 indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-            simplifiedLabelArray[1] = "";
-            simplifiedLabelArray[4] = "";
-        }
-        // ...if the direct label is equal to the third indirect label:
-        else if (directLabelBracketless.equals(indirectLabel3Bracketless) &&
-                 indirectLabel1Bracketless.equals(EMPTY_STRING) &&
-                 indirectLabel2Bracketless.equals(EMPTY_STRING)) {
-            simplifiedLabelArray[1] = "";
-            simplifiedLabelArray[6] = "";
-        }
-
-        // Build the simplified label.
-        StringBuilder simplifiedLabelBuilder = new StringBuilder();
-        Arrays.stream(simplifiedLabelArray).toList()
-                .forEach(simplifiedLabelBuilder::append);
-
-        // Use the Parser to remove unnecessary brackets and return the
-        // simplified label.
-        return Parser.simplifyRegexString(simplifiedLabelBuilder.toString());
-    }
-
-    /**
      * Unselects the currently selected component and restores its
      * highlighting.
      */
@@ -723,6 +706,20 @@ public final class ConvertFAScreenController implements Initializable {
 
         // Return the path label and the path edges.
         return new Pair<>(pathLabel, pathEdges);
+    }
+
+    /**
+     * This enum represents the available work modes. The work mode changes how
+     * the user can interact with the finite automaton. There are three work
+     * modes:<br>
+     * <ul>
+     *     <li>SELECT:  allows the user to select a state to remove</li>
+     *     <li>UPDATE:  allows the user to update edges</li>
+     *     <li>REMOVE:  allows the user to remove the chosen state</li>
+     * </ul>>
+     */
+    enum WorkMode {
+        SELECT, UPDATE, REMOVE
     }
 
     /**
@@ -980,9 +977,9 @@ public final class ConvertFAScreenController implements Initializable {
      */
     private class RemoveStateCommand extends Command {
 
-        private ArrayList<Pair<SmartComponent, Paint>> savedHighlighting;
         private final ArrayList<SmartEdgeComponent> savedEdges =
                 new ArrayList<>();
+        private ArrayList<Pair<SmartComponent, Paint>> savedHighlighting;
         private SmartState savedState;
         private String savedInfoLabelText;
 

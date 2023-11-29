@@ -37,20 +37,8 @@ import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
  */
 public final class CreateFAScreenController implements Initializable {
 
-    /**
-     * This enum represents the available work modes. The work mode changes how
-     * the user can interact with the finite automaton. There are three work
-     * modes:<br>
-     * <ul>
-     *     <li>MOVE:  allows the user to move existing states</li>
-     *     <li>STATE: allows the user to create new states</li>
-     *     <li>EDGE:  allows the user to create new edges</li>
-     * </ul>>
-     */
-    enum WorkMode {
-        MOVE, STATE, EDGE
-    }
-
+    private final SmartFiniteAutomaton finiteAutomaton =
+            new SmartFiniteAutomaton(this);
     private FXMLLoader fxmlLoader;
     @FXML
     private ScrollPane scrollPane;
@@ -66,16 +54,13 @@ public final class CreateFAScreenController implements Initializable {
     private String infoLabelText;
     @FXML
     private Button convertButton;
-
-    private final SmartFiniteAutomaton finiteAutomaton =
-            new SmartFiniteAutomaton(this);
-    private final ContextMenu stateContextMenu = createStateContextMenu();
-    private final ContextMenu edgeContextMenu = createEdgeContextMenu();
-    private final ContextMenu loopContextMenu = createLoopContextMenu();
     private WorkMode workMode = WorkMode.MOVE;
     private Map<Button, WorkMode> buttonToWorkMode;
     private Map<WorkMode, Button> workModeToButton;
     private SmartComponent currentlySelected;
+    private final ContextMenu stateContextMenu = createStateContextMenu();
+    private final ContextMenu edgeContextMenu = createEdgeContextMenu();
+    private final ContextMenu loopContextMenu = createLoopContextMenu();
     private SmartState edgeStartState;
     private SmartState edgeEndState;
 
@@ -110,14 +95,12 @@ public final class CreateFAScreenController implements Initializable {
 
         // Create the mapping from buttons to work modes.
         buttonToWorkMode =
-                Map.of(moveButton, WorkMode.MOVE,
-                       stateButton, WorkMode.STATE,
+                Map.of(moveButton, WorkMode.MOVE, stateButton, WorkMode.STATE,
                        edgeButton, WorkMode.EDGE);
 
         // Create the mapping from work modes to buttons.
         workModeToButton =
-                Map.of(WorkMode.MOVE, moveButton,
-                       WorkMode.STATE, stateButton,
+                Map.of(WorkMode.MOVE, moveButton, WorkMode.STATE, stateButton,
                        WorkMode.EDGE, edgeButton);
     }
 
@@ -630,6 +613,20 @@ public final class CreateFAScreenController implements Initializable {
 
         loopContextMenu.getItems().addAll(rename, flip, delete);
         return loopContextMenu;
+    }
+
+    /**
+     * This enum represents the available work modes. The work mode changes how
+     * the user can interact with the finite automaton. There are three work
+     * modes:<br>
+     * <ul>
+     *     <li>MOVE:  allows the user to move existing states</li>
+     *     <li>STATE: allows the user to create new states</li>
+     *     <li>EDGE:  allows the user to create new edges</li>
+     * </ul>>
+     */
+    enum WorkMode {
+        MOVE, STATE, EDGE
     }
 
 }

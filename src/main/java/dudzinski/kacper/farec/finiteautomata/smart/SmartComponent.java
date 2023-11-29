@@ -21,13 +21,6 @@ public abstract class SmartComponent {
     public abstract Group getContainer();
 
     /**
-     * Sets the stroke colour of this smart component.
-     *
-     * @param paint the new stroke colour
-     */
-    public abstract void setStroke(Paint paint);
-
-    /**
      * Returns the stroke colour of this smart component.
      *
      * @return the stroke colour
@@ -35,11 +28,11 @@ public abstract class SmartComponent {
     public abstract Paint getStroke();
 
     /**
-     * Sets the text of this smart component's label.
+     * Sets the stroke colour of this smart component.
      *
-     * @param labelText the new text of the label
+     * @param paint the new stroke colour
      */
-    public abstract void setLabelText(String labelText);
+    public abstract void setStroke(Paint paint);
 
     /**
      * Returns the text of this component's label.
@@ -47,5 +40,12 @@ public abstract class SmartComponent {
      * @return the text of this component's label
      */
     public abstract String getLabelText();
+
+    /**
+     * Sets the text of this smart component's label.
+     *
+     * @param labelText the new text of the label
+     */
+    public abstract void setLabelText(String labelText);
 
 }

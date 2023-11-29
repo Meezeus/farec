@@ -28,11 +28,11 @@ import javafx.scene.shape.Shape;
 public abstract class SmartEdgeComponent extends SmartComponent {
 
     protected final Group container = new Group();
+    protected final SmartState startState;
+    protected final SmartState endState;
     protected Shape edgeShape;
     protected Polygon arrowhead;
     protected Label label;
-    protected final SmartState startState;
-    protected final SmartState endState;
 
     /**
      * Creates an edge between two (not necessarily unique) states.
@@ -66,6 +66,16 @@ public abstract class SmartEdgeComponent extends SmartComponent {
     }
 
     /**
+     * Returns the stroke colour of this edge.
+     *
+     * @return the stroke colour
+     */
+    @Override
+    public Paint getStroke() {
+        return edgeShape.getStroke();
+    }
+
+    /**
      * Set the stroke colour of this edge. The stroke colour is applied to the
      * edge shape and the arrowhead.
      *
@@ -78,13 +88,13 @@ public abstract class SmartEdgeComponent extends SmartComponent {
     }
 
     /**
-     * Returns the stroke colour of this edge.
+     * Returns the text of this edge's label.
      *
-     * @return the stroke colour
+     * @return the text of this edge's label
      */
     @Override
-    public Paint getStroke() {
-        return edgeShape.getStroke();
+    public String getLabelText() {
+        return label.getText();
     }
 
     /**
@@ -95,16 +105,6 @@ public abstract class SmartEdgeComponent extends SmartComponent {
     @Override
     public void setLabelText(String labelText) {
         label.setText(labelText);
-    }
-
-    /**
-     * Returns the text of this edge's label.
-     *
-     * @return the text of this edge's label
-     */
-    @Override
-    public String getLabelText() {
-        return label.getText();
     }
 
     /**
