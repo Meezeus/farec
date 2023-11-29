@@ -27,7 +27,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static dudzinski.kacper.farec.finiteautomata.FiniteAutomatonSettings.*;
-import static dudzinski.kacper.farec.regex.RegularExpressionSettings.*;
 
 /**
  * This is the controller for the view used to convert finite automata into
@@ -386,11 +385,13 @@ public final class ConvertFAScreenController implements Initializable {
                 depth--;
             }
             else if ((depth == 0)
-                    && (currentChar == getUnionOperatorChar())) {
+                    && (currentChar == RegularExpressionSettings
+                                        .getUnionOperatorChar())) {
                 unionIndex = index;
             }
             else if ((depth == 0)
-                    && (currentChar == getConcatenationOperatorChar())) {
+                    && (currentChar == RegularExpressionSettings
+                                        .getConcatenationOperatorChar())) {
                 if (concatIndex1 == -1) {
                     concatIndex1 = index;
                 }
@@ -452,9 +453,9 @@ public final class ConvertFAScreenController implements Initializable {
             // include the first concatenation symbol.
             if (!indirectLabel2Bracketless.equals(EMPTY_STRING)
                     || !indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-                simplifiedLabelArray[3] = "" +
+                simplifiedLabelArray[3] = String.valueOf(
                         RegularExpressionSettings
-                                .getConcatenationOperatorChar();
+                                .getConcatenationOperatorChar());
             }
             // Otherwise, ignore it.
             else {
@@ -470,13 +471,15 @@ public final class ConvertFAScreenController implements Initializable {
         // If the second indirect label is not an empty string, include it.
         if (!indirectLabel2Bracketless.equals(EMPTY_STRING)) {
             // Note: have to add the star operator back.
-            simplifiedLabelArray[4] = indirectLabel2 + getStarOperatorChar();
+            simplifiedLabelArray[4] = indirectLabel2
+                    + RegularExpressionSettings.getStarOperatorChar();
 
             // If the third indirect label is also not an empty string, include
             // the second concatenation symbol.
             if (!indirectLabel3Bracketless.equals(EMPTY_STRING)) {
-                simplifiedLabelArray[5] =
-                        String.valueOf(getConcatenationOperatorChar());
+                simplifiedLabelArray[5] = String.valueOf(
+                        RegularExpressionSettings
+                                .getConcatenationOperatorChar());
             }
             // Otherwise, ignore it.
             else {
@@ -518,7 +521,8 @@ public final class ConvertFAScreenController implements Initializable {
         // This can only happen if the direct label = (R*) and the second
         // indirect label = (R)*.
         else if (directLabelBracketless
-                .equals(indirectLabel2Bracketless + getStarOperatorChar())
+                .equals(indirectLabel2Bracketless
+                        + RegularExpressionSettings.getStarOperatorChar())
                 && indirectLabel1Bracketless.equals(EMPTY_STRING)
                 && indirectLabel3Bracketless.equals(EMPTY_STRING)) {
             simplifiedLabelArray[1] = "";
@@ -732,10 +736,10 @@ public final class ConvertFAScreenController implements Initializable {
 
         // Create the path label for the indirect path.
         String pathLabel = startToMiddleLabel
-                + getConcatenationOperatorChar()
+                + RegularExpressionSettings.getConcatenationOperatorChar()
                 + middleToMiddleLabel
-                + getStarOperatorChar()
-                + getConcatenationOperatorChar()
+                + RegularExpressionSettings.getStarOperatorChar()
+                + RegularExpressionSettings.getConcatenationOperatorChar()
                 + middleToEndLabel;
 
         // Return the path label and the path edges.
@@ -897,7 +901,7 @@ public final class ConvertFAScreenController implements Initializable {
 
             // Create the new label.
             String newLabel = directPath.getKey()
-                    + getUnionOperatorChar()
+                    + RegularExpressionSettings.getUnionOperatorChar()
                     + indirectPath.getKey();
 
             // Simplify the label.
