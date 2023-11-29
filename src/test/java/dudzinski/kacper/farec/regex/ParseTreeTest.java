@@ -27,12 +27,10 @@ class ParseTreeTest {
      */
     @BeforeEach
     void resetOperatorChars() {
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.STAR, '*');
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.UNION, '+');
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.CONCATENATION, '|');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.STAR, '*');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.UNION, '+');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.CONCATENATION,
+                                                  '|');
     }
 
     /**
@@ -40,7 +38,7 @@ class ParseTreeTest {
      */
     @Nested
     @DisplayName("Preorder traversal returns the correct nodes when the regex" +
-            " string is")
+                 " string is")
     class PreorderTraversalTest {
         @Test
         @DisplayName("1")
@@ -49,12 +47,9 @@ class ParseTreeTest {
             RegularExpression regularExpression =
                     Parser.parseRegexString(regexString);
             ParseTree parseTree = new ParseTree(regularExpression);
-            ArrayList<ParseTreeNode> nodeList =
-                    parseTree.preorderTraversal();
-            assertEquals("1",
-                         nodeList.stream()
-                                 .map(ParseTreeNode::getLabelText)
-                                 .collect(Collectors.joining(",")));
+            ArrayList<ParseTreeNode> nodeList = parseTree.preorderTraversal();
+            assertEquals("1", nodeList.stream().map(ParseTreeNode::getLabelText)
+                    .collect(Collectors.joining(",")));
         }
 
         @Test
@@ -64,11 +59,9 @@ class ParseTreeTest {
             RegularExpression regularExpression =
                     Parser.parseRegexString(regexString);
             ParseTree parseTree = new ParseTree(regularExpression);
-            ArrayList<ParseTreeNode> nodeList =
-                    parseTree.preorderTraversal();
+            ArrayList<ParseTreeNode> nodeList = parseTree.preorderTraversal();
             assertEquals("1,*",
-                         nodeList.stream()
-                                 .map(ParseTreeNode::getLabelText)
+                         nodeList.stream().map(ParseTreeNode::getLabelText)
                                  .collect(Collectors.joining(",")));
         }
 
@@ -79,11 +72,9 @@ class ParseTreeTest {
             RegularExpression regularExpression =
                     Parser.parseRegexString(regexString);
             ParseTree parseTree = new ParseTree(regularExpression);
-            ArrayList<ParseTreeNode> nodeList =
-                    parseTree.preorderTraversal();
+            ArrayList<ParseTreeNode> nodeList = parseTree.preorderTraversal();
             assertEquals("1,2,+",
-                         nodeList.stream()
-                                 .map(ParseTreeNode::getLabelText)
+                         nodeList.stream().map(ParseTreeNode::getLabelText)
                                  .collect(Collectors.joining(",")));
         }
 
@@ -94,11 +85,9 @@ class ParseTreeTest {
             RegularExpression regularExpression =
                     Parser.parseRegexString(regexString);
             ParseTree parseTree = new ParseTree(regularExpression);
-            ArrayList<ParseTreeNode> nodeList =
-                    parseTree.preorderTraversal();
+            ArrayList<ParseTreeNode> nodeList = parseTree.preorderTraversal();
             assertEquals("1,2,+,3,*,4,5,|,+,|",
-                         nodeList.stream()
-                                 .map(ParseTreeNode::getLabelText)
+                         nodeList.stream().map(ParseTreeNode::getLabelText)
                                  .collect(Collectors.joining(",")));
         }
     }
