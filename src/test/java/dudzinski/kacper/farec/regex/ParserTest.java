@@ -102,6 +102,18 @@ class ParserTest {
                              " opening and closing brackets!",
                              isValid.getValue());
             }
+
+            @Test
+            @DisplayName("different numbers of opening and closing brackets")
+            void test4() {
+                String regexString = "a+b)|c*";
+                Pair<Boolean, String> isValid = Parser.isValid(regexString);
+                assertFalse(isValid.getKey());
+                assertEquals(
+                        "The regular expression has a closing bracket without" +
+                        " an opening bracket!",
+                        isValid.getValue());
+            }
         }
     }
 
