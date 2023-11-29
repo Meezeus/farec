@@ -20,12 +20,10 @@ public class RegularExpressionTest {
      */
     @BeforeEach
     void resetOperatorChars() {
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.STAR, '*');
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.UNION, '+');
-        RegularExpressionSettings
-                .setOperatorChar(RegexOperator.CONCATENATION, '|');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.STAR, '*');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.UNION, '+');
+        RegularExpressionSettings.setOperatorChar(RegexOperator.CONCATENATION,
+                                                  '|');
     }
 
     /**
@@ -33,7 +31,7 @@ public class RegularExpressionTest {
      */
     @Nested
     @DisplayName("The depth of a regular expression is returned correctly" +
-            " when the regex string is")
+                 " when the regex string is")
     class GetDepthTest {
         @Test
         @DisplayName("a")
@@ -120,7 +118,7 @@ public class RegularExpressionTest {
      */
     @Nested
     @DisplayName("Preorder traversal returns the correct regular expressions" +
-            " when the regex string is")
+                 " when the regex string is")
     class PreorderTraversalTest {
         @Test
         @DisplayName("1")
@@ -135,9 +133,7 @@ public class RegularExpressionTest {
                     regularExpression.preorderTraversal();
 
             assertEquals(trueRegexStringList.size(), testRegexList.size());
-            for (int index = 0;
-                 index < trueRegexStringList.size();
-                 index++) {
+            for (int index = 0; index < trueRegexStringList.size(); index++) {
                 assertEquals(trueRegexStringList.get(index),
                              testRegexList.get(index).toString());
             }
@@ -157,9 +153,7 @@ public class RegularExpressionTest {
                     regularExpression.preorderTraversal();
 
             assertEquals(trueRegexStringList.size(), testRegexList.size());
-            for (int index = 0;
-                 index < trueRegexStringList.size();
-                 index++) {
+            for (int index = 0; index < trueRegexStringList.size(); index++) {
                 assertEquals(trueRegexStringList.get(index),
                              testRegexList.get(index).toString());
             }
@@ -180,9 +174,7 @@ public class RegularExpressionTest {
                     regularExpression.preorderTraversal();
 
             assertEquals(trueRegexStringList.size(), testRegexList.size());
-            for (int index = 0;
-                 index < trueRegexStringList.size();
-                 index++) {
+            for (int index = 0; index < trueRegexStringList.size(); index++) {
                 assertEquals(trueRegexStringList.get(index),
                              testRegexList.get(index).toString());
             }
@@ -210,9 +202,7 @@ public class RegularExpressionTest {
                     regularExpression.preorderTraversal();
 
             assertEquals(trueRegexStringList.size(), testRegexList.size());
-            for (int index = 0;
-                 index < trueRegexStringList.size();
-                 index++) {
+            for (int index = 0; index < trueRegexStringList.size(); index++) {
                 assertEquals(trueRegexStringList.get(index),
                              testRegexList.get(index).toString());
             }
