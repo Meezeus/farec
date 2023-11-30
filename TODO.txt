@@ -1,0 +1,75 @@
+//////////////////////////
+// Backend Improvements //
+//////////////////////////
+
+In the SmartState class, remove the distinction between incoming and outgoing
+when adding/removing edges, and just check the edge when its being
+added/removed.
+
+Move the container, shape and label into the SmartComponent class. Override
+Shape with Line, QuadCurve, CubicCurve in the subclasses.
+
+Get rid of graphical finite automata, use smart finite automata for everything?
+
+ParseTreeNode should keep its Circle and Label as private variables.
+
+Change name of State Elimination to Brzozowski and McCluskey algorithm?
+
+////////////////////////////
+// Improved Functionality //
+////////////////////////////
+
+Allow initial state and final state of the finite automaton to be the same, as
+well as multiple final states during finite automaton creation. Then convert
+into GNFA.
+
+When creating a new edge, have a faint grey arrow going from the start state to
+the cursor, until the edge is created or cancelled.
+
+In FA creation screen, dragging a state off the edge should also move the scroll
+pane.
+
+Non-epsilon labels should be more visible than epsilon labels.
+
+Turn labels into text area (?) so that text can be copied.
+
+Rework parse trees so that they are not HUGE! Build them bottom-up.
+
+Rework graphical finite automata so that they are smarter about their sizes.
+Less empty space.
+
+Get it running on other OS.
+
+///////////////////////
+// New Functionality //
+///////////////////////
+
+Double-click a state or edge to rename.
+
+Add an Edit button at the start of the FA -> RE conversion process to return
+back to the create FA screen with the current FA.
+
+Explanation label for FA -> RE conversion.
+
+Add highlighting to the RE -> FA conversion process to indicate transitions
+added/previous FA.
+
+Saving and loading regular expressions.
+
+Saving and loading finite automata.
+
+Settings window and user customisation.
+
+Zoom functionality for finite automata and parse trees.
+
+Undo and redo button for finite automaton construction.
+
+//////////////////
+// Beyond FAREC //
+//////////////////
+
+The code for FAREC could be used for other programs. FAREC provides code for a
+GUI program where the user can create graphs. Such code could be combined with
+code for [graph algorithms](https://github.com/Meezeus/graph-algorithms) to
+create an educational program for shortest path algorithms and flow algorithms.
+(The program could be called PaFlo: Path and Flow Finder)
