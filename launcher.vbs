@@ -1,0 +1,1 @@
+CreateObject("Wscript.Shell").Run "bin\FAREC.bat", 0, True
