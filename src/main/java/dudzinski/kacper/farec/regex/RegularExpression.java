@@ -24,17 +24,17 @@ public abstract class RegularExpression {
     public abstract int getDepth();
 
     /**
-     * Returns the preorder traversal of the subexpressions of this regular
+     * Returns the postorder traversal of the subexpressions of this regular
      * expression.
      *
-     * @return the preorder traversal of the subexpressions of this regular
+     * @return the postorder traversal of the subexpressions of this regular
      * expression
      */
-    public ArrayList<RegularExpression> preorderTraversal() {
+    public ArrayList<RegularExpression> postorderTraversal() {
         // Create the list.
         ArrayList<RegularExpression> currentList = new ArrayList<>();
 
-        // If this regular expression is complex, add the preorder traversal of
+        // If this regular expression is complex, add the postorder traversal of
         // its left child followed by its right child to the list.
         if (this instanceof ComplexRegularExpression complexRegularExpression) {
             // Get the children.
@@ -43,12 +43,12 @@ public abstract class RegularExpression {
             RegularExpression rightChild =
                     complexRegularExpression.getRightOperand();
 
-            // If they are not null, add their preorder traversal to the list.
+            // If they are not null, add their postorder traversal to the list.
             if (leftChild != null) {
-                currentList.addAll(leftChild.preorderTraversal());
+                currentList.addAll(leftChild.postorderTraversal());
             }
             if (rightChild != null) {
-                currentList.addAll(rightChild.preorderTraversal());
+                currentList.addAll(rightChild.postorderTraversal());
             }
         }
 

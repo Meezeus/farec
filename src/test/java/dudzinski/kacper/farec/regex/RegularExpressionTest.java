@@ -114,12 +114,13 @@ public class RegularExpressionTest {
     }
 
     /**
-     * Test class for the {@link RegularExpression#preorderTraversal()} method.
+     * Test class for the {@link RegularExpression#postorderTraversal()}
+     * method.
      */
     @Nested
-    @DisplayName("Preorder traversal returns the correct regular expressions " +
-                 "when the regex string is")
-    class PreorderTraversalTest {
+    @DisplayName("Postorder traversal returns the correct regular " +
+                 "expressions when the regex string is")
+    class PostorderTraversalTest {
         @Test
         @DisplayName("1")
         void test1() {
@@ -130,7 +131,7 @@ public class RegularExpressionTest {
             RegularExpression regularExpression =
                     Parser.parseRegexString(regexString);
             ArrayList<RegularExpression> testRegexList =
-                    regularExpression.preorderTraversal();
+                    regularExpression.postorderTraversal();
 
             assertEquals(trueRegexStringList.size(), testRegexList.size());
             for (int index = 0; index < trueRegexStringList.size(); index++) {
@@ -150,7 +151,7 @@ public class RegularExpressionTest {
             RegularExpression regularExpression =
                     Parser.parseRegexString(regexString);
             ArrayList<RegularExpression> testRegexList =
-                    regularExpression.preorderTraversal();
+                    regularExpression.postorderTraversal();
 
             assertEquals(trueRegexStringList.size(), testRegexList.size());
             for (int index = 0; index < trueRegexStringList.size(); index++) {
@@ -171,7 +172,7 @@ public class RegularExpressionTest {
             RegularExpression regularExpression =
                     Parser.parseRegexString(regexString);
             ArrayList<RegularExpression> testRegexList =
-                    regularExpression.preorderTraversal();
+                    regularExpression.postorderTraversal();
 
             assertEquals(trueRegexStringList.size(), testRegexList.size());
             for (int index = 0; index < trueRegexStringList.size(); index++) {
@@ -199,7 +200,7 @@ public class RegularExpressionTest {
             RegularExpression regularExpression =
                     Parser.parseRegexString(regexString);
             ArrayList<RegularExpression> testRegexList =
-                    regularExpression.preorderTraversal();
+                    regularExpression.postorderTraversal();
 
             assertEquals(trueRegexStringList.size(), testRegexList.size());
             for (int index = 0; index < trueRegexStringList.size(); index++) {

@@ -76,12 +76,12 @@ public final class ParseTree {
     }
 
     /**
-     * Returns the preorder traversal of the nodes in this parse tree.
+     * Returns the postorder traversal of the nodes in this parse tree.
      *
-     * @return the preorder traversal of the nodes in this parse tree
+     * @return the postorder traversal of the nodes in this parse tree
      */
-    public ArrayList<ParseTreeNode> preorderTraversal() {
-        return preorderTraversal(root);
+    public ArrayList<ParseTreeNode> postorderTraversal() {
+        return postorderTraversal(root);
     }
 
     /**
@@ -306,13 +306,14 @@ public final class ParseTree {
     }
 
     /**
-     * Returns the preorder traversal of the parse tree rooted at the given
+     * Returns the postorder traversal of the parse tree rooted at the given
      * parse tree node.
      *
      * @param rootNode the root parse tree node of the parse tree
-     * @return the preorder traversal of the nodes in the parse tree
+     * @return the postorder traversal of the nodes in the parse tree
      */
-    private ArrayList<ParseTreeNode> preorderTraversal(ParseTreeNode rootNode) {
+    private ArrayList<ParseTreeNode> postorderTraversal(
+            ParseTreeNode rootNode) {
         // Create the list.
         ArrayList<ParseTreeNode> currentList = new ArrayList<>();
 
@@ -320,12 +321,12 @@ public final class ParseTree {
         ParseTreeNode leftChild = rootNode.getLeftChild();
         ParseTreeNode rightChild = rootNode.getRightChild();
 
-        // Add the preorder traversal of the left child, then the right child.
+        // Add the postorder traversal of the left child, then the right child.
         if (leftChild != null) {
-            currentList.addAll(preorderTraversal(leftChild));
+            currentList.addAll(postorderTraversal(leftChild));
         }
         if (rightChild != null) {
-            currentList.addAll(preorderTraversal(rightChild));
+            currentList.addAll(postorderTraversal(rightChild));
         }
 
         // Add the root and return the list.

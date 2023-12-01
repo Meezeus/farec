@@ -49,10 +49,10 @@ public final class ConvertREScreenController implements Initializable {
     @FXML
     private Button nextButton;
 
-    private int currentPreorderIndex;
-    private int maxPreorderIndex;
-    private ArrayList<ParseTreeNode> parseTreeNodesPreorder;
-    private ArrayList<RegularExpression> regularExpressionsPreorder;
+    private int currentPostorderIndex;
+    private int maxPostorderIndex;
+    private ArrayList<ParseTreeNode> parseTreeNodesPostorder;
+    private ArrayList<RegularExpression> regularExpressionsPostorder;
 
     /**
      * Makes the finite automaton area and the parse tree area grow by equal
@@ -93,8 +93,8 @@ public final class ConvertREScreenController implements Initializable {
     /**
      * Starts off the process of converting the regular expression shown in the
      * parse tree into a finite automaton. Displays the parse tree and
-     * highlights the first parse tree node in the preorder traversal. Displays
-     * the finite automaton for the first regular expression in the preorder
+     * highlights the first parse tree node in the postorder traversal. Displays
+     * the finite automaton for the first regular expression in the postorder
      * traversal. Sets all the labels in the view. Disables the prev button (and
      * possibly the next button).
      *
@@ -102,13 +102,13 @@ public final class ConvertREScreenController implements Initializable {
      *                  converted
      */
     public void setParseTree(ParseTree parseTree) {
-        // Get the preorder list of parse tree nodes and the preorder list of
+        // Get the postorder list of parse tree nodes and the postorder list of
         // regular expressions, and set the indices accordingly.
-        parseTreeNodesPreorder = parseTree.preorderTraversal();
-        regularExpressionsPreorder =
-                parseTree.getRegularExpression().preorderTraversal();
-        currentPreorderIndex = 0;
-        maxPreorderIndex = parseTreeNodesPreorder.size() - 1;
+        parseTreeNodesPostorder = parseTree.postorderTraversal();
+        regularExpressionsPostorder =
+                parseTree.getRegularExpression().postorderTraversal();
+        currentPostorderIndex = 0;
+        maxPostorderIndex = parseTreeNodesPostorder.size() - 1;
 
         // Display the parse tree and update the regular expression label.
         parseTreeScrollPane.setContent(parseTree.getContainer());
@@ -119,19 +119,20 @@ public final class ConvertREScreenController implements Initializable {
 
         // Disable the prev button (and possibly the next button).
         prevButton.setDisable(true);
-        if (currentPreorderIndex == maxPreorderIndex) {
+        if (currentPostorderIndex == maxPostorderIndex) {
             nextButton.setDisable(true);
         }
 
-        // Highlight the first node in the preorder traversal of the parse tree.
+        // Highlight the first node in the postorder traversal of the parse
+        // tree.
         ParseTreeNode currentParseTreeNode =
-                parseTreeNodesPreorder.get(currentPreorderIndex);
+                parseTreeNodesPostorder.get(currentPostorderIndex);
         currentParseTreeNode.setStroke(NODE_STROKE_HIGHLIGHT_COLOR);
 
-        // Set the info label with the first regular expression in the preorder
+        // Set the info label with the first regular expression in the postorder
         // traversal.
         RegularExpression currentRegularExpression =
-                regularExpressionsPreorder.get(currentPreorderIndex);
+                regularExpressionsPostorder.get(currentPostorderIndex);
         infoLabel.setText("Showing the finite automaton for " +
                           Parser.simplifyRegexString(
                                   currentRegularExpression.toString()) + ".");
@@ -158,26 +159,26 @@ public final class ConvertREScreenController implements Initializable {
     public void prev() {
         // Remove highlighting from current node.
         ParseTreeNode currentParseTreeNode =
-                parseTreeNodesPreorder.get(currentPreorderIndex);
+                parseTreeNodesPostorder.get(currentPostorderIndex);
         currentParseTreeNode.setStroke(NODE_STROKE_COLOR);
 
         // Decrease the index and enable/disable the buttons accordingly.
-        currentPreorderIndex -= 1;
-        if (currentPreorderIndex == 0) {
+        currentPostorderIndex -= 1;
+        if (currentPostorderIndex == 0) {
             prevButton.setDisable(true);
         }
-        if (currentPreorderIndex < maxPreorderIndex) {
+        if (currentPostorderIndex < maxPostorderIndex) {
             nextButton.setDisable(false);
         }
 
         // Highlight the previous node.
         ParseTreeNode previousParseTreeNode =
-                parseTreeNodesPreorder.get(currentPreorderIndex);
+                parseTreeNodesPostorder.get(currentPostorderIndex);
         previousParseTreeNode.setStroke(NODE_STROKE_HIGHLIGHT_COLOR);
 
         // Update the info label.
         RegularExpression previousRegularExpression =
-                regularExpressionsPreorder.get(currentPreorderIndex);
+                regularExpressionsPostorder.get(currentPostorderIndex);
         infoLabel.setText("Showing the finite automaton for " +
                           Parser.simplifyRegexString(
                                   previousRegularExpression.toString()) + ".");
@@ -204,26 +205,26 @@ public final class ConvertREScreenController implements Initializable {
     public void next() {
         // Remove the highlighting from current node.
         ParseTreeNode currentParseTreeNode =
-                parseTreeNodesPreorder.get(currentPreorderIndex);
+                parseTreeNodesPostorder.get(currentPostorderIndex);
         currentParseTreeNode.setStroke(NODE_STROKE_COLOR);
 
         // Increase the index and enable/disable the buttons accordingly.
-        currentPreorderIndex += 1;
-        if (currentPreorderIndex > 0) {
+        currentPostorderIndex += 1;
+        if (currentPostorderIndex > 0) {
             prevButton.setDisable(false);
         }
-        if (currentPreorderIndex == maxPreorderIndex) {
+        if (currentPostorderIndex == maxPostorderIndex) {
             nextButton.setDisable(true);
         }
 
         // Highlight the next node.
         ParseTreeNode nextParseTreeNode =
-                parseTreeNodesPreorder.get(currentPreorderIndex);
+                parseTreeNodesPostorder.get(currentPostorderIndex);
         nextParseTreeNode.setStroke(NODE_STROKE_HIGHLIGHT_COLOR);
 
         // Update the info label.
         RegularExpression nextRegularExpression =
-                regularExpressionsPreorder.get(currentPreorderIndex);
+                regularExpressionsPostorder.get(currentPostorderIndex);
         infoLabel.setText("Showing the finite automaton for " +
                           Parser.simplifyRegexString(
                                   nextRegularExpression.toString()) + ".");
