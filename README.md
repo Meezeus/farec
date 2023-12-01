@@ -1,6 +1,6 @@
 # FAREC
 
-**FAREC** (Finite Automata and Regular Expression Converter) is an educational
+**FAREC** (*Finite Automata and Regular Expression Converter*) is an educational
 tool designed to demonstrate the algorithms used to convert between **finite
 automata** and **regular expressions**.
 
@@ -18,8 +18,9 @@ aforementioned algorithms, see the included [report](/report.pdf).
 
 ## Installation
 
-The easiest way to run the program is to download *FAREC.zip*, extract its
-contents and then launch the program by double-clicking *launcher.vbs*.
+The easiest way to run the program is to download [*FAREC.zip*](/FAREC.zip),
+extract its contents and then launch the program by double-clicking
+*launcher.vbs*.
 
 If you wish to run the program from an IDE, I recommend using
 [IntelliJ](https://www.jetbrains.com/idea/). First clone the repo and then open
