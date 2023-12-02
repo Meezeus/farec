@@ -36,7 +36,7 @@ Finally, run *copy_launcher.bat*. The packaged program will be inside the
 ## Usage
 
 For information on how to use the program, see the included [user
-guide](/user_guide/user_guide.pdf). Two example use cases are also demonstrated
+guide](/User%20Guide/user_guide.pdf). Two example use cases are also demonstrated
 in the [project video](/project_video.mp4), from 2:40 onwards.
 
 ## Future Work
