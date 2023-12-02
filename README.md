@@ -16,15 +16,6 @@ Thompson's construction algorithm).
 For more information about finite automata, regular expressions or the
 aforementioned algorithms, see the included [report](/report.pdf).
 
-![](https://github.com/Meezeus/farec/blob/98ff259e3ddfcef8f36d3851bfe27d25bb75e07f/User%20Guide/Diagrams/CreateREScreen.png?raw=true)
-
-![](https://github.com/Meezeus/farec/blob/98ff259e3ddfcef8f36d3851bfe27d25bb75e07f/User%20Guide/Diagrams/ConvertREScreen.png?raw=true)
-
-![](https://github.com/Meezeus/farec/blob/98ff259e3ddfcef8f36d3851bfe27d25bb75e07f/User%20Guide/Diagrams/CreateFAScreen.png?raw=true)
-
-![](https://github.com/Meezeus/farec/blob/98ff259e3ddfcef8f36d3851bfe27d25bb75e07f/User%20Guide/Diagrams/ConvertFAScreen.png?raw=true)
-
-
 ## Installation
 
 The easiest way to run the program is to download [*FAREC.zip*](/FAREC.zip),
@@ -61,3 +52,13 @@ regular expressions"*. My supervisor for the project was Dr. Agi Kurucz.
 
 For more information about the project, see the included [report](/report.pdf)
 or [project video](/project_video.mp4).
+
+## Gallery
+
+![](https://github.com/Meezeus/farec/blob/98ff259e3ddfcef8f36d3851bfe27d25bb75e07f/User%20Guide/Diagrams/CreateREScreen.png?raw=true)
+
+![](https://github.com/Meezeus/farec/blob/98ff259e3ddfcef8f36d3851bfe27d25bb75e07f/User%20Guide/Diagrams/ConvertREScreen.png?raw=true)
+
+![](https://github.com/Meezeus/farec/blob/98ff259e3ddfcef8f36d3851bfe27d25bb75e07f/User%20Guide/Diagrams/CreateFAScreen.png?raw=true)
+
+![](https://github.com/Meezeus/farec/blob/98ff259e3ddfcef8f36d3851bfe27d25bb75e07f/User%20Guide/Diagrams/ConvertFAScreen.png?raw=true)
