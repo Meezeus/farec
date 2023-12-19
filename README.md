@@ -36,8 +36,9 @@ Finally, run *copy_launcher.bat*. The packaged program will be inside the
 ## Usage
 
 For information on how to use the program, see the included [user
-guide](/User%20Guide/user_guide.pdf). Two example use cases are also demonstrated
-in the [project video](/project_video.mp4), from 2:40 onwards.
+guide](/User%20Guide/user_guide.pdf). Two example use cases are also
+demonstrated in the [project video](https://youtu.be/m4aCRncxnWQ), from 2:40
+onwards.
 
 ## Future Work
 
@@ -51,7 +52,7 @@ of my project was *"Implementing algorithms connecting finite automata and
 regular expressions"*. My supervisor for the project was Dr. Agi Kurucz.
 
 For more information about the project, see the included [report](/report.pdf)
-or [project video](/project_video.mp4).
+or [project video](https://youtu.be/m4aCRncxnWQ).
 
 ## Gallery
 
